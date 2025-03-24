@@ -1,0 +1,19 @@
+# Visual Studio Code directories and files
+.vscode/
+
+# Logs
+*.log*
+npm-debug.log*
+
+# Node.js files
+.npm
+.DS_Store
+
+# Build directories
+node_modules/
+out/
+dist/
+
+# Local env files
+*.env
+*.env.*.local
