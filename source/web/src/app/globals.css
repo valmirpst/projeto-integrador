@@ -1,0 +1,39 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+
+  font-family: var(--font-inter), "sans-serif";
+}
+
+:root {
+  --background: "#FFFFFF";
+  --foreground: "#111111";
+
+  --primary-100: "#4A67DF";
+  --primary-300: "#4A67DF";
+  --primary-500: "#172C82";
+  --primary-700: "#0B1641";
+  --primary-900: "#060C23";
+
+  --gray-100: "#FFFFFF";
+  --gray-200: "#E7E7E7";
+  --gray-300: "#808080";
+  --gray-400: "#6A6A6A";
+  --gray-500: "#222222";
+  --gray-600: "#111111";
+  --gray-700: "#000000";
+
+  --danger-300: "#D52A3E";
+  --danger-500: "#BF2234";
+  --danger-700: "#AD1F2F";
+
+  --safe-300: "#28A847";
+  --safe-500: "#1F8438";
+  --safe-700: "#17632A";
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
