@@ -1,0 +1,73 @@
+.defaultStyles {
+  font-family: var(--font-inter);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.sizeXxs {
+  font-size: 10px;
+}
+
+.sizeXs {
+  font-size: 12px;
+}
+
+.sizeSm {
+  font-size: 14px;
+}
+
+.sizeSmMd {
+  font-size: 15px;
+}
+
+.sizeMd {
+  font-size: 16px;
+}
+
+.sizeLg {
+  font-size: 18px;
+}
+
+.sizeXl {
+  font-size: 20px;
+}
+
+.size2Xl {
+  font-size: 24px;
+}
+
+.weightLight {
+  font-weight: 300;
+}
+
+.weightRegular {
+  font-weight: 400;
+}
+
+.weightMedium {
+  font-weight: 500;
+}
+
+.weightBold {
+  font-weight: 700;
+}
+
+.variantDefault {
+  color: var(--foreground);
+}
+
+.variantLighter {
+  color: var(--gray-400);
+}
+
+.variantLight {
+  color: var(--gray-500);
+}
+
+.variantDanger {
+  color: var(--danger-300);
+}
+
+.variantSafe {
+  color: var(--safe-500);
+}

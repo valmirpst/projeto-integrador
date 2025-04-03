@@ -1,0 +1,50 @@
+.sizeXs {
+  font-size: 16px;
+}
+
+.sizeSm {
+  font-size: 18px;
+}
+
+.sizeMd {
+  font-size: 20px;
+}
+
+.sizeLg {
+  font-size: 24px;
+}
+
+.sizeXl {
+  font-size: 28px;
+}
+
+.size2Xl {
+  font-size: 32px;
+}
+
+.size3Xl {
+  font-size: 36px;
+}
+
+.size4Xl {
+  font-size: 40px;
+}
+
+.weightRegular {
+  font-weight: 400;
+}
+
+.weightMedium {
+  font-weight: 500;
+}
+
+.weightBold {
+  font-weight: 700;
+}
+
+.defaultStyles {
+  font-family: var(--font-inter);
+  color: var(--foreground);
+  line-height: 1;
+  margin: 0;
+}

@@ -1,0 +1,140 @@
+/* Button.module.css */
+
+/* Base styles */
+.buttonBase {
+  width: 96px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.1s;
+  position: relative;
+  line-height: 1;
+}
+
+/* Sizes */
+.sizeSm {
+  min-width: 96px;
+  height: 2.25rem;
+}
+
+.sizeMd {
+  height: 2.5rem;
+}
+
+.sizeLg {
+  height: 2.75rem;
+}
+
+.sizeFull {
+  width: 100%;
+}
+
+/* Variants */
+.variantPrimary {
+  color: var(--gray-100);
+  background-color: var(--primary-500);
+
+  &:hover:enabled {
+    background-color: var(--primary-300);
+  }
+
+  &:disabled {
+    opacity: 0.8;
+    cursor: default;
+  }
+}
+
+[data-theme="dark"] .variantPrimary {
+  background-color: var(--primary-300);
+
+  &:hover:enabled {
+    background-color: var(--primary-500);
+  }
+}
+
+.variantSecondary {
+  color: var(--gray-700);
+  background-color: transparent;
+  border: 1px solid var(--primary-300);
+
+  &:hover:enabled {
+    color: var(--gray-100);
+    background-color: var(--primary-300);
+  }
+
+  &:disabled {
+    opacity: 0.8;
+    cursor: default;
+  }
+}
+
+.variantDanger {
+  color: var(--gray-100);
+  background-color: var(--danger-500);
+
+  &:hover:enabled {
+    background-color: var(--danger-300);
+  }
+
+  &:disabled {
+    opacity: 0.8;
+    cursor: default;
+  }
+}
+
+.variantSafe {
+  color: var(--gray-100);
+  background-color: var(--safe-500);
+
+  &:hover:enabled {
+    background-color: var(--safe-300);
+  }
+
+  &:disabled {
+    opacity: 0.8;
+    cursor: default;
+  }
+}
+
+/* Loader overlay */
+.loadingOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Loader icon */
+.loader {
+  width: 1rem; /* w-4 */
+  height: 1rem; /* h-4 */
+  animation: spin 1s linear infinite;
+}
+
+/* Spin animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Content */
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  line-height: 1;
+}
+
+.contentHidden {
+  opacity: 0;
+}

@@ -1,0 +1,7 @@
+/* Estilo base do Box */
+.boxBase {
+  padding: 1.5rem;
+  background-color: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+}

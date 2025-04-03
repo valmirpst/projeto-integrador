@@ -7,30 +7,30 @@
 }
 
 :root {
-  --background: "#FFFFFF";
-  --foreground: "#111111";
+  --background: #ffffff;
+  --foreground: #111111;
 
-  --primary-100: "#4A67DF";
-  --primary-300: "#4A67DF";
-  --primary-500: "#172C82";
-  --primary-700: "#0B1641";
-  --primary-900: "#060C23";
+  --primary-100: #4a67df;
+  --primary-300: #4a67df;
+  --primary-500: #172c82;
+  --primary-700: #0b1641;
+  --primary-900: #060c23;
 
-  --gray-100: "#FFFFFF";
-  --gray-200: "#E7E7E7";
-  --gray-300: "#808080";
-  --gray-400: "#6A6A6A";
-  --gray-500: "#222222";
-  --gray-600: "#111111";
-  --gray-700: "#000000";
+  --gray-100: #f6f6f6;
+  --gray-200: #e7e7e7;
+  --gray-300: #808080;
+  --gray-400: #6a6a6a;
+  --gray-500: #222222;
+  --gray-600: #111111;
+  --gray-700: #000000;
 
-  --danger-300: "#D52A3E";
-  --danger-500: "#BF2234";
-  --danger-700: "#AD1F2F";
+  --danger-300: #d52a3e;
+  --danger-500: #bf2234;
+  --danger-700: #ad1f2f;
 
-  --safe-300: "#28A847";
-  --safe-500: "#1F8438";
-  --safe-700: "#17632A";
+  --safe-300: #28a847;
+  --safe-500: #1f8438;
+  --safe-700: #17632a;
 }
 
 body {

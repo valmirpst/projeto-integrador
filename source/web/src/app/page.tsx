@@ -1,7 +1,13 @@
+"use client";
+
+import { Heading } from "@/components/ui/heading";
+import { Text } from "@/components/ui/text";
+
 export default function Home() {
   return (
     <main>
-      <div>Hello world!</div>
+      <Heading>Library!</Heading>
+      <Text variant="light">Hello World</Text>
     </main>
   );
 }

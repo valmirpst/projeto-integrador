@@ -1,0 +1,85 @@
+.container {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: var(--gray-100);
+  border: 1px solid var(--gray-300);
+  color: var(--gray-700);
+  font-size: 14px;
+}
+
+.container:focus-within {
+  outline: none;
+  border-color: var(--primary-300);
+}
+
+.dark .container {
+  border-color: var(--gray-300);
+}
+
+.dark .container:focus-within {
+  border-color: var(--primary-300);
+}
+
+/* Quando o input interno estiver desabilitado */
+.container:has(input:disabled) {
+  opacity: 0.7;
+  cursor: default;
+}
+
+/* Quando há erro */
+.hasError {
+  border-color: var(--danger-300) !important;
+}
+
+/* Quando há ícones sem prefixo */
+.hasIcon {
+  gap: 0.5rem;
+}
+
+/* Tamanhos */
+.sm {
+  height: 2rem;
+}
+
+.md {
+  height: 2.25rem;
+}
+
+.lg {
+  height: 2.5rem;
+}
+
+/* Input */
+.input {
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--gray-700);
+  caret-color: var(--gray-700);
+  background: transparent;
+  border: none;
+  width: 100%;
+}
+
+.input::placeholder {
+  color: var(--gray-100);
+}
+
+.input:focus {
+  outline: none;
+}
+
+/* Prefixo */
+.prefix {
+  width: max-content;
+  font-size: 14px;
+  color: var(--gray-700);
+}
+
+.prefix.hasIcon {
+  margin-left: 0.5rem;
+}
