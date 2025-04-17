@@ -1,0 +1,10 @@
+.menuWrapper {
+  padding: 3.125rem 2.5rem;
+  background-color: var(--primary-900);
+}
+
+.menuHeader {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
