@@ -71,3 +71,79 @@
 .variantSafe {
   color: var(--safe-500);
 }
+
+.colorPrimary100 {
+  color: #4a67df;
+}
+
+.colorPrimary300 {
+  color: #4a67df;
+}
+
+.colorPrimary500 {
+  color: #172c82;
+}
+
+.colorPrimary700 {
+  color: #0b1641;
+}
+
+.colorPrimary900 {
+  color: #060c23;
+}
+
+.colorGray50 {
+  color: #ffffff;
+}
+
+.colorGray100 {
+  color: #f6f6f6;
+}
+
+.colorGray200 {
+  color: #e7e7e7;
+}
+
+.colorGray300 {
+  color: #808080;
+}
+
+.colorGray400 {
+  color: #6a6a6a;
+}
+
+.colorGray500 {
+  color: #222222;
+}
+
+.colorGray600 {
+  color: #111111;
+}
+
+.colorGray700 {
+  color: #000000;
+}
+
+.colorDanger300 {
+  color: #d52a3e;
+}
+
+.colorDanger500 {
+  color: #bf2234;
+}
+
+.colorDanger700 {
+  color: #ad1f2f;
+}
+
+.colorSafe300 {
+  color: #28a847;
+}
+
+.colorSafe500 {
+  color: #1f8438;
+}
+
+.colorSafe700 {
+  color: #17632a;
+}

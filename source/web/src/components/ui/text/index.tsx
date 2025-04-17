@@ -6,8 +6,33 @@ export interface TextProps extends React.HTMLAttributes<HTMLParagraphElement> {
   as?: React.ElementType;
   size?: keyof typeof sizeStyles;
   weight?: keyof typeof weightStyles;
-  variant?: keyof typeof variantStyles;
+  color?: keyof typeof colorStyles;
 }
+
+const colorStyles = {
+  primary100: styles.colorPrimary100,
+  primary300: styles.colorPrimary300,
+  primary500: styles.colorPrimary500,
+  primary700: styles.colorPrimary700,
+  primary900: styles.colorPrimary900,
+
+  gray50: styles.colorGray50,
+  gray100: styles.colorGray100,
+  gray200: styles.colorGray200,
+  gray300: styles.colorGray300,
+  gray400: styles.colorGray400,
+  gray500: styles.colorGray500,
+  gray600: styles.colorGray600,
+  gray700: styles.colorGray700,
+
+  danger300: styles.colorDanger300,
+  danger500: styles.colorDanger500,
+  danger700: styles.colorDanger700,
+
+  safe300: styles.colorSafe300,
+  safe500: styles.colorSafe500,
+  safe700: styles.colorSafe700,
+};
 
 const sizeStyles = {
   xxs: styles.sizeXxs,
@@ -27,17 +52,26 @@ const weightStyles = {
   bold: styles.weightBold,
 };
 
-const variantStyles = {
-  default: styles.variantDefault,
-  lighter: styles.variantLighter,
-  light: styles.variantLight,
-  danger: styles.variantDanger,
-  safe: styles.variantSafe,
-};
-
 export const Text = forwardRef<HTMLParagraphElement, TextProps>(
-  ({ as: Component = "p", size = "md", weight = "regular", variant = "default", children, className, ...rest }, ref) => {
-    const classes = cnModules(styles.defaultStyles, sizeStyles[size], weightStyles[weight], variantStyles[variant], className);
+  (
+    {
+      as: Component = "p",
+      size = "md",
+      weight = "regular",
+      color = "gray700",
+      children,
+      className,
+      ...rest
+    },
+    ref
+  ) => {
+    const classes = cnModules(
+      styles.defaultStyles,
+      sizeStyles[size],
+      weightStyles[weight],
+      colorStyles[color],
+      className
+    );
 
     return (
       <Component ref={ref} className={classes} {...rest}>
