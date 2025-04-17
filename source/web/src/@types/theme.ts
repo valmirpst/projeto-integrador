@@ -6,6 +6,7 @@ export type Theme = {
     primary100: string;
     primary300: string;
     primary500: string;
+    primary600: string;
     primary700: string;
     primary900: string;
 

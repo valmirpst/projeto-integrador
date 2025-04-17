@@ -2,6 +2,7 @@
   font-family: var(--font-inter);
   line-height: 1.5;
   margin: 0;
+  transition: 0.1s;
 }
 
 .sizeXxs {
@@ -50,26 +51,6 @@
 
 .weightBold {
   font-weight: 700;
-}
-
-.variantDefault {
-  color: var(--foreground);
-}
-
-.variantLighter {
-  color: var(--gray-400);
-}
-
-.variantLight {
-  color: var(--gray-500);
-}
-
-.variantDanger {
-  color: var(--danger-300);
-}
-
-.variantSafe {
-  color: var(--safe-500);
 }
 
 .colorPrimary100 {

@@ -8,6 +8,7 @@ export const theme: Theme = {
     primary100: "#4a67df",
     primary300: "#4a67df",
     primary500: "#172c82",
+    primary600: "#172c82",
     primary700: "#0b1641",
     primary900: "#060c23",
 
