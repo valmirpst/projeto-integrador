@@ -1,13 +1,12 @@
-"use client";
-
-import { Heading } from "@/components/ui/heading";
+import GlobalContainer from "@/components/global-container";
+import Menu from "@/components/menu";
 import { Text } from "@/components/ui/text";
 
 export default function Home() {
   return (
-    <main>
-      <Heading>Library!</Heading>
-      <Text variant="light">Hello World</Text>
-    </main>
+    <GlobalContainer>
+      <Menu />
+      <Text>Hello World</Text>
+    </GlobalContainer>
   );
 }

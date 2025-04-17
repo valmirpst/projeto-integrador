@@ -1,0 +1,21 @@
+.menuItem {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.25rem 0;
+}
+
+.menuItem + .menuItem {
+  margin-top: 0.75rem;
+}
+
+.menuItem:hover p {
+  color: var(--primary-300);
+}
+
+.menuItem:hover svg path {
+  stroke: var(--primary-300);
+}
+
+.menuItem:hover svg path {
+  stroke: var(--primary-300);
+}
