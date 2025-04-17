@@ -1,12 +1,16 @@
-import GlobalContainer from "@/components/global-container";
-import Menu from "@/components/menu";
-import { Text } from "@/components/ui/text";
+"use client";
+
+import Search from "@/components/search";
+import { Box } from "@/components/ui/box";
+import styles from "./page.module.css";
+import { useState } from "react";
 
 export default function Home() {
+  const [searchValue, setSearchValue] = useState("");
+
   return (
-    <GlobalContainer>
-      <Menu />
-      <Text>Hello World</Text>
-    </GlobalContainer>
+    <Box className={styles.homeWrapper}>
+      <Search onChange={(event) => console.log(event)} value={searchValue} />
+    </Box>
   );
 }
