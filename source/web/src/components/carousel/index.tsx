@@ -71,9 +71,9 @@ export default function Carousel(props: Props) {
   const scrollBarWidth = 800 - books.length * 20;
 
   useEffect(() => {
-    /* Calculando steps do carrousel */
     const carrousel = carrouselRef.current;
     if (carrousel) {
+      /* Calculando steps do carrousel */
       const stepsList = [0];
 
       const carrouselWidth = carrousel?.scrollWidth;
@@ -125,7 +125,7 @@ export default function Carousel(props: Props) {
   }
 
   const handleMouseUp = useCallback(
-    (event: MouseEvent) => {
+    (event: React.MouseEvent) => {
       setMoveActive(false);
       setIsTransistionActive(true);
 
@@ -155,12 +155,6 @@ export default function Carousel(props: Props) {
     setMoveDistance(distance);
   }
 
-  useEffect(() => {
-    addEventListener("mouseup", handleMouseUp);
-
-    return () => removeEventListener("mouseup", handleMouseUp);
-  }, [handleMouseUp]);
-
   const classes = cnModules(styles.carouselWrapper, className);
 
   return (
@@ -180,6 +174,13 @@ export default function Carousel(props: Props) {
         }}
         onMouseDown={handleMouseDown}
         onMouseMove={moveActive ? handleMouseMove : undefined}
+        onMouseUp={handleMouseUp}
+        onMouseEnter={(event) => {
+          if (moveActive) {
+            handleMouseUp(event);
+            setMoveActive(false);
+          }
+        }}
         onDragStart={(e) => e.preventDefault()}
       >
         {books.map((book) => (
