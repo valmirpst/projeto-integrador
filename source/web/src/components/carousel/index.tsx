@@ -70,12 +70,11 @@ export default function Carousel(props: Props) {
       (carrouselWidth - (window.innerWidth - 300 + 48 * 2 - 192)) * -1;
 
     for (let i = 2; i <= books.length; i += 2) {
-      const value = (i * imageWidth + 40 * i) * -1;
-      if (value <= lastStep) break;
+      const value = (i * imageWidth + 40 * i - (imageWidth + 60) / 2) * -1;
+      if (value <= lastStep + 100) break;
       stepsList.push(value);
     }
     stepsList.push(lastStep);
-
     setSteps(stepsList);
 
     /* Calculando steps da scrollbar */
@@ -85,7 +84,6 @@ export default function Carousel(props: Props) {
       const stepsScrollBarList = stepsList.map((_, index) => {
         return index * (lastStep / (stepsList.length - 1));
       });
-
       setStepsScrollBar(stepsScrollBarList);
     }
   }, [books.length, scrollBarWidth]);
