@@ -52,14 +52,17 @@ export default function Carousel(props: Props) {
   const [position, setPosition] = useState(0);
   const [isTransistionActive, setIsTransistionActive] = useState(true);
   const [steps, setSteps] = useState<number[]>([]);
+  const [stepsScrollBar, setStepsScrollBar] = useState<number[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
 
   const carrouselRef = useRef<HTMLDivElement>(null);
 
   const imageWidth = 240;
   const amountMovement = 1.2;
+  const scrollBarWidth = 800 - books.length * 20;
 
   useEffect(() => {
+    /* Calculando steps do carrousel */
     const stepsList = [0];
 
     const carrouselWidth = imageWidth * books.length + 40 * (books.length - 1);
@@ -74,18 +77,33 @@ export default function Carousel(props: Props) {
     stepsList.push(lastStep);
 
     setSteps(stepsList);
-  }, [books.length]);
+
+    /* Calculando steps da scrollbar */
+    if (carrouselRef.current) {
+      const lastStep = carrouselRef.current?.clientWidth - scrollBarWidth - 48;
+
+      const stepsScrollBarList = stepsList.map((_, index) => {
+        return index * (lastStep / (stepsList.length - 1));
+      });
+
+      setStepsScrollBar(stepsScrollBarList);
+    }
+  }, [books.length, scrollBarWidth]);
 
   function changeStep(moved: number) {
-    if (moved > 0 && currentStep < steps.length - 1) {
-      setCurrentStep((prev) => prev + 1);
-      setMoveDistance(steps[currentStep + 1]);
-      setPosition(steps[currentStep + 1]);
-    }
-    if (moved < 0 && currentStep > 0) {
-      setCurrentStep((prev) => prev - 1);
-      setMoveDistance(steps[currentStep - 1]);
-      setPosition(steps[currentStep - 1]);
+    if (Math.abs(moved) > 40) {
+      if (moved > 0 && currentStep < steps.length - 1) {
+        setCurrentStep((prev) => prev + 1);
+        setMoveDistance(steps[currentStep + 1]);
+        setPosition(steps[currentStep + 1]);
+      }
+      if (moved < 0 && currentStep > 0) {
+        setCurrentStep((prev) => prev - 1);
+        setMoveDistance(steps[currentStep - 1]);
+        setPosition(steps[currentStep - 1]);
+      }
+    } else {
+      setMoveDistance(steps[currentStep]);
     }
   }
 
@@ -108,7 +126,6 @@ export default function Carousel(props: Props) {
       setMoveDistance(lastStep);
       setPosition(lastStep);
     } else {
-      setPosition(moveDistance);
       changeStep(moveStart - event.clientX);
     }
   }
@@ -143,7 +160,7 @@ export default function Carousel(props: Props) {
         className={styles.carousel}
         style={{
           transform: `translateX(${moveDistance}px)`,
-          transition: isTransistionActive ? "0.5s" : "",
+          transition: isTransistionActive ? "transform 0.5s" : "",
         }}
         onMouseDown={handleMouseDown}
         onMouseMove={moveActive ? handleMouseMove : undefined}
@@ -162,6 +179,13 @@ export default function Carousel(props: Props) {
           </Box>
         ))}
       </Box>
+      <Box
+        className={styles.scroolBar}
+        style={{
+          transform: `translateX(${stepsScrollBar[currentStep]}px)`,
+          width: `${scrollBarWidth / 16}rem`,
+        }}
+      />
     </Box>
   );
 }

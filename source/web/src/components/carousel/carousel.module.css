@@ -18,3 +18,12 @@
 .bookImage {
   border-radius: 0.75rem;
 }
+
+.scroolBar {
+  height: 0.75rem;
+  background-color: var(--gray-200);
+  border-radius: 4rem;
+  opacity: 0.75;
+  margin-top: 1rem;
+  transition: transform 0.5s;
+}
