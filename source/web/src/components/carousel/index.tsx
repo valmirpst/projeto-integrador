@@ -22,10 +22,12 @@ import styles from "./carousel.module.css";
 
 /** Libs */
 import { cnModules } from "@/lib/cnModules";
+import { theme } from "@/theme";
 
 type Props = HTMLAttributes<HTMLDivElement> & {
   title: string;
   books: Book[];
+  scrollbarColor?: string;
 };
 
 /**
@@ -53,7 +55,13 @@ type Props = HTMLAttributes<HTMLDivElement> & {
  * <Carousel title="Livros Populares" books={livros} />
  */
 export default function Carousel(props: Props) {
-  const { title, books, className, ...rest } = props;
+  const {
+    title,
+    books,
+    scrollbarColor = theme.colors.gray200,
+    className,
+    ...rest
+  } = props;
 
   const [moveActive, setMoveActive] = useState(false);
   const [moveStart, setMoveStart] = useState(0);
@@ -88,8 +96,7 @@ export default function Carousel(props: Props) {
       setSteps(stepsList);
 
       /* Calculando steps da scrollbar */
-      const lastScrollbarStep =
-        carrousel?.clientWidth - scrollBarWidth - 48 * 2;
+      const lastScrollbarStep = carrousel?.clientWidth - scrollBarWidth - 48;
 
       const stepsScrollBarList = stepsList.map((_, index) => {
         return index * (lastScrollbarStep / (stepsList.length - 1));
@@ -201,6 +208,7 @@ export default function Carousel(props: Props) {
         style={{
           transform: `translateX(${stepsScrollBar[currentStep]}px)`,
           width: `${scrollBarWidth / 16}rem`,
+          backgroundColor: scrollbarColor,
         }}
       />
     </Box>

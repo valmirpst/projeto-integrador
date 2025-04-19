@@ -1,6 +1,7 @@
 .homeWrapper {
   padding-top: 3rem;
   overflow-x: hidden;
+  grid-column: 2;
 }
 
 .seachHome {

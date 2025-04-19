@@ -1,8 +1,9 @@
 .menuWrapper {
   padding: 3.125rem 2.5rem;
   background-color: var(--primary-900);
-  min-height: 100vh;
-  position: relative;
+  height: 100vh;
+  width: 18.75rem;
+  position: fixed;
 }
 
 .menuHeader {

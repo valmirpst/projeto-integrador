@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import { useState } from "react";
 import Carousel from "@/components/carousel";
 import { Book } from "@/@types/boook";
+import { theme } from "@/theme";
 
 const books: Book[] = [
   {
@@ -132,6 +133,7 @@ export default function Home() {
           className={styles.carouselContinueReading}
           title="Continue Lendo"
           books={books}
+          scrollbarColor={theme.colors.gray300}
         />
       </Box>
     </Box>
