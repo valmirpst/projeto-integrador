@@ -1,6 +1,12 @@
 "use client";
 /** React */
-import { useEffect, useRef, useState } from "react";
+import {
+  HTMLAttributes,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 /** Types */
 import { Book } from "@/@types/boook";
@@ -14,7 +20,10 @@ import * as Icon from "phosphor-react";
 /** Styles */
 import styles from "./carousel.module.css";
 
-type Props = {
+/** Libs */
+import { cnModules } from "@/lib/cnModules";
+
+type Props = HTMLAttributes<HTMLDivElement> & {
   title: string;
   books: Book[];
 };
@@ -44,7 +53,7 @@ type Props = {
  * <Carousel title="Livros Populares" books={livros} />
  */
 export default function Carousel(props: Props) {
-  const { title, books } = props;
+  const { title, books, className, ...rest } = props;
 
   const [moveActive, setMoveActive] = useState(false);
   const [moveStart, setMoveStart] = useState(0);
@@ -63,47 +72,51 @@ export default function Carousel(props: Props) {
 
   useEffect(() => {
     /* Calculando steps do carrousel */
-    const stepsList = [0];
+    const carrousel = carrouselRef.current;
+    if (carrousel) {
+      const stepsList = [0];
 
-    const carrouselWidth = imageWidth * books.length + 40 * (books.length - 1);
-    const lastStep =
-      (carrouselWidth - (window.innerWidth - 300 + 48 * 2 - 192)) * -1;
+      const carrouselWidth = carrousel?.scrollWidth;
+      const lastStep = (carrouselWidth - carrousel?.clientWidth + 48) * -1;
 
-    for (let i = 2; i <= books.length; i += 2) {
-      const value = (i * imageWidth + 40 * i - (imageWidth + 60) / 2) * -1;
-      if (value <= lastStep + 100) break;
-      stepsList.push(value);
-    }
-    stepsList.push(lastStep);
-    setSteps(stepsList);
+      for (let i = 2; i <= books.length; i += 2) {
+        const value = (i * imageWidth + 40 * i - imageWidth / 2) * -1;
+        if (value <= lastStep + 100) break;
+        stepsList.push(value);
+      }
+      stepsList.push(lastStep);
+      setSteps(stepsList);
 
-    /* Calculando steps da scrollbar */
-    if (carrouselRef.current) {
-      const lastStep = carrouselRef.current?.clientWidth - scrollBarWidth - 48;
+      /* Calculando steps da scrollbar */
+      const lastScrollbarStep =
+        carrousel?.clientWidth - scrollBarWidth - 48 * 2;
 
       const stepsScrollBarList = stepsList.map((_, index) => {
-        return index * (lastStep / (stepsList.length - 1));
+        return index * (lastScrollbarStep / (stepsList.length - 1));
       });
       setStepsScrollBar(stepsScrollBarList);
     }
   }, [books.length, scrollBarWidth]);
 
-  function changeStep(moved: number) {
-    if (Math.abs(moved) > 40) {
-      if (moved > 0 && currentStep < steps.length - 1) {
-        setCurrentStep((prev) => prev + 1);
-        setMoveDistance(steps[currentStep + 1]);
-        setPosition(steps[currentStep + 1]);
+  const changeStep = useCallback(
+    (moved: number) => {
+      if (Math.abs(moved) > 40) {
+        if (moved > 0 && currentStep < steps.length - 1) {
+          setCurrentStep((prev) => prev + 1);
+          setMoveDistance(steps[currentStep + 1]);
+          setPosition(steps[currentStep + 1]);
+        }
+        if (moved < 0 && currentStep > 0) {
+          setCurrentStep((prev) => prev - 1);
+          setMoveDistance(steps[currentStep - 1]);
+          setPosition(steps[currentStep - 1]);
+        }
+      } else {
+        setMoveDistance(steps[currentStep]);
       }
-      if (moved < 0 && currentStep > 0) {
-        setCurrentStep((prev) => prev - 1);
-        setMoveDistance(steps[currentStep - 1]);
-        setPosition(steps[currentStep - 1]);
-      }
-    } else {
-      setMoveDistance(steps[currentStep]);
-    }
-  }
+    },
+    [currentStep, steps]
+  );
 
   function handleMouseDown(event: React.MouseEvent) {
     setMoveActive(true);
@@ -111,22 +124,25 @@ export default function Carousel(props: Props) {
     setMoveStart(event.clientX);
   }
 
-  function handleMouseUp(event: MouseEvent) {
-    setMoveActive(false);
-    setIsTransistionActive(true);
+  const handleMouseUp = useCallback(
+    (event: MouseEvent) => {
+      setMoveActive(false);
+      setIsTransistionActive(true);
 
-    const lastStep = steps[steps.length - 1];
+      const lastStep = steps[steps.length - 1];
 
-    if (moveDistance > 0) {
-      setMoveDistance(steps[0]);
-      setPosition(steps[0]);
-    } else if (moveDistance < lastStep) {
-      setMoveDistance(lastStep);
-      setPosition(lastStep);
-    } else {
-      changeStep(moveStart - event.clientX);
-    }
-  }
+      if (moveDistance > 0) {
+        setMoveDistance(steps[0]);
+        setPosition(steps[0]);
+      } else if (moveDistance < lastStep) {
+        setMoveDistance(lastStep);
+        setPosition(lastStep);
+      } else {
+        changeStep(moveStart - event.clientX);
+      }
+    },
+    [changeStep, moveDistance, moveStart, steps]
+  );
 
   function handleMouseMove(event: React.MouseEvent) {
     if (!moveActive) return;
@@ -143,10 +159,12 @@ export default function Carousel(props: Props) {
     addEventListener("mouseup", handleMouseUp);
 
     return () => removeEventListener("mouseup", handleMouseUp);
-  });
+  }, [handleMouseUp]);
+
+  const classes = cnModules(styles.carouselWrapper, className);
 
   return (
-    <Box ref={carrouselRef} className={styles.carouselWrapper}>
+    <Box ref={carrouselRef} className={classes} {...rest}>
       <Box className={styles.carouselTitle}>
         <Text size="xl" weight="medium">
           {title}

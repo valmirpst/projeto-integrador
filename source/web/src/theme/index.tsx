@@ -14,7 +14,7 @@ export const theme: Theme = {
 
     gray50: "#ffffff",
     gray100: "#f6f6f6",
-    gray200: "#cccccc",
+    gray200: "#e2e2e2",
     gray300: "#808080",
     gray400: "#6a6a6a",
     gray500: "#222222",
