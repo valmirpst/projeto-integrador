@@ -1,5 +1,4 @@
 "use client";
-
 import Search from "@/components/search";
 import { Box } from "@/components/ui/box";
 import styles from "./page.module.css";
@@ -118,8 +117,23 @@ export default function Home() {
 
   return (
     <Box className={styles.homeWrapper}>
-      <Search onChange={(event) => console.log(event)} value={searchValue} />
-      <Carousel title="Sugestões de Leitura" books={books} />
+      <Search
+        className={styles.seachHome}
+        onChange={(event) => console.log(event)}
+        value={searchValue}
+      />
+      <Carousel
+        className={styles.carouselHeadSuggestions}
+        title="Sugestões de Leitura"
+        books={books}
+      />
+      <Box className={styles.carouselContinueReadingWrapper}>
+        <Carousel
+          className={styles.carouselContinueReading}
+          title="Continue Lendo"
+          books={books}
+        />
+      </Box>
     </Box>
   );
 }

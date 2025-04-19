@@ -1,4 +1,24 @@
 .homeWrapper {
-  padding: 3rem 0 3rem 3rem;
+  padding-top: 3rem;
   overflow-x: hidden;
+}
+
+.seachHome {
+  margin-bottom: 2.25rem;
+  padding: 0 3rem;
+}
+
+.carouselHeadSuggestions {
+  margin-bottom: 3.75rem;
+  margin-left: 3rem;
+}
+
+.carouselContinueReadingWrapper {
+  background-color: var(--gray-200);
+}
+
+.carouselContinueReading {
+  margin-left: 3rem;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
 }
