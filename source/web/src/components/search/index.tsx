@@ -9,10 +9,10 @@ import { HTMLAttributes } from "react";
 type Props = HTMLAttributes<HTMLInputElement> & { value: string };
 
 export default function Search(props: Props) {
-  const { onChange, value } = props;
+  const { onChange, value, ...rest } = props;
 
   return (
-    <Box>
+    <Box {...rest}>
       <Text size="sm" className={styles.label}>
         Pesquisa
       </Text>
