@@ -18,11 +18,11 @@ import Img from "../ui/img";
 import * as Icon from "phosphor-react";
 
 /** Styles */
+import { theme } from "@/theme";
 import styles from "./carousel.module.css";
 
 /** Libs */
 import { cnModules } from "@/lib/cnModules";
-import { theme } from "@/theme";
 
 type Props = HTMLAttributes<HTMLDivElement> & {
   title: string;
@@ -112,11 +112,12 @@ export default function Carousel(props: Props) {
           setCurrentStep((prev) => prev + 1);
           setMoveDistance(steps[currentStep + 1]);
           setPosition(steps[currentStep + 1]);
-        }
-        if (moved < 0 && currentStep > 0) {
+        } else if (moved < 0 && currentStep > 0) {
           setCurrentStep((prev) => prev - 1);
           setMoveDistance(steps[currentStep - 1]);
           setPosition(steps[currentStep - 1]);
+        } else {
+          setMoveDistance(steps[currentStep]);
         }
       } else {
         setMoveDistance(steps[currentStep]);
@@ -136,19 +137,9 @@ export default function Carousel(props: Props) {
       setMoveActive(false);
       setIsTransistionActive(true);
 
-      const lastStep = steps[steps.length - 1];
-
-      if (moveDistance > 0) {
-        setMoveDistance(steps[0]);
-        setPosition(steps[0]);
-      } else if (moveDistance < lastStep) {
-        setMoveDistance(lastStep);
-        setPosition(lastStep);
-      } else {
-        changeStep(moveStart - event.clientX);
-      }
+      changeStep(moveStart - event.clientX);
     },
-    [changeStep, moveDistance, moveStart, steps]
+    [changeStep, , moveStart]
   );
 
   function handleMouseMove(event: React.MouseEvent) {
