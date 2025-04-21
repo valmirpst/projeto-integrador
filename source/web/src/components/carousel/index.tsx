@@ -14,7 +14,7 @@ import { Book } from "@/@types/boook";
 /** Components */
 import { Text } from "../ui/text";
 import { Box } from "../ui/box";
-import Img from "../ui/img";
+import CarouselItem from "./corousel-item";
 import * as Icon from "phosphor-react";
 
 /** Styles */
@@ -74,7 +74,7 @@ export default function Carousel(props: Props) {
 
   const carrouselRef = useRef<HTMLDivElement>(null);
 
-  const imageWidth = 240;
+  const itemWidth = 240;
   const amountMovement = 1.2;
   const scrollBarWidth = 800 - books.length * 20;
 
@@ -88,7 +88,7 @@ export default function Carousel(props: Props) {
       const lastStep = (carrouselWidth - carrousel?.clientWidth + 48) * -1;
 
       for (let i = 2; i <= books.length; i += 2) {
-        const value = (i * imageWidth + 40 * i - imageWidth / 2) * -1;
+        const value = (i * itemWidth + 40 * i - itemWidth / 2) * -1;
         if (value <= lastStep + 100) break;
         stepsList.push(value);
       }
@@ -182,16 +182,13 @@ export default function Carousel(props: Props) {
         onDragStart={(e) => e.preventDefault()}
       >
         {books.map((book) => (
-          <Box key={book.isbn} className={styles.bookCard}>
-            <Img
-              className={styles.bookImage}
-              style={{ minWidth: `${imageWidth / 16}rem` }}
-              src={book.caminho_img}
-              alt={book.titulo}
-              width={imageWidth}
-              height={340}
-            />
-          </Box>
+          <CarouselItem
+            key={book.isbn}
+            src={book.caminho_img}
+            title={book.titulo}
+            width={itemWidth}
+            height={340}
+          />
         ))}
       </Box>
       <Box
