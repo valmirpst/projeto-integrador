@@ -5,7 +5,7 @@ export const theme: Theme = {
     background: "#ffffff",
     foreground: "#111111",
 
-    primary100: "#4a67df",
+    primary100: "#B1BDF1",
     primary300: "#4a67df",
     primary500: "#172c82",
     primary600: "#172c82",
