@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import GlobalContainer from "@/components/global-container";
 import Menu from "@/components/menu";
+import { Box } from "@/components/ui/box";
 
 export const metadata: Metadata = {
   title: {
@@ -22,7 +23,9 @@ export default function RootLayout({
     <html lang="pt-br">
       <body className={`${inter.variable} ${inter.className}`}>
         <GlobalContainer>
-          <Menu />
+          <Box>
+            <Menu />
+          </Box>
           {children}
         </GlobalContainer>
       </body>
