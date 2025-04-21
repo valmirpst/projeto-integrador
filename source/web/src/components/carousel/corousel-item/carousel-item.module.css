@@ -1,0 +1,31 @@
+.carouselItemBase {
+  border-radius: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.carouselItemMenu {
+  position: absolute;
+  display: grid;
+  align-content: center;
+  padding: 0 2rem;
+  transition: 0.5s;
+}
+
+.carouselItemMenuItem {
+  color: var(--gray-100);
+  padding: 0.75rem 0;
+  text-align: center;
+  border: 1px solid var(--gray-100);
+  border-radius: 0.125rem;
+  transition: 0.05s;
+}
+
+.carouselItemMenuItem:hover {
+  color: var(--primary-300);
+  border-color: var(--primary-300);
+}
+
+.carouselItemMenuItem + .carouselItemMenuItem {
+  margin-top: 1.25rem;
+}

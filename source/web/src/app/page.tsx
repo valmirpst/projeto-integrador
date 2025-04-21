@@ -1,12 +1,12 @@
-import GlobalContainer from "@/components/global-container";
-import Menu from "@/components/menu";
-import { Text } from "@/components/ui/text";
+import { Metadata } from "next";
+import dynamic from "next/dynamic";
+
+const ClientSide = dynamic(() => import("./client"));
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {};
+}
 
 export default function Home() {
-  return (
-    <GlobalContainer>
-      <Menu />
-      <Text>Hello World</Text>
-    </GlobalContainer>
-  );
+  return <ClientSide />;
 }
