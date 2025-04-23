@@ -1,0 +1,67 @@
+.container {
+  padding: 3rem;
+}
+
+.livroDetalhes {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2.5rem;
+  margin-bottom: 4.5rem;
+}
+
+.livroHeader {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+  border-bottom: 2px solid var(--gray-200);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+.imgLivro {
+  width: 272px;
+  height: 400px;
+  border-radius: 12px;
+  left: 348px;
+  background: url(/mock/livro-crepusculo.jpg);
+  box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+}
+.bookOptions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.titulo {
+  width: 271px;
+  height: 58px;
+
+  font-family: 'Inter';
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 58px;
+}
+
+.descricao {
+  width: 592px;
+  height: 266px;
+
+  font-family: 'Inter';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.iconeEstrela {
+  width: 20px;
+  height: 20px;
+  color: #ffd70c;
+}
+
+.iconeFavorito {
+  width: 20px;
+  height: 19px;
+}
+.iconeCompartilhar {
+  width: 20px;
+  height: 20px;
+}
