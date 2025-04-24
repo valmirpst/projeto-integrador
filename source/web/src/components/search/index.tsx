@@ -13,10 +13,9 @@ export default function Search(props: Props) {
 
   return (
     <Box {...rest}>
-      <Text size="sm" className={styles.label}>
-        Pesquisa
-      </Text>
       <Input
+        id="search-home"
+        label="Pesquisa"
         onChange={onChange}
         value={value}
         className={styles.search}
