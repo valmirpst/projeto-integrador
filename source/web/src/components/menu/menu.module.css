@@ -31,14 +31,6 @@
   bottom: 3.125rem;
 }
 
-.emptyProfilePhoto {
-  background-color: var(--gray-200);
-  padding: 0.5rem;
-  border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
-}
-
 .loginText:hover {
   color: var(--gray-200) !important;
 }
