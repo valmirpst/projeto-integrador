@@ -6,31 +6,33 @@ import Table, { ColumnType } from "@/components/table";
 import { Book } from "@/@types/book";
 
 export default function HomeClient() {
-  const columns: ColumnType<Book> = {
+  const columns: ColumnType<Book & { autor: string }> = {
     titulo: {
-      title: "livro",
+      title: "Livro",
       proporcion: 2.5,
       image: "caminho_img",
     },
-    isbn: {
+    autor: {
       title: "Autor",
       proporcion: 2,
     },
     editora: {
       title: "Editora",
-      proporcion: 2,
+      proporcion: 1.5,
     },
     edicao: {
       title: "Edição",
-      proporcion: 1,
+      proporcion: 2,
+      justify: "center",
     },
     genero: {
       title: "Gênero",
-      proporcion: 1.25,
+      proporcion: 1.5,
     },
     qtd_disponivel: {
       title: "Disponível",
       proporcion: 1,
+      justify: "center",
     },
   };
 

@@ -7,11 +7,12 @@ export const books: Book[] = [
     edicao: "2ª",
     editora: "HarperCollins",
     qtd_disponivel: 12,
-    genero: "M",
+    genero: "Romance",
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao: "Uma épica aventura pela Terra Média para destruir o Um Anel.",
     total_avaliacoes: 250,
     total_estrelas: "1125",
+    autor: "Machado de Assis",
   },
   {
     isbn: "978-0-06-112008-4",
@@ -19,12 +20,13 @@ export const books: Book[] = [
     edicao: "1ª",
     editora: "Penguin Books",
     qtd_disponivel: 5,
-    genero: "F",
+    genero: "Romance",
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Romance clássico de Jane Austen que explora temas de amor e classe social.",
     total_avaliacoes: 320,
     total_estrelas: "1440",
+    autor: "Machado de Assis",
   },
   {
     isbn: "978-85-250-4560-4",
@@ -32,12 +34,13 @@ export const books: Book[] = [
     edicao: "3ª",
     editora: "Companhia das Letras",
     qtd_disponivel: 8,
-    genero: "M",
+    genero: "Ficção Ciêntifica",
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
     total_avaliacoes: 180,
     total_estrelas: "810",
+    autor: "Machado de Assis",
   },
   {
     isbn: "978-85-250-4560-3",
@@ -45,12 +48,13 @@ export const books: Book[] = [
     edicao: "3ª",
     editora: "Companhia das Letras",
     qtd_disponivel: 8,
-    genero: "M",
+    genero: "Romance",
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
     total_avaliacoes: 180,
     total_estrelas: "810",
+    autor: "Machado de Assis",
   },
   {
     isbn: "978-85-250-4560-2",
@@ -58,12 +62,13 @@ export const books: Book[] = [
     edicao: "3ª",
     editora: "Companhia das Letras",
     qtd_disponivel: 8,
-    genero: "M",
+    genero: "Romance",
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
     total_avaliacoes: 180,
     total_estrelas: "810",
+    autor: "Machado de Assis",
   },
   {
     isbn: "978-85-250-4530-2",
@@ -71,12 +76,13 @@ export const books: Book[] = [
     edicao: "3ª",
     editora: "Companhia das Letras",
     qtd_disponivel: 8,
-    genero: "M",
+    genero: "Romance",
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
     total_avaliacoes: 180,
     total_estrelas: "810",
+    autor: "Machado de Assis",
   },
   {
     isbn: "978-45-250-4560-2",
@@ -84,12 +90,13 @@ export const books: Book[] = [
     edicao: "3ª",
     editora: "Companhia das Letras",
     qtd_disponivel: 8,
-    genero: "M",
+    genero: "Romance",
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
     total_avaliacoes: 180,
     total_estrelas: "810",
+    autor: "Machado de Assis",
   },
   {
     isbn: "978-85-750-4560-2",
@@ -97,11 +104,12 @@ export const books: Book[] = [
     edicao: "3ª",
     editora: "Companhia das Letras",
     qtd_disponivel: 8,
-    genero: "M",
+    genero: "Romance",
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
     total_avaliacoes: 180,
     total_estrelas: "810",
+    autor: "Machado de Assis",
   },
 ];

@@ -33,7 +33,7 @@
 
 .tableWrapper tr th:last-child,
 .tableWrapper tr td:last-child {
-  padding-right: 2.5rem;
+  padding-right: 4rem;
 }
 
 .tableWrapper th {

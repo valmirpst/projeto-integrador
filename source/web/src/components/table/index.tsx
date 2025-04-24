@@ -1,11 +1,13 @@
 "use client";
 import styles from "./table.module.css";
 import Img from "../ui/img";
+import { Columns } from "phosphor-react";
 
 type ColumnItemType<T> = {
   title: string;
   proporcion: number;
   image?: keyof T;
+  justify?: "start" | "center" | "end";
 };
 
 export type ColumnType<T> = Partial<{
@@ -32,7 +34,14 @@ export default function Table<T>(props: Props<T>) {
       <thead>
         <tr style={{ gridTemplateColumns: gridColumns }}>
           {values.map((column, index) => (
-            <th key={index}>{column.title}</th>
+            <th
+              key={index}
+              style={{
+                justifyContent: column.justify,
+              }}
+            >
+              {column.title}
+            </th>
           ))}
         </tr>
       </thead>
@@ -40,7 +49,12 @@ export default function Table<T>(props: Props<T>) {
         {items.map((item, index) => (
           <tr key={index} style={{ gridTemplateColumns: gridColumns }}>
             {keys.map((key, index) => (
-              <td key={index}>
+              <td
+                key={index}
+                style={{
+                  justifyContent: columns[key]?.justify,
+                }}
+              >
                 {columns[key]?.image &&
                   typeof item[columns[key].image] === "string" &&
                   typeof item[key] === "string" && (
