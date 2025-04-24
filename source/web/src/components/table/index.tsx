@@ -1,7 +1,10 @@
 "use client";
 import styles from "./table.module.css";
 import Img from "../ui/img";
-import { Columns } from "phosphor-react";
+import { CaretLeft, CaretRight } from "phosphor-react";
+import { Text } from "../ui/text";
+import { Box } from "../ui/box";
+import { useState } from "react";
 
 type ColumnItemType<T> = {
   title: string;
@@ -22,12 +25,17 @@ type Props<T> = {
 export default function Table<T>(props: Props<T>) {
   const { items, columns } = props;
 
+  const [page, setPage] = useState(2);
+
   const keys = Object.keys(columns || {}) as (keyof T)[];
   const values = Object.values(columns || {}) as ColumnItemType<T>[];
 
   const gridColumns = values.reduce((acc, value) => {
     return acc + `${value.proporcion}fr `;
   }, "");
+
+  const itemsPerPage = 10;
+  const totalPages = Number((items.length / itemsPerPage).toFixed(0));
 
   return (
     <table className={styles.tableWrapper}>
@@ -73,6 +81,70 @@ export default function Table<T>(props: Props<T>) {
           </tr>
         ))}
       </tbody>
+      <tfoot className={styles.tableFooter}>
+        <tr>
+          <td>
+            <Text>
+              {page} de {totalPages} páginas
+            </Text>
+            <Box className={styles.tableFooterContent}>
+              {page > 1 && (
+                <Box
+                  className={styles.paginationNumber}
+                  onClick={() => setPage(page - 1)}
+                >
+                  <CaretLeft width={20} height={20} />
+                </Box>
+              )}
+              {page > 1 && (
+                <Text
+                  className={`${styles.paginationNumber}`}
+                  onClick={() => setPage(page - 1)}
+                >
+                  {page - 1}
+                </Text>
+              )}
+              <Text
+                className={`${styles.paginationNumber} ${styles.pageAtive}`}
+              >
+                {page}
+              </Text>
+              <Text
+                className={`
+                  ${styles.paginationNumber} 
+                  ${page + 1 > totalPages && styles.paginationNumberDisabled}
+                `}
+                onClick={() => {
+                  if (page + 1 < totalPages) setPage(page + 1);
+                }}
+              >
+                {page + 1}
+              </Text>
+              {page === 1 && (
+                <Text
+                  className={`
+                    ${styles.paginationNumber} 
+                    ${page + 2 > totalPages && styles.paginationNumberDisabled}
+                  `}
+                  onClick={() => {
+                    if (page + 2 < totalPages) setPage(page + 2);
+                  }}
+                >
+                  {page + 2}
+                </Text>
+              )}
+              {page < totalPages && (
+                <Box
+                  className={styles.paginationNumber}
+                  onClick={() => setPage(page + 1)}
+                >
+                  <CaretRight width={20} height={20} />
+                </Box>
+              )}
+            </Box>
+          </td>
+        </tr>
+      </tfoot>
     </table>
   );
 }
