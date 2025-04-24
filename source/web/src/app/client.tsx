@@ -14,7 +14,9 @@ export default function HomeClient() {
     <Box className={styles.homeWrapper}>
       <Search
         className={styles.seachHome}
-        onChange={(event) => console.log(event)}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          setSearchValue(event.target.value);
+        }}
         value={searchValue}
       />
       <Carousel

@@ -25,7 +25,7 @@ type Props<T> = {
 export default function Table<T>(props: Props<T>) {
   const { items, columns } = props;
 
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
 
   const keys = Object.keys(columns || {}) as (keyof T)[];
   const values = Object.values(columns || {}) as ColumnItemType<T>[];
