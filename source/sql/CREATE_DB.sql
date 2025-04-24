@@ -102,7 +102,8 @@ CREATE TABLE IF NOT EXISTS livro (
 	editora VARCHAR(40),
 	qtd_disponivel INTEGER,
 	genero genero_enum,
-	caminho_img VARCHAR(40)
+	caminho_img TEXT,
+	descricao TEXT
 );
 
 -- --------------------------------------------
