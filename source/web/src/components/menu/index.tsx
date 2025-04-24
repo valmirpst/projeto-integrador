@@ -1,11 +1,12 @@
 "use client";
+import { theme } from "@/theme";
+import * as Icon from "phosphor-react";
+import { Avatar } from "../ui/avatar";
 import { Box } from "../ui/box";
 import Img from "../ui/img";
 import { Text } from "../ui/text";
-import styles from "./menu.module.css";
-import * as Icon from "phosphor-react";
-import { theme } from "@/theme";
 import MenuItem from "./menu-item";
+import styles from "./menu.module.css";
 
 const userMenu = [
   {
@@ -13,9 +14,7 @@ const userMenu = [
     text: "Home",
   },
   {
-    icon: (
-      <Icon.Bookmarks width={20} height={20} color={theme.colors.gray100} />
-    ),
+    icon: <Icon.Bookmarks width={20} height={20} color={theme.colors.gray100} />,
     text: "Categorias",
   },
   {
@@ -34,9 +33,7 @@ const librarianMenu = [
     text: "Livro",
   },
   {
-    icon: (
-      <Icon.AddressBook width={20} height={20} color={theme.colors.gray100} />
-    ),
+    icon: <Icon.AddressBook width={20} height={20} color={theme.colors.gray100} />,
     text: "Reserva",
   },
 ];
@@ -47,19 +44,11 @@ const userSubMenu = [
     text: "Favoritos",
   },
   {
-    icon: (
-      <Icon.LightbulbFilament
-        width={20}
-        height={20}
-        color={theme.colors.gray100}
-      />
-    ),
+    icon: <Icon.LightbulbFilament width={20} height={20} color={theme.colors.gray100} />,
     text: "Sugestões de Leitura",
   },
   {
-    icon: (
-      <Icon.ChartLineUp width={20} height={20} color={theme.colors.gray100} />
-    ),
+    icon: <Icon.ChartLineUp width={20} height={20} color={theme.colors.gray100} />,
     text: "Livros Lidos",
   },
 ];
@@ -85,30 +74,23 @@ export default function Menu() {
         Descubra seu livro
       </Text>
 
-      {menuItems.map((item) => (
+      {menuItems.map(item => (
         <MenuItem key={item.text} text={item.text} icon={item.icon} />
       ))}
 
       {true && (
         <>
           <Box className={styles.menuDivider} />
-          {userSubMenu.map((item) => (
+          {userSubMenu.map(item => (
             <MenuItem key={item.text} text={item.text} icon={item.icon} />
           ))}
         </>
       )}
 
       <Box className={styles.menuFooter}>
-        <Box className={styles.emptyProfilePhoto}>
-          <Icon.User width={24} height={24} color={theme.colors.gray700} />
-        </Box>
+        <Avatar src="" />
         <Box>
-          <Text
-            className={styles.loginText}
-            size="md"
-            weight="bold"
-            color="gray50"
-          >
+          <Text className={styles.loginText} size="md" weight="bold" color="gray50">
             Entrar/Registrar
           </Text>
           <Text size="xs" weight="light" color="gray50">
