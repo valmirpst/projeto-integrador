@@ -3,15 +3,27 @@
   border-collapse: collapse;
   border-radius: 0.75rem;
   overflow: hidden;
+  box-shadow: 0.125rem 0.125rem 0.25rem var(--gray-200);
 }
 
 .tableWrapper tr {
   display: grid;
+  align-items: center;
 }
 
 .tableWrapper tr th,
 .tableWrapper tr td {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tableWrapper tr td {
   padding: 1rem 0;
+}
+
+.tableWrapper tr th {
+  padding: 1.5rem 0;
 }
 
 .tableWrapper tr th:first-child,

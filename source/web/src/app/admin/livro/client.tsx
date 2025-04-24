@@ -10,6 +10,7 @@ export default function HomeClient() {
     titulo: {
       title: "livro",
       proporcion: 2.5,
+      image: "caminho_img",
     },
     isbn: {
       title: "Autor",
@@ -24,8 +25,8 @@ export default function HomeClient() {
       proporcion: 1,
     },
     genero: {
-      title: "Disponível",
-      proporcion: 1,
+      title: "Gênero",
+      proporcion: 1.25,
     },
     qtd_disponivel: {
       title: "Disponível",
