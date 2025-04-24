@@ -9,7 +9,7 @@ import {
 } from "react";
 
 /** Types */
-import { Book } from "@/@types/boook";
+import { Book } from "@/@types/book";
 
 /** Components */
 import { Text } from "../ui/text";
