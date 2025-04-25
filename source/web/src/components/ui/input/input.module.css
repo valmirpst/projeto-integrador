@@ -7,7 +7,8 @@
   align-items: center;
   justify-content: flex-start;
   background-color: var(--gray-100);
-  border: 1px solid var(--gray-300);
+  border-width: 0.0625rem;
+  border-style: solid;
   color: var(--gray-700);
   font-size: 14px;
 }
@@ -29,6 +30,7 @@
   display: block;
   font-size: 0.875rem;
   margin-bottom: 0.25rem;
+  transition: 0.3s;
 }
 
 /* Quando o input interno estiver desabilitado */

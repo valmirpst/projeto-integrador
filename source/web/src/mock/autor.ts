@@ -1,6 +1,6 @@
-import { Autor } from "@/@types/autor";
+import { AutorType } from "@/@types/autor";
 
-export const autores: Autor[] = [
+export const autores: AutorType[] = [
   { id: "a1b2c3d4e5", nome: "Machado de Assis" },
   { id: "f6g7h8i9j0", nome: "Clarice Lispector" },
   { id: "k1l2m3n4o5", nome: "Carlos Drummond de Andrade" },

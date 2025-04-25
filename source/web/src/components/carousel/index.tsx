@@ -9,7 +9,7 @@ import {
 } from "react";
 
 /** Types */
-import { Book } from "@/@types/book";
+import { BookType } from "@/@types/book";
 
 /** Components */
 import { Text } from "../ui/text";
@@ -26,7 +26,7 @@ import { cnModules } from "@/lib/cnModules";
 
 type Props = HTMLAttributes<HTMLDivElement> & {
   title: string;
-  books: Book[];
+  books: BookType[];
   scrollbarColor?: string;
 };
 

@@ -1,8 +1,9 @@
 "use client";
 
 import { cnModules } from "@/lib/cnModules";
-import { forwardRef, ReactNode } from "react";
+import { forwardRef, ReactNode, useState } from "react";
 import styles from "./input.module.css";
+import { theme } from "@/theme";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -31,9 +32,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
+    const [isFocused, setIsFocused] = useState(false);
+
     return (
       <div>
-        <label htmlFor={id} className={styles.label}>
+        <label
+          htmlFor={id}
+          className={styles.label}
+          style={{
+            color: isFocused ? theme.colors.primary300 : theme.colors.gray700,
+          }}
+        >
           {label}
         </label>
         <div
@@ -58,6 +67,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             </span>
           )}
           <input
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
             spellCheck={false}
             className={styles.input}
             ref={ref}
