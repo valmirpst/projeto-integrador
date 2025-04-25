@@ -10,7 +10,7 @@ export const books: Book[] = [
     genero: "M",
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao: "Uma épica aventura pela Terra Média para destruir o Um Anel.",
-    total_avaliacoes: 250,
+    total_avaliacoes: 2.6,
     total_estrelas: "1125",
   },
   {
@@ -23,7 +23,7 @@ export const books: Book[] = [
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Romance clássico de Jane Austen que explora temas de amor e classe social.",
-    total_avaliacoes: 320,
+    total_avaliacoes: 2.2,
     total_estrelas: "1440",
   },
   {
@@ -36,7 +36,7 @@ export const books: Book[] = [
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
-    total_avaliacoes: 180,
+    total_avaliacoes: 6.1,
     total_estrelas: "810",
   },
   {
@@ -49,7 +49,7 @@ export const books: Book[] = [
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
-    total_avaliacoes: 180,
+    total_avaliacoes: 2.6,
     total_estrelas: "810",
   },
   {
@@ -62,7 +62,7 @@ export const books: Book[] = [
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
-    total_avaliacoes: 180,
+    total_avaliacoes: 5.6,
     total_estrelas: "810",
   },
   {
@@ -75,7 +75,7 @@ export const books: Book[] = [
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
-    total_avaliacoes: 180,
+    total_avaliacoes: 3.5,
     total_estrelas: "810",
   },
   {
@@ -88,11 +88,11 @@ export const books: Book[] = [
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
-    total_avaliacoes: 180,
+    total_avaliacoes: 2.9,
     total_estrelas: "810",
   },
   {
-    isbn: "978-85-750-4560-2",
+    isbn: "978-85-750-4520-2",
     titulo: "Capitães da Areia",
     edicao: "3ª",
     editora: "Companhia das Letras",
@@ -101,7 +101,59 @@ export const books: Book[] = [
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
-    total_avaliacoes: 180,
+    total_avaliacoes: 4.6,
+    total_estrelas: "810",
+  },
+  {
+    isbn: "978-85-750-4530-2",
+    titulo: "Capitães da Areia",
+    edicao: "3ª",
+    editora: "Companhia das Letras",
+    qtd_disponivel: 8,
+    genero: "M",
+    caminho_img: "/mock/livro-crepusculo.jpg",
+    descricao:
+      "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
+    total_avaliacoes: 8.1,
+    total_estrelas: "810",
+  },
+  {
+    isbn: "978-85-750-4580-2",
+    titulo: "Capitães da Areia",
+    edicao: "3ª",
+    editora: "Companhia das Letras",
+    qtd_disponivel: 8,
+    genero: "M",
+    caminho_img: "/mock/livro-crepusculo.jpg",
+    descricao:
+      "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
+    total_avaliacoes: 7.5,
+    total_estrelas: "810",
+  },
+  {
+    isbn: "978-85-750-4220-2",
+    titulo: "Capitães da Areia",
+    edicao: "3ª",
+    editora: "Companhia das Letras",
+    qtd_disponivel: 8,
+    genero: "M",
+    caminho_img: "/mock/livro-crepusculo.jpg",
+    descricao:
+      "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
+    total_avaliacoes: 3.6,
+    total_estrelas: "810",
+  },
+  {
+    isbn: "978-85-750-4510-2",
+    titulo: "Capitães da Areia",
+    edicao: "3ª",
+    editora: "Companhia das Letras",
+    qtd_disponivel: 8,
+    genero: "M",
+    caminho_img: "/mock/livro-crepusculo.jpg",
+    descricao:
+      "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
+    total_avaliacoes: 2.3,
     total_estrelas: "810",
   },
 ];
