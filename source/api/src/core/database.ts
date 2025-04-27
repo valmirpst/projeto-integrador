@@ -10,5 +10,5 @@ pool.on("connect", () => {
 });
 
 export const db = {
-  query: (text: string | QueryConfig<any>, params?: any) => pool.query(text, params),
+  query: (text: string | QueryConfig, params?: QueryConfig["values"]) => pool.query(text, params),
 };

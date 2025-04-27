@@ -9,7 +9,7 @@ interface SuccessResponse {
 
 interface ErrorResponse {
   res: Response;
-  error: any;
+  error?: any;
   status?: number;
   message?: string;
 }
