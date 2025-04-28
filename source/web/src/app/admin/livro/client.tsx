@@ -1,12 +1,20 @@
 "use client";
 import { Box } from "@/components/ui/box";
 import styles from "./livro.module.css";
+import stylesAdmin from "../admin.module.css";
 import { books } from "@/mock/book";
 import Table, { ColumnType } from "@/components/table";
-import { Book } from "@/@types/book";
+import { BookType } from "@/@types/book";
+import { Text } from "@/components/ui/text";
+import Search from "@/components/search";
+import { useState } from "react";
+import Select from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 export default function HomeClient() {
-  const columns: ColumnType<Book & { autor: string }> = {
+  const [searchValue, setSearchValue] = useState("");
+
+  const columns: ColumnType<BookType> = {
     titulo: {
       title: "Livro",
       proporcion: 2.5,
@@ -38,6 +46,34 @@ export default function HomeClient() {
 
   return (
     <Box className={styles.adminBookWrapper}>
+      <Text as="h1" className={stylesAdmin.adminTitle}>
+        Livros
+      </Text>
+      <Box className={stylesAdmin.adminFilterContainer}>
+        <Search
+          className={stylesAdmin.adminSearch}
+          value={searchValue}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setSearchValue(event.target.value);
+          }}
+          width={500}
+        />
+        <Box className={stylesAdmin.adminSelectContainer}>
+          <Select
+            options={books.map((value) => value.genero)}
+            label="Gênero"
+            width={200}
+          />
+          <Select
+            options={books.map((value) => value.editora)}
+            label="Editora"
+            width={200}
+          />
+        </Box>
+        <Button className={stylesAdmin.adminButton} size="sm" width={120}>
+          Cadastrar
+        </Button>
+      </Box>
       <Table items={books} columns={columns}></Table>
     </Box>
   );

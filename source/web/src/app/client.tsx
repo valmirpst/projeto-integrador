@@ -13,7 +13,7 @@ export default function HomeClient() {
   return (
     <Box className={styles.homeWrapper}>
       <Search
-        className={styles.seachHome}
+        className={styles.searchHome}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           setSearchValue(event.target.value);
         }}
