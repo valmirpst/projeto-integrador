@@ -45,8 +45,15 @@ export default function Select(props: Props) {
     <div ref={selectRef} className={styles.selectWrapper}>
       <div style={{ width: `${width ? width / 16 : 16}rem` }}>
         <label
+          style={{
+            color: selectActive
+              ? theme.colors.primary300
+              : theme.colors.gray700,
+          }}
           className={
-            selectActive ? styles.selectLabelActive : styles.selectLabel
+            !selectActive && !activeValues.length
+              ? styles.selectLabel
+              : styles.selectLabelActive
           }
         >
           {label}

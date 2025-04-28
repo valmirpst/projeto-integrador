@@ -1,6 +1,6 @@
-import { Book } from "@/@types/book";
+import { BookType } from "@/@types/book";
 
-export const books: Book[] = [
+export const books: BookType[] = [
   {
     isbn: "978-3-16-148410-0",
     titulo: "O Senhor dos Anéis",
@@ -20,7 +20,7 @@ export const books: Book[] = [
     edicao: "1ª",
     editora: "Penguin Books",
     qtd_disponivel: 5,
-    genero: "Romance",
+    genero: "Romance2",
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Romance clássico de Jane Austen que explora temas de amor e classe social.",
@@ -32,7 +32,7 @@ export const books: Book[] = [
     isbn: "978-85-250-4560-4",
     titulo: "Capitães da Areia",
     edicao: "3ª",
-    editora: "Companhia das Letras",
+    editora: "Companhia das Letras6",
     qtd_disponivel: 8,
     genero: "Ficção Ciêntifica",
     caminho_img: "/mock/livro-crepusculo.jpg",
@@ -46,9 +46,9 @@ export const books: Book[] = [
     isbn: "978-85-250-4560-3",
     titulo: "Capitães da Areia",
     edicao: "3ª",
-    editora: "Companhia das Letras",
+    editora: "Companhia das Letras5",
     qtd_disponivel: 8,
-    genero: "Romance",
+    genero: "Romance3",
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
@@ -60,9 +60,9 @@ export const books: Book[] = [
     isbn: "978-85-250-4560-2",
     titulo: "Capitães da Areia",
     edicao: "3ª",
-    editora: "Companhia das Letras",
+    editora: "Companhia das Letras4",
     qtd_disponivel: 8,
-    genero: "Romance",
+    genero: "Romance4",
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
@@ -74,9 +74,9 @@ export const books: Book[] = [
     isbn: "978-85-250-4530-2",
     titulo: "Capitães da Areia",
     edicao: "3ª",
-    editora: "Companhia das Letras",
+    editora: "Companhia das Letras3",
     qtd_disponivel: 8,
-    genero: "Romance",
+    genero: "Romance5",
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
@@ -88,9 +88,9 @@ export const books: Book[] = [
     isbn: "978-45-250-4560-2",
     titulo: "Capitães da Areia",
     edicao: "3ª",
-    editora: "Companhia das Letras",
+    editora: "Companhia das Letras1",
     qtd_disponivel: 8,
-    genero: "Romance",
+    genero: "Romance6",
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
@@ -102,9 +102,9 @@ export const books: Book[] = [
     isbn: "978-85-750-4560-2",
     titulo: "Capitães da Areia",
     edicao: "3ª",
-    editora: "Companhia das Letras",
+    editora: "Companhia das Letras2",
     qtd_disponivel: 8,
-    genero: "Romance",
+    genero: "Romance7",
     caminho_img: "/mock/livro-crepusculo.jpg",
     descricao:
       "Narrativa sobre um grupo de meninos de rua em Salvador, escrita por Jorge Amado.",
