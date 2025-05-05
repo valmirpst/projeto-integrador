@@ -4,7 +4,6 @@ import { Box } from "../ui/box";
 import { Input } from "../ui/input";
 import styles from "./search.module.css";
 import { HTMLAttributes } from "react";
-import { cnModules } from "@/lib/cnModules";
 
 type Props = HTMLAttributes<HTMLInputElement> & {
   value: string;
@@ -14,17 +13,15 @@ type Props = HTMLAttributes<HTMLInputElement> & {
 export default function Search(props: Props) {
   const { onChange, className, value, width, ...rest } = props;
 
-  const classes = cnModules(styles.search, className);
-
   return (
-    <Box {...rest}>
+    <Box {...rest} className={className}>
       <Input
         id="search-home"
         style={{ width: `${width && width / 16}rem !important` }}
         label="Pesquisa"
         onChange={onChange}
         value={value}
-        className={classes}
+        className={styles.search}
         startIcon={<Icon.MagnifyingGlass size={18} />}
       />
     </Box>
