@@ -1,45 +1,36 @@
 "use client";
 import { Box } from "@/components/ui/box";
-import styles from "./livro.module.css";
+import styles from "./reserve.module.css";
 import stylesAdmin from "../admin.module.css";
-import { books } from "@/mock/book";
+import { reserves } from "@/mock/reserve";
 import Table, { ColumnType } from "@/components/table";
-import { BookType } from "@/@types/book";
 import { Text } from "@/components/ui/text";
 import Search from "@/components/search";
 import { useState } from "react";
 import Select from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { ReserveType } from "@/@types/reserve";
 
 export default function HomeClient() {
   const [searchValue, setSearchValue] = useState("");
 
-  const columns: ColumnType<BookType> = {
-    titulo: {
+  const columns: ColumnType<ReserveType> = {
+    isbn_livro: {
       title: "Livro",
       proporcion: 2.5,
-      image: "caminho_img",
+      // image: "caminho_img",
     },
-    autor: {
-      title: "Autor",
+    id_usuario: {
+      title: "Usuário",
       proporcion: 2,
     },
-    editora: {
-      title: "Editora",
+    id_bibliotecario: {
+      title: "Bibliotecário(a)",
       proporcion: 1.5,
     },
-    edicao: {
-      title: "Edição",
+    criado_em: {
+      title: "Data",
       proporcion: 2,
-      justify: "center",
-    },
-    genero: {
-      title: "Gênero",
-      proporcion: 1.5,
-    },
-    qtd_disponivel: {
-      title: "Disponível",
-      proporcion: 1,
       justify: "center",
     },
   };
@@ -47,7 +38,7 @@ export default function HomeClient() {
   return (
     <Box className={styles.adminBookWrapper}>
       <Text as="h1" className={stylesAdmin.adminTitle}>
-        Livros
+        Reservas
       </Text>
       <Box className={stylesAdmin.adminFilterContainer}>
         <Box className={stylesAdmin.adminFilters}>
@@ -61,13 +52,13 @@ export default function HomeClient() {
           />
           <Box className={stylesAdmin.adminSelectContainer}>
             <Select
-              options={books.map((value) => value.genero)}
+              options={reserves.map((value) => value.status)}
               label="Gênero"
               width={200}
             />
             <Select
-              options={books.map((value) => value.editora)}
-              label="Editora"
+              options={["Mais recente", "Mais antigo"]}
+              label="Ordenar Por"
               width={200}
             />
           </Box>
@@ -85,7 +76,7 @@ export default function HomeClient() {
           </Box>
         </Box>
       </Box>
-      <Table items={books} columns={columns}></Table>
+      <Table items={reserves} columns={columns}></Table>
     </Box>
   );
 }
