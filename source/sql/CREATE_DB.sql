@@ -19,12 +19,10 @@ DROP TABLE IF EXISTS categoria;
 
 DROP TYPE IF EXISTS perfil_enum;
 DROP TYPE IF EXISTS emprestimo_status_enum;
-DROP TYPE IF EXISTS genero_enum;
 DROP TYPE IF EXISTS tipo_categoria_enum;
 
 CREATE TYPE perfil_enum AS ENUM('bibliotecario', 'aluno', 'professor');
 CREATE TYPE emprestimo_status_enum AS ENUM('ativo', 'inativo');
-CREATE TYPE genero_enum AS ENUM('masc', 'fem');
 CREATE TYPE tipo_categoria_enum AS ENUM('subcategoria', 'categoria');
 
 -- --------------------------------------------
@@ -101,7 +99,7 @@ CREATE TABLE IF NOT EXISTS livro (
 	edicao VARCHAR(40),
 	editora VARCHAR(40),
 	qtd_disponivel INTEGER,
-	genero genero_enum,
+	genero TEXT,
 	caminho_img TEXT,
 	descricao TEXT
 );
