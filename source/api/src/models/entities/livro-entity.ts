@@ -1,7 +1,14 @@
 export class LivroEntity {
-  public isbn: string;
+  public isbn!: string;
+  public titulo!: string;
+  public edicao!: string;
+  public editora!: string;
+  public qtd_disponivel!: number;
+  public genero!: string;
+  public caminho_img?: string;
+  public descricao!: string;
 
   constructor(livro: LivroEntity) {
-    this.isbn = livro.isbn;
+    Object.assign(this, livro);
   }
 }

@@ -23,7 +23,8 @@ const ok = ({ res, payload, status = 200, message = "Request successful" }: Succ
 };
 
 const error = ({ res, error, status = 500, message = "Internal server error" }: ErrorResponse): Response => {
-  console.error(error);
+  if (error) console.error(error);
+
   return res.status(status).json({
     success: false,
     message,

@@ -7,7 +7,7 @@ export class LivroController {
   static async getAsync(req: Request, res: Response) {
     try {
       const livros = await LivroModel.getAsync();
-      response.ok({ res, status: 201, payload: livros });
+      response.ok({ res, status: 200, payload: livros });
     } catch (error) {
       response.error({ res, error });
     }
@@ -16,11 +16,16 @@ export class LivroController {
   static async postAsync(req: Request, res: Response) {
     try {
       const livro = req.body;
-      const parsed = livroSchema.parse(livro);
+      const parsed = livroSchema.safeParse(livro);
 
-      const novoLivro = await LivroModel.postAsync(parsed);
+      if (parsed.success === false) {
+        response.error({ res, status: 400, message: "Dados inválidos", error: { ...parsed.error } });
+        return;
+      }
 
-      response.ok({ res, payload: novoLivro });
+      const novoLivro = await LivroModel.postAsync(parsed.data);
+
+      response.ok({ res, status: 201, payload: novoLivro });
     } catch (error) {
       response.error({ res, error });
     }
@@ -30,9 +35,20 @@ export class LivroController {
     try {
       const isbn = req.params.isbn;
       const newLivro = req.body;
-      const parsed = livroSchema.parse(newLivro);
+      const parsed = livroSchema.safeParse(newLivro);
 
-      const updatedLivro = await LivroModel.putAsync(isbn, parsed);
+      const exists = await LivroModel.getByIsbnAsync(isbn);
+      if (!exists) {
+        response.error({ res, message: "Registro não encontrado" });
+        return;
+      }
+
+      if (parsed.success === false) {
+        response.error({ res, status: 400, message: "Dados inválidos", error: { ...parsed.error } });
+        return;
+      }
+
+      const updatedLivro = await LivroModel.putAsync(isbn, parsed.data);
 
       response.ok({ res, payload: updatedLivro });
     } catch (error) {
@@ -49,9 +65,9 @@ export class LivroController {
         return;
       }
 
-      const deletedLivro = await LivroModel.deleteAsync(isbn);
+      await LivroModel.deleteAsync(isbn);
 
-      response.ok({ res, payload: deletedLivro });
+      response.ok({ res, payload: undefined });
     } catch (error) {
       response.error({ res, error });
     }
