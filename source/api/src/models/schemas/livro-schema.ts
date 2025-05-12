@@ -9,4 +9,6 @@ export const livroSchema = z.object({
   genero: z.string(),
   caminho_img: z.string().optional(),
   descricao: z.string(),
+  total_avaliacoes: z.number().default(0),
+  total_estrelas: z.number().default(0),
 });

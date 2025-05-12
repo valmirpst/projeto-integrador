@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS usuario_perfil;
 DROP TABLE IF EXISTS usuario_curso;
 DROP TABLE IF EXISTS livro_autor;
 DROP TABLE IF EXISTS livro_categoria;
-DROP TABLE IF EXISTS emprestimo;
+DROP TABLE IF EXISTS historico;
 DROP TABLE IF EXISTS curso;
 DROP TABLE IF EXISTS perfil;
 DROP TABLE IF EXISTS usuario;
@@ -18,11 +18,11 @@ DROP TABLE IF EXISTS livro;
 DROP TABLE IF EXISTS categoria;
 
 DROP TYPE IF EXISTS perfil_enum;
-DROP TYPE IF EXISTS emprestimo_status_enum;
+DROP TYPE IF EXISTS historico_enum;
 DROP TYPE IF EXISTS tipo_categoria_enum;
 
 CREATE TYPE perfil_enum AS ENUM('bibliotecario', 'aluno', 'professor');
-CREATE TYPE emprestimo_status_enum AS ENUM('ativo', 'inativo');
+CREATE TYPE historico_enum AS ENUM('ativo', 'inativo');
 CREATE TYPE tipo_categoria_enum AS ENUM('subcategoria', 'categoria');
 
 -- --------------------------------------------
@@ -43,7 +43,8 @@ CREATE TABLE IF NOT EXISTS usuario (
 CREATE TABLE IF NOT EXISTS perfil (
 	id VARCHAR(40) PRIMARY KEY NOT NULL,
 	nome perfil_enum NOT NULL,
-	tempo_emprestimo_dias INTEGER
+	tempo_emprestimo_dias INTEGER,
+	valor_multa_dia DECIMAL(16, 6)
 );
 
 -- --------------------------------------------
@@ -101,7 +102,9 @@ CREATE TABLE IF NOT EXISTS livro (
 	qtd_disponivel INTEGER,
 	genero TEXT,
 	caminho_img TEXT,
-	descricao TEXT
+	descricao TEXT,
+	total_avaliacoes INTEGER,
+	total_estrelas INTEGER
 );
 
 -- --------------------------------------------
@@ -132,13 +135,13 @@ CREATE TABLE IF NOT EXISTS livro_autor (
 
 -- --------------------------------------------
 
-CREATE TABLE IF NOT EXISTS emprestimo (
+CREATE TABLE IF NOT EXISTS historico (
 	isbn_livro VARCHAR(40) NOT NULL,
 	id_usuario VARCHAR(40) NOT NULL,
 	id_bibliotecario VARCHAR(40) NOT NULL,
 	criado_em TIMESTAMPTZ,
 	atualizado_em TIMESTAMPTZ,
-	status emprestimo_status_enum,
+	status historico_enum,
 	
 	PRIMARY KEY (isbn_livro, id_usuario),
 
