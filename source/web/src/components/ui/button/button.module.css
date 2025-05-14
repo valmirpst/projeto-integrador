@@ -2,10 +2,10 @@
 
 /* Base styles */
 .buttonBase {
-  width: 96px;
+  width: max-content;
   font-size: 14px;
   font-weight: 500;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -67,6 +67,20 @@
   &:hover:enabled {
     color: var(--gray-100);
     background-color: var(--primary-300);
+  }
+
+  &:disabled {
+    opacity: 0.8;
+    cursor: default;
+  }
+}
+
+.variantTertiary {
+  color: var(--gray-600);
+  background-color: transparent;
+
+  &:hover:enabled {
+    background-color: var(--gray-200);
   }
 
   &:disabled {

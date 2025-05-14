@@ -16,6 +16,7 @@ const sizeStyles = {
 const variantStyles = {
   primary: styles.variantPrimary,
   secondary: styles.variantSecondary,
+  tertiary: styles.variantTertiary,
   danger: styles.variantDanger,
   safe: styles.variantSafe,
 };

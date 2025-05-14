@@ -1,11 +1,12 @@
 "use client";
+import { theme } from "@/theme";
+import * as Icon from "phosphor-react";
+import { Avatar } from "../ui/avatar";
 import { Box } from "../ui/box";
 import Img from "../ui/img";
 import { Text } from "../ui/text";
-import styles from "./menu.module.css";
-import * as Icon from "phosphor-react";
-import { theme } from "@/theme";
 import MenuItem from "./menu-item";
+import styles from "./menu.module.css";
 
 const userMenu = [
   {
@@ -118,9 +119,7 @@ export default function Menu() {
       )}
 
       <Box className={styles.menuFooter}>
-        <Box className={styles.emptyProfilePhoto}>
-          <Icon.User width={24} height={24} color={theme.colors.gray700} />
-        </Box>
+        <Avatar src="" />
         <Box>
           <Text
             className={styles.loginText}
