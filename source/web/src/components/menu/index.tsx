@@ -11,16 +11,19 @@ const userMenu = [
   {
     icon: <Icon.House width={20} height={20} color={theme.colors.gray100} />,
     text: "Home",
+    url: "/",
   },
   {
     icon: (
       <Icon.Bookmarks width={20} height={20} color={theme.colors.gray100} />
     ),
     text: "Categorias",
+    url: "categorias",
   },
   {
     icon: <Icon.Book width={20} height={20} color={theme.colors.gray100} />,
     text: "Acervo",
+    url: "acervo",
   },
 ];
 
@@ -28,16 +31,19 @@ const librarianMenu = [
   {
     icon: <Icon.House width={20} height={20} color={theme.colors.gray100} />,
     text: "Dashboard",
+    url: "dashboard",
   },
   {
     icon: <Icon.Books width={20} height={20} color={theme.colors.gray100} />,
     text: "Livro",
+    url: "livro",
   },
   {
     icon: (
       <Icon.AddressBook width={20} height={20} color={theme.colors.gray100} />
     ),
     text: "Reserva",
+    url: "reserva",
   },
 ];
 
@@ -45,6 +51,7 @@ const userSubMenu = [
   {
     icon: <Icon.Heart width={20} height={20} color={theme.colors.gray100} />,
     text: "Favoritos",
+    url: "favoritos",
   },
   {
     icon: (
@@ -55,12 +62,14 @@ const userSubMenu = [
       />
     ),
     text: "Sugestões de Leitura",
+    url: "sugestoes",
   },
   {
     icon: (
       <Icon.ChartLineUp width={20} height={20} color={theme.colors.gray100} />
     ),
     text: "Livros Lidos",
+    url: "livros-lidos",
   },
 ];
 
@@ -86,14 +95,24 @@ export default function Menu() {
       </Text>
 
       {menuItems.map((item) => (
-        <MenuItem key={item.text} text={item.text} icon={item.icon} />
+        <MenuItem
+          key={item.text}
+          url={item.url}
+          text={item.text}
+          icon={item.icon}
+        />
       ))}
 
       {true && (
         <>
           <Box className={styles.menuDivider} />
           {userSubMenu.map((item) => (
-            <MenuItem key={item.text} text={item.text} icon={item.icon} />
+            <MenuItem
+              key={item.text}
+              url={item.url}
+              text={item.text}
+              icon={item.icon}
+            />
           ))}
         </>
       )}

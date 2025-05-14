@@ -76,7 +76,7 @@ export default function HomeClient() {
           </Button>
         </Box>
         <Box className={stylesAdmin.adminOtherInformations}>
-          <Text color="gray400">16 produtos encontrados</Text>
+          <Text color="gray400">{books.length} produtos encontrados</Text>
           <Box className={stylesAdmin.adminCleanFilters}>
             <Text color="primary300" weight="bold">
               Limpar filtros

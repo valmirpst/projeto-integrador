@@ -11,29 +11,43 @@ import Select from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { ReserveType } from "@/@types/reserve";
 
+type EditarAtributo<T, K extends keyof T, V> = Omit<T, K> & { [P in K]: V };
+
 export default function HomeClient() {
   const [searchValue, setSearchValue] = useState("");
 
-  const columns: ColumnType<ReserveType> = {
-    isbn_livro: {
-      title: "Livro",
-      proporcion: 2.5,
-      // image: "caminho_img",
-    },
-    id_usuario: {
-      title: "Usuário",
-      proporcion: 2,
-    },
-    id_bibliotecario: {
-      title: "Bibliotecário(a)",
-      proporcion: 1.5,
-    },
-    criado_em: {
-      title: "Data",
-      proporcion: 2,
-      justify: "center",
-    },
-  };
+  const columns: ColumnType<EditarAtributo<ReserveType, "criado_em", string>> =
+    {
+      isbn_livro: {
+        title: "Livro",
+        proporcion: 2.5,
+        // image: "caminho_img",
+      },
+      id_usuario: {
+        title: "Usuário",
+        proporcion: 2,
+      },
+      id_bibliotecario: {
+        title: "Bibliotecário(a)",
+        proporcion: 1.5,
+      },
+      criado_em: {
+        title: "Data",
+        proporcion: 2,
+        justify: "center",
+      },
+    };
+
+  const reserverFormat = reserves.map((reserve) => {
+    return {
+      ...reserve,
+      criado_em: new Date(reserve.criado_em).toLocaleDateString("pt-BR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+    };
+  });
 
   return (
     <Box className={styles.adminBookWrapper}>
@@ -67,7 +81,7 @@ export default function HomeClient() {
           </Button>
         </Box>
         <Box className={stylesAdmin.adminOtherInformations}>
-          <Text color="gray400">16 produtos encontrados</Text>
+          <Text color="gray400">{reserves.length} produtos encontrados</Text>
           <Box className={stylesAdmin.adminCleanFilters}>
             <Text color="primary300" weight="bold">
               Limpar filtros
@@ -76,7 +90,7 @@ export default function HomeClient() {
           </Box>
         </Box>
       </Box>
-      <Table items={reserves} columns={columns}></Table>
+      <Table items={reserverFormat} columns={columns}></Table>
     </Box>
   );
 }

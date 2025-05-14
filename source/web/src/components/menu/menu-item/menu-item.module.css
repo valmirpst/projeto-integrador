@@ -1,7 +1,12 @@
 .menuItem {
+  display: block;
+  padding: 0.25rem 0;
+  text-decoration: none;
+}
+
+.menuItemContent {
   display: flex;
   gap: 0.75rem;
-  padding: 0.25rem 0;
 }
 
 .menuItem + .menuItem {

@@ -54,32 +54,35 @@ export default function Table<T>(props: Props<T>) {
         </tr>
       </thead>
       <tbody>
-        {items.map((item, index) => (
-          <tr key={index} style={{ gridTemplateColumns: gridColumns }}>
-            {keys.map((key, index) => (
-              <td
-                key={index}
-                style={{
-                  justifyContent: columns[key]?.justify,
-                }}
-              >
-                {columns[key]?.image &&
-                  typeof item[columns[key].image] === "string" &&
-                  typeof item[key] === "string" && (
-                    <Img
-                      src={item[columns[key].image] as string}
-                      alt={item[key] as string}
-                      width={40}
-                      height={60}
-                    />
-                  )}
-                {typeof item[key] === "string" || typeof item[key] === "number"
-                  ? item[key]
-                  : null}
-              </td>
-            ))}
-          </tr>
-        ))}
+        {items
+          .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+          .map((item, index) => (
+            <tr key={index} style={{ gridTemplateColumns: gridColumns }}>
+              {keys.map((key, index) => (
+                <td
+                  key={index}
+                  style={{
+                    justifyContent: columns[key]?.justify,
+                  }}
+                >
+                  {columns[key]?.image &&
+                    typeof item[columns[key].image] === "string" &&
+                    typeof item[key] === "string" && (
+                      <Img
+                        src={item[columns[key].image] as string}
+                        alt={item[key] as string}
+                        width={40}
+                        height={60}
+                      />
+                    )}
+                  {typeof item[key] === "string" ||
+                  typeof item[key] === "number"
+                    ? item[key]
+                    : null}
+                </td>
+              ))}
+            </tr>
+          ))}
       </tbody>
       <tfoot className={styles.tableFooter}>
         <tr>
@@ -115,7 +118,7 @@ export default function Table<T>(props: Props<T>) {
                   ${page + 1 > totalPages && styles.paginationNumberDisabled}
                 `}
                 onClick={() => {
-                  if (page + 1 < totalPages) setPage(page + 1);
+                  if (page + 1 <= totalPages) setPage(page + 1);
                 }}
               >
                 {page + 1}
