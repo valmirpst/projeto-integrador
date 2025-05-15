@@ -4,7 +4,7 @@ import { LivroModel } from "../models/livro-model";
 import { livroSchema } from "../models/schemas/livro-schema";
 
 export class LivroController {
-  static async getAsync(req: Request, res: Response) {
+  static async getAsync(_: Request, res: Response) {
     try {
       const livros = await LivroModel.getAsync();
       response.ok({ res, status: 200, payload: livros });
