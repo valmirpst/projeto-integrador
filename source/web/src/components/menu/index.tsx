@@ -32,19 +32,19 @@ const librarianMenu = [
   {
     icon: <Icon.House width={20} height={20} color={theme.colors.gray100} />,
     text: "Dashboard",
-    url: "dashboard",
+    url: "/admin/dashboard",
   },
   {
     icon: <Icon.Books width={20} height={20} color={theme.colors.gray100} />,
     text: "Livro",
-    url: "livro",
+    url: "/admin/livro",
   },
   {
     icon: (
       <Icon.AddressBook width={20} height={20} color={theme.colors.gray100} />
     ),
     text: "Reserva",
-    url: "reserva",
+    url: "/admin/reserva",
   },
 ];
 
@@ -75,7 +75,8 @@ const userSubMenu = [
 ];
 
 export default function Menu() {
-  const menuItems = true ? userMenu : librarianMenu;
+  const isAdmin = true;
+  const menuItems = isAdmin ? librarianMenu : userMenu;
 
   return (
     <Box className={styles.menuWrapper}>
@@ -92,7 +93,7 @@ export default function Menu() {
       </Box>
 
       <Text className={styles.menuSectionTitle} size="lg" color="gray50">
-        Descubra seu livro
+        {isAdmin ? "Gerencie a biblioteca" : "Descubra seu livro"}
       </Text>
 
       {menuItems.map((item) => (
@@ -104,7 +105,7 @@ export default function Menu() {
         />
       ))}
 
-      {true && (
+      {!isAdmin && (
         <>
           <Box className={styles.menuDivider} />
           {userSubMenu.map((item) => (
