@@ -34,35 +34,8 @@ CREATE TABLE IF NOT EXISTS usuario (
 	sobrenome VARCHAR(80),
 	data_nasc DATE,
 	email VARCHAR(80),
-	telefone VARCHAR(20)
-);
-
--- --------------------------------------------
-
-CREATE TABLE IF NOT EXISTS perfil (
-	id VARCHAR(40) PRIMARY KEY NOT NULL,
-	nome perfil_enum NOT NULL,
-	tempo_emprestimo_dias INTEGER,
-	valor_multa_dia DECIMAL(16, 6)
-);
-
--- --------------------------------------------
-
-CREATE TABLE IF NOT EXISTS usuario_perfil (
-	id_usuario VARCHAR(40) NOT NULL,
-	id_perfil VARCHAR(40) NOT NULL,
-	
-	PRIMARY KEY (id_usuario, id_perfil),
-	
-	CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario)
-		REFERENCES usuario(id)
-		ON DELETE CASCADE
-		ON UPDATE RESTRICT,
-
-	CONSTRAINT fk_id_perfil FOREIGN KEY (id_perfil)
-		REFERENCES perfil(id)
-		ON DELETE CASCADE
-		ON UPDATE RESTRICT
+	telefone VARCHAR(20),
+	perfil perfil_enum
 );
 
 -- --------------------------------------------
