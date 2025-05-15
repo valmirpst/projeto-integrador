@@ -13,6 +13,7 @@ export const swaggerOptions: Options = {
         url: `http://localhost:${env.PORT}/api`,
       },
     ],
+    tags: [{ name: "Livros" }, { name: "Usuarios" }],
   },
   apis: ["src/routes/*.ts"],
 };
