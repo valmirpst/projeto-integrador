@@ -3,14 +3,34 @@ import { LivroEntity } from "./entities/livro-entity";
 
 export class LivroModel {
   static async getAsync() {
-    const query = "SELECT * FROM livro";
+    const query = `
+      SELECT livro.*, array_agg(livro_autor.nome_autor) as autores
+      FROM livro
+      JOIN livro_autor ON livro.isbn = livro_autor.isbn_livro
+      GROUP BY livro.isbn
+      ORDER BY livro.isbn ASC
+    `;
+
     const res = await db.query(query);
+
     return res.rows;
   }
 
   static async postAsync(livro: LivroEntity) {
-    const { isbn, descricao, edicao, editora, genero, qtd_disponivel, titulo, caminho_img, total_avaliacoes, total_estrelas } =
-      livro;
+    const {
+      isbn,
+      descricao,
+      edicao,
+      editora,
+      genero,
+      qtd_disponivel,
+      titulo,
+      caminho_img,
+      total_avaliacoes,
+      total_estrelas,
+      autores,
+    } = livro;
+
     const values = [
       isbn,
       descricao,
@@ -30,7 +50,15 @@ export class LivroModel {
     `;
 
     const res = await db.query(query, values);
-    return res.rows[0];
+
+    const livro_autor_query = `
+        INSERT INTO livro_autor(isbn_livro, nome_autor)
+        VALUES($1, $2)
+      `;
+
+    autores.forEach(async autor => await db.query(livro_autor_query, [isbn, autor]));
+
+    return { ...res.rows[0], autores };
   }
 
   static async putAsync(isbn: string, livro: LivroEntity) {
@@ -45,6 +73,7 @@ export class LivroModel {
       caminho_img,
       total_avaliacoes,
       total_estrelas,
+      autores,
     } = livro;
 
     if (livroIsbn !== isbn) {
@@ -65,23 +94,40 @@ export class LivroModel {
     ];
 
     const query = `
-    UPDATE livro
-    SET
-      descricao = $1,
-      edicao = $2,
-      editora = $3,
-      genero = $4,
-      qtd_disponivel = $5,
-      titulo = $6,
-      caminho_img = $7,
-      total_avaliacoes = $8,
-      total_estrelas = $9
-    WHERE isbn = $10
-    RETURNING *
+      UPDATE livro
+      SET
+        descricao = $1,
+        edicao = $2,
+        editora = $3,
+        genero = $4,
+        qtd_disponivel = $5,
+        titulo = $6,
+        caminho_img = $7,
+        total_avaliacoes = $8,
+        total_estrelas = $9
+      WHERE isbn = $10
+      RETURNING *
   `;
 
     const res = await db.query(query, values);
-    return res.rows[0];
+
+    let autores_string = "";
+    autores.forEach((autor, i) => {
+      autores_string += `${i == 0 ? "" : ","}'${autor}'`;
+    });
+    console.log(autores_string);
+
+    const livro_autor_query = `
+      DELETE FROM livro_autor
+      WHERE isbn_livro = '${isbn}';
+
+      INSERT INTO livro_autor (isbn_livro, nome_autor)
+      SELECT '${isbn}', unnest(array[${autores_string}]);
+    `;
+
+    await db.query(livro_autor_query);
+
+    return { ...res.rows[0], autores };
   }
 
   static async deleteAsync(isbn: string) {
