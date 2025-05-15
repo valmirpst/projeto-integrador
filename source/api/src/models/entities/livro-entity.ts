@@ -9,6 +9,7 @@ export class LivroEntity {
   public descricao!: string;
   public total_avaliacoes: number = 0;
   public total_estrelas: number = 0;
+  public autores!: string[];
 
   constructor(livro: LivroEntity) {
     Object.assign(this, livro);

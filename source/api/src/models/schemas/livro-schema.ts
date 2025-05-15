@@ -11,4 +11,5 @@ export const livroSchema = z.object({
   descricao: z.string(),
   total_avaliacoes: z.number().default(0),
   total_estrelas: z.number().default(0),
+  autores: z.array(z.string()),
 });

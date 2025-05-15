@@ -13,7 +13,6 @@ DROP TABLE IF EXISTS historico;
 DROP TABLE IF EXISTS curso;
 DROP TABLE IF EXISTS perfil;
 DROP TABLE IF EXISTS usuario;
-DROP TABLE IF EXISTS autor;
 DROP TABLE IF EXISTS livro;
 DROP TABLE IF EXISTS categoria;
 
@@ -109,26 +108,14 @@ CREATE TABLE IF NOT EXISTS livro (
 
 -- --------------------------------------------
 
-CREATE TABLE IF NOT EXISTS autor (
-	id VARCHAR(40) PRIMARY KEY NOT NULL,
-	nome VARCHAR(40) NOT NULL
-);
-
--- --------------------------------------------
-
 CREATE TABLE IF NOT EXISTS livro_autor (
 	isbn_livro VARCHAR(40) NOT NULL,
-	id_autor VARCHAR(40) NOT NULL,
+	nome_autor VARCHAR(100) NOT NULL,
 	
-	PRIMARY KEY (isbn_livro, id_autor),
+	PRIMARY KEY (isbn_livro, nome_autor),
 
 	CONSTRAINT fk_isbn_livro FOREIGN KEY (isbn_livro)
 		REFERENCES livro(isbn)
-		ON DELETE CASCADE
-		ON UPDATE RESTRICT,
-		
-	CONSTRAINT fk_id_autor FOREIGN KEY (id_autor)
-		REFERENCES autor(id)
 		ON DELETE CASCADE
 		ON UPDATE RESTRICT
 );
