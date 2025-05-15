@@ -9,22 +9,19 @@ DROP TABLE IF EXISTS usuario_perfil;
 DROP TABLE IF EXISTS usuario_curso;
 DROP TABLE IF EXISTS livro_autor;
 DROP TABLE IF EXISTS livro_categoria;
-DROP TABLE IF EXISTS emprestimo;
+DROP TABLE IF EXISTS historico;
 DROP TABLE IF EXISTS curso;
 DROP TABLE IF EXISTS perfil;
 DROP TABLE IF EXISTS usuario;
-DROP TABLE IF EXISTS autor;
 DROP TABLE IF EXISTS livro;
 DROP TABLE IF EXISTS categoria;
 
 DROP TYPE IF EXISTS perfil_enum;
-DROP TYPE IF EXISTS emprestimo_status_enum;
-DROP TYPE IF EXISTS genero_enum;
+DROP TYPE IF EXISTS historico_enum;
 DROP TYPE IF EXISTS tipo_categoria_enum;
 
 CREATE TYPE perfil_enum AS ENUM('bibliotecario', 'aluno', 'professor');
-CREATE TYPE emprestimo_status_enum AS ENUM('ativo', 'inativo');
-CREATE TYPE genero_enum AS ENUM('masc', 'fem');
+CREATE TYPE historico_enum AS ENUM('ativo', 'inativo');
 CREATE TYPE tipo_categoria_enum AS ENUM('subcategoria', 'categoria');
 
 -- --------------------------------------------
@@ -45,7 +42,8 @@ CREATE TABLE IF NOT EXISTS usuario (
 CREATE TABLE IF NOT EXISTS perfil (
 	id VARCHAR(40) PRIMARY KEY NOT NULL,
 	nome perfil_enum NOT NULL,
-	tempo_emprestimo_dias INTEGER
+	tempo_emprestimo_dias INTEGER,
+	valor_multa_dia DECIMAL(16, 6)
 );
 
 -- --------------------------------------------
@@ -101,45 +99,36 @@ CREATE TABLE IF NOT EXISTS livro (
 	edicao VARCHAR(40),
 	editora VARCHAR(40),
 	qtd_disponivel INTEGER,
-	genero genero_enum,
-	caminho_img VARCHAR(40)
-);
-
--- --------------------------------------------
-
-CREATE TABLE IF NOT EXISTS autor (
-	id VARCHAR(40) PRIMARY KEY NOT NULL,
-	nome VARCHAR(40) NOT NULL
+	genero TEXT,
+	caminho_img TEXT,
+	descricao TEXT,
+	total_avaliacoes INTEGER,
+	total_estrelas INTEGER
 );
 
 -- --------------------------------------------
 
 CREATE TABLE IF NOT EXISTS livro_autor (
 	isbn_livro VARCHAR(40) NOT NULL,
-	id_autor VARCHAR(40) NOT NULL,
+	nome_autor VARCHAR(100) NOT NULL,
 	
-	PRIMARY KEY (isbn_livro, id_autor),
+	PRIMARY KEY (isbn_livro, nome_autor),
 
 	CONSTRAINT fk_isbn_livro FOREIGN KEY (isbn_livro)
 		REFERENCES livro(isbn)
-		ON DELETE CASCADE
-		ON UPDATE RESTRICT,
-		
-	CONSTRAINT fk_id_autor FOREIGN KEY (id_autor)
-		REFERENCES autor(id)
 		ON DELETE CASCADE
 		ON UPDATE RESTRICT
 );
 
 -- --------------------------------------------
 
-CREATE TABLE IF NOT EXISTS emprestimo (
+CREATE TABLE IF NOT EXISTS historico (
 	isbn_livro VARCHAR(40) NOT NULL,
 	id_usuario VARCHAR(40) NOT NULL,
 	id_bibliotecario VARCHAR(40) NOT NULL,
 	criado_em TIMESTAMPTZ,
 	atualizado_em TIMESTAMPTZ,
-	status emprestimo_status_enum,
+	status historico_enum,
 	
 	PRIMARY KEY (isbn_livro, id_usuario),
 

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "_version": "22.0.0",
+
+  "compilerOptions": {
+    "lib": ["DOM", "ES6"],
+    "module": "CommonJS",
+    "target": "es2022",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node"
+  },
+
+  "exclude": ["node_modules", "dist"],
+
+  "include": ["src/**/*.ts"]
+}

@@ -1,8 +1,8 @@
-import Img from "@/components/ui/img";
-import styles from "./carousel-item.module.css";
 import { Box } from "@/components/ui/box";
+import Img from "@/components/ui/img";
 import { theme } from "@/theme";
 import React, { useState } from "react";
+import styles from "./carousel-item.module.css";
 
 type Props = {
   src: string;
@@ -15,13 +15,9 @@ export default function CarouselItem(props: Props) {
   const { src, title, width, height } = props;
 
   const [showMenu, setShowMenu] = useState(false);
-  const [mouseDownPosition, setMouseDownPosition] = useState<number | null>(
-    null
-  );
-  const [mouseEnterTimeout, setMouseEnterTimeout] =
-    useState<NodeJS.Timeout | null>(null);
-  const [mouseLeaveTimeout, setMouseLeaveTimeout] =
-    useState<NodeJS.Timeout | null>(null);
+  const [mouseDownPosition, setMouseDownPosition] = useState<number | null>(null);
+  const [mouseEnterTimeout, setMouseEnterTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [mouseLeaveTimeout, setMouseLeaveTimeout] = useState<NodeJS.Timeout | null>(null);
 
   function onMouseEnter() {
     if (mouseLeaveTimeout) clearTimeout(mouseLeaveTimeout);
@@ -49,8 +45,7 @@ export default function CarouselItem(props: Props) {
   function onMouseUp(event: React.MouseEvent) {
     const position = event.clientX;
 
-    if (mouseDownPosition && Math.abs(mouseDownPosition - position) > 40)
-      return;
+    if (mouseDownPosition && Math.abs(mouseDownPosition - position) > 40) return;
     setShowMenu(true);
   }
 
@@ -72,27 +67,18 @@ export default function CarouselItem(props: Props) {
           opacity: showMenu ? 1 : 0,
         }}
       >
-        <Box
-          className={styles.carouselItemMenuItem}
-          style={{ backgroundColor: theme.colors.primary300 + "08" }}
-        >
+        <Box className={styles.carouselItemMenuItem} style={{ backgroundColor: theme.colors.primary300 + "08" }}>
           Mais detalhes
         </Box>
-        <Box
-          className={styles.carouselItemMenuItem}
-          style={{ backgroundColor: theme.colors.primary300 + "08" }}
-        >
+        <Box className={styles.carouselItemMenuItem} style={{ backgroundColor: theme.colors.primary300 + "08" }}>
           Reservar
         </Box>
-        <Box
-          className={styles.carouselItemMenuItem}
-          style={{ backgroundColor: theme.colors.primary300 + "08" }}
-        >
+        <Box className={styles.carouselItemMenuItem} style={{ backgroundColor: theme.colors.primary300 + "08" }}>
           Marcar como favorito
         </Box>
       </Box>
 
-      <Img src={src} alt={title} width={width} height={height} />
+      <Img src={"https://m.media-amazon.com/images/I/61pt9lG-PvL.jpg"} alt={title} width={width} height={height} />
     </Box>
   );
 }
