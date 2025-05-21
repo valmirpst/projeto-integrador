@@ -1,0 +1,79 @@
+.selectWrapper {
+  display: flex;
+  align-items: end;
+  z-index: 1;
+  user-select: none;
+  position: relative;
+}
+
+.selectLabel {
+  display: block;
+  position: absolute;
+  bottom: 0.5rem;
+  left: 1rem;
+  transition: 0.3s;
+}
+
+.selectLabelActive {
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+  position: absolute;
+  bottom: 2.25rem;
+  left: 0;
+  transition: 0.3s;
+}
+
+.selectInput {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 1.25rem;
+  max-width: 28rem;
+  height: 2.25rem;
+  background-color: var(--gray-50);
+  border: 1px solid var(--gray-400);
+  padding: 0 1rem;
+}
+
+.selectTextContainer {
+  display: flex;
+}
+
+.selectText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.selectArrowIcon {
+  transition: 0.3s;
+  margin-left: auto;
+}
+
+.optionsContainer {
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  margin-top: 4.25rem;
+  padding-bottom: 0.5rem;
+  background-color: var(--gray-50);
+  border-radius: 1.25rem;
+  width: 100%;
+  height: 20rem;
+  overflow-y: auto;
+  transition: 1s;
+}
+
+.optionItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.optionItem + .optionItem {
+  border-top: 0.0625rem solid var(--gray-200);
+}
+
+.optionItem:hover {
+  background-color: var(--gray-200);
+}

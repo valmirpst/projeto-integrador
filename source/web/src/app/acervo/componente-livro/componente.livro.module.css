@@ -1,0 +1,29 @@
+.img {
+  width: 100%;
+  height: auto;
+  box-shadow: 10 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+.titulo {
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.avaliacoes {
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.avaliacaoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.iconeEstrela {
+  color: #ffd70c;
+}

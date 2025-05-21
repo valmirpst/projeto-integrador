@@ -1,4 +1,15 @@
-.filterContainer {
+.adminGlobalContainer {
+  background-color: var(--gray-100) !important;
+  padding: 3rem;
+}
+
+.adminTitle {
+  font-size: 2.5rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 3rem;
+}
+
+.adminFilterContainer {
   background-color: var(--gray-50);
   padding: 2rem 2.5rem;
   padding: 2rem 2.5rem;
@@ -7,17 +18,17 @@
   box-shadow: 0.125rem 0.125rem 0.25rem var(--gray-200);
 }
 
-.acervoFilters {
+.adminFilters {
   display: flex;
   align-items: flex-end;
 }
 
-.acervoSearch {
+.adminSearch {
   position: relative;
   margin-right: 2.5rem;
 }
 
-.acervoSearch::after {
+.adminSearch::after {
   content: "";
   display: block;
   height: 100%;
@@ -28,29 +39,25 @@
   top: 0.5rem;
 }
 
-.selectContainer {
+.adminSelectContainer {
   display: flex;
   gap: 2rem;
   margin-left: 2.5rem;
 }
 
-.otherInformations {
+.adminButton {
+  margin-left: auto;
+}
+
+.adminOtherInformations {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 2rem;
 }
 
-.cleanFilters {
+.adminCleanFilters {
   display: flex;
   align-items: center;
   gap: 2rem;
-}
-
-.acervoList {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 3rem;
-  padding: 0 3rem;
-  margin-bottom: 4rem;
 }

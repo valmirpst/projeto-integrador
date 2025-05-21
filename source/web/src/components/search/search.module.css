@@ -1,10 +1,6 @@
 .search {
   border-radius: 1.25rem;
-  max-width: 28rem;
+  width: 28rem;
   background-color: transparent;
   border: 1px solid var(--gray-400);
-}
-
-.label {
-  margin-bottom: 0.25rem;
 }

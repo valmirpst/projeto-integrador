@@ -1,12 +1,13 @@
-export type Book = {
+export type BookType = {
   isbn: string;
   titulo: string;
   edicao: string;
   editora: string;
   qtd_disponivel: number;
-  genero: "M" | "F";
+  genero: string;
   caminho_img: string;
   descricao: string;
   total_avaliacoes: number;
   total_estrelas: string;
+  autor: string;
 };

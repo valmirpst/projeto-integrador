@@ -12,14 +12,19 @@ const userMenu = [
   {
     icon: <Icon.House width={20} height={20} color={theme.colors.gray100} />,
     text: "Home",
+    url: "/",
   },
   {
-    icon: <Icon.Bookmarks width={20} height={20} color={theme.colors.gray100} />,
+    icon: (
+      <Icon.Bookmarks width={20} height={20} color={theme.colors.gray100} />
+    ),
     text: "Categorias",
+    url: "categorias",
   },
   {
     icon: <Icon.Book width={20} height={20} color={theme.colors.gray100} />,
     text: "Acervo",
+    url: "acervo",
   },
 ];
 
@@ -27,14 +32,19 @@ const librarianMenu = [
   {
     icon: <Icon.House width={20} height={20} color={theme.colors.gray100} />,
     text: "Dashboard",
+    url: "/admin/dashboard",
   },
   {
     icon: <Icon.Books width={20} height={20} color={theme.colors.gray100} />,
     text: "Livro",
+    url: "/admin/livro",
   },
   {
-    icon: <Icon.AddressBook width={20} height={20} color={theme.colors.gray100} />,
+    icon: (
+      <Icon.AddressBook width={20} height={20} color={theme.colors.gray100} />
+    ),
     text: "Reserva",
+    url: "/admin/reserva",
   },
 ];
 
@@ -42,19 +52,31 @@ const userSubMenu = [
   {
     icon: <Icon.Heart width={20} height={20} color={theme.colors.gray100} />,
     text: "Favoritos",
+    url: "favoritos",
   },
   {
-    icon: <Icon.LightbulbFilament width={20} height={20} color={theme.colors.gray100} />,
+    icon: (
+      <Icon.LightbulbFilament
+        width={20}
+        height={20}
+        color={theme.colors.gray100}
+      />
+    ),
     text: "Sugestões de Leitura",
+    url: "sugestoes",
   },
   {
-    icon: <Icon.ChartLineUp width={20} height={20} color={theme.colors.gray100} />,
+    icon: (
+      <Icon.ChartLineUp width={20} height={20} color={theme.colors.gray100} />
+    ),
     text: "Livros Lidos",
+    url: "livros-lidos",
   },
 ];
 
 export default function Menu() {
-  const menuItems = true ? userMenu : librarianMenu;
+  const isAdmin = true;
+  const menuItems = isAdmin ? librarianMenu : userMenu;
 
   return (
     <Box className={styles.menuWrapper}>
@@ -71,18 +93,28 @@ export default function Menu() {
       </Box>
 
       <Text className={styles.menuSectionTitle} size="lg" color="gray50">
-        Descubra seu livro
+        {isAdmin ? "Gerencie a biblioteca" : "Descubra seu livro"}
       </Text>
 
-      {menuItems.map(item => (
-        <MenuItem key={item.text} text={item.text} icon={item.icon} />
+      {menuItems.map((item) => (
+        <MenuItem
+          key={item.text}
+          url={item.url}
+          text={item.text}
+          icon={item.icon}
+        />
       ))}
 
-      {true && (
+      {!isAdmin && (
         <>
           <Box className={styles.menuDivider} />
-          {userSubMenu.map(item => (
-            <MenuItem key={item.text} text={item.text} icon={item.icon} />
+          {userSubMenu.map((item) => (
+            <MenuItem
+              key={item.text}
+              url={item.url}
+              text={item.text}
+              icon={item.icon}
+            />
           ))}
         </>
       )}
@@ -90,7 +122,12 @@ export default function Menu() {
       <Box className={styles.menuFooter}>
         <Avatar src="" />
         <Box>
-          <Text className={styles.loginText} size="md" weight="bold" color="gray50">
+          <Text
+            className={styles.loginText}
+            size="md"
+            weight="bold"
+            color="gray50"
+          >
             Entrar/Registrar
           </Text>
           <Text size="xs" weight="light" color="gray50">
