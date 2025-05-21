@@ -1,5 +1,5 @@
 "use client";
-import { Book } from "@/@types/boook";
+import { BookType } from "@/@types/book";
 import Carousel from "@/components/carousel";
 import Search from "@/components/search";
 import { Box } from "@/components/ui/box";
@@ -8,7 +8,7 @@ import { useState } from "react";
 import styles from "./page.module.css";
 
 type HomeClientProps = {
-  books: Book[];
+  books: BookType[];
 };
 
 export default function HomeClient({ books }: HomeClientProps) {
@@ -16,14 +16,21 @@ export default function HomeClient({ books }: HomeClientProps) {
 
   return (
     <Box className={styles.homeWrapper}>
-      <Search className={styles.searchHome} onChange={event: React.ChangeEvent<HTMLInputElement> => {
-          setSearchValue(event.target.value);
-        }} value={searchValue} />
+      <Search
+        className={styles.searchHome}
+        value={searchValue}
+        setState={setSearchValue}
+      />
+
       {books.length === 0 ? (
         <p className={styles.noBooksMessage}>Nenhum livro cadastrado.</p>
       ) : (
         <>
-          <Carousel className={styles.carouselHeadSuggestions} title="Sugestões de Leitura" books={books} />
+          <Carousel
+            className={styles.carouselHeadSuggestions}
+            title="Sugestões de Leitura"
+            books={books}
+          />
           <Box className={styles.carouselContinueReadingWrapper}>
             <Carousel
               className={styles.carouselContinueReading}

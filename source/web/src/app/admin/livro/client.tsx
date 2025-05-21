@@ -54,9 +54,7 @@ export default function HomeClient() {
           <Search
             className={stylesAdmin.adminSearch}
             value={searchValue}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setSearchValue(event.target.value);
-            }}
+            setState={setSearchValue}
             width={500}
           />
           <Box className={stylesAdmin.adminSelectContainer}>

@@ -1,34 +1,56 @@
-.container {
+.filterContainer {
+  background-color: var(--gray-50);
+  padding: 2rem 2.5rem;
+  padding: 2rem 2.5rem;
+  margin-bottom: 2.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0.125rem 0.125rem 0.25rem var(--gray-200);
+}
+
+.acervoFilters {
   display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  justify-content: center;
-  padding: 24px;
+  align-items: flex-end;
 }
 
-.img {
-  box-shadow: 10 4px 12px rgba(0, 0, 0, 0.6);
+.acervoSearch {
+  position: relative;
+  margin-right: 2.5rem;
 }
 
-.titulo {
-  font-size: 14px;
-  font-weight: 500;
-  margin-top: 10px;
-  text-align: center;
+.acervoSearch::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: 0.125rem;
+  background-color: var(--gray-300);
+  position: absolute;
+  right: -2.5rem;
+  top: 0.5rem;
 }
 
-.avaliacoes{
-  font-size: 10px;
-  font-weight: 400;
+.selectContainer {
+  display: flex;
+  gap: 2rem;
+  margin-left: 2.5rem;
 }
-.avaliacaoContainer {
+
+.otherInformations {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.cleanFilters {
   display: flex;
   align-items: center;
-  justify-content: center; 
-  gap: 6px; 
-  margin-top: 6px;
+  gap: 2rem;
 }
 
-.iconeEstrela {
-  color: #ffd70c;
+.acervoList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 3rem;
+  padding: 0 3rem;
+  margin-bottom: 4rem;
 }
