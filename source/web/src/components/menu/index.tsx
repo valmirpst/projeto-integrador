@@ -75,7 +75,7 @@ const userSubMenu = [
 ];
 
 export default function Menu() {
-  const isAdmin = true;
+  const isAdmin = false;
   const menuItems = isAdmin ? librarianMenu : userMenu;
 
   return (
