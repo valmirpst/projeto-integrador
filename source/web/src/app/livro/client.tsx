@@ -1,13 +1,13 @@
-'use client';
-import { Box } from '@/components/ui/box';
-import styles from './livro.module.css';
-import { Text } from '@/components/ui/text';
-import Carousel from '@/components/carousel';
-import { books } from '@/mock/book';
-import Img from '@/components/ui/img';
-import { Button } from '@/components/ui/button';
-import { Heart, ShareNetwork, Star } from 'phosphor-react';
-import { theme } from '@/theme';
+"use client";
+import { Box } from "@/components/ui/box";
+import styles from "./livro.module.css";
+import { Text } from "@/components/ui/text";
+import Carousel from "@/components/carousel";
+import { books } from "@/mock/book";
+import Img from "@/components/ui/img";
+import { Button } from "@/components/ui/button";
+import { Heart, ShareNetwork, Star } from "phosphor-react";
+import { theme } from "@/theme";
 
 export default function LivroClient() {
   return (
@@ -31,22 +31,25 @@ export default function LivroClient() {
                 <Star size={32} className={styles.iconeEstrela}></Star>
                 <Star size={32} className={styles.iconeEstrela}></Star>
                 <Star size={32} className={styles.iconeEstrela}></Star>
-                
+
                 <Box>
                   <Heart
                     size={32}
                     className={styles.iconeFavorito}
                     style={{ color: theme.colors.danger700 }}
                   />
-                  <ShareNetwork className={styles.iconeCompartilhar} size={32} />
+                  <ShareNetwork
+                    className={styles.iconeCompartilhar}
+                    size={32}
+                  />
                 </Box>
               </Box>
             </Box>
 
             <Button
               className={styles.botaoEnviar}
-              style={{ backgroundColor: theme.colors.primary500 } }
-              size='sm'
+              style={{ backgroundColor: theme.colors.primary500 }}
+              size="sm"
             >
               Enviar
             </Button>

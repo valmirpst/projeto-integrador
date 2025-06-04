@@ -10,9 +10,11 @@ import Search from "@/components/search";
 import { useState } from "react";
 import Select from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import RegisterLivroModal from "@/components/register-livro-modal";
 
-export default function HomeClient() {
+export default function LivroClient() {
   const [searchValue, setSearchValue] = useState("");
+  const [isCreateBookModalActive, setIsCreateBookModalActive] = useState(false);
 
   const columns: ColumnType<BookType> = {
     titulo: {
@@ -45,45 +47,56 @@ export default function HomeClient() {
   };
 
   return (
-    <Box className={styles.adminBookWrapper}>
-      <Text as="h1" className={stylesAdmin.adminTitle}>
-        Livros
-      </Text>
-      <Box className={stylesAdmin.adminFilterContainer}>
-        <Box className={stylesAdmin.adminFilters}>
-          <Search
-            className={stylesAdmin.adminSearch}
-            value={searchValue}
-            setState={setSearchValue}
-            width={500}
-          />
-          <Box className={stylesAdmin.adminSelectContainer}>
-            <Select
-              options={books.map((value) => value.genero)}
-              label="Gênero"
-              width={200}
+    <>
+      <Box className={styles.adminBookWrapper}>
+        <Text as="h1" className={stylesAdmin.adminTitle}>
+          Livros
+        </Text>
+        <Box className={stylesAdmin.adminFilterContainer}>
+          <Box className={stylesAdmin.adminFilters}>
+            <Search
+              className={stylesAdmin.adminSearch}
+              value={searchValue}
+              setState={setSearchValue}
+              width={500}
             />
-            <Select
-              options={books.map((value) => value.editora)}
-              label="Editora"
-              width={200}
-            />
+            <Box className={stylesAdmin.adminSelectContainer}>
+              <Select
+                options={books.map((value) => value.genero)}
+                label="Gênero"
+                width={200}
+              />
+              <Select
+                options={books.map((value) => value.editora)}
+                label="Editora"
+                width={200}
+              />
+            </Box>
+            <Button
+              className={stylesAdmin.adminButton}
+              size="sm"
+              width={120}
+              onClick={() => setIsCreateBookModalActive(true)}
+            >
+              Cadastrar
+            </Button>
           </Box>
-          <Button className={stylesAdmin.adminButton} size="sm" width={120}>
-            Cadastrar
-          </Button>
-        </Box>
-        <Box className={stylesAdmin.adminOtherInformations}>
-          <Text color="gray400">{books.length} produtos encontrados</Text>
-          <Box className={stylesAdmin.adminCleanFilters}>
-            <Text color="primary300" weight="bold">
-              Limpar filtros
-            </Text>
-            <Text>Filtros selecionados</Text>
+          <Box className={stylesAdmin.adminOtherInformations}>
+            <Text color="gray400">{books.length} produtos encontrados</Text>
+            <Box className={stylesAdmin.adminCleanFilters}>
+              <Text color="primary300" weight="bold">
+                Limpar filtros
+              </Text>
+              <Text>Filtros selecionados</Text>
+            </Box>
           </Box>
         </Box>
+        <Table items={books} columns={columns}></Table>
       </Box>
-      <Table items={books} columns={columns}></Table>
-    </Box>
+      <RegisterLivroModal
+        open={isCreateBookModalActive}
+        onOpenChange={() => setIsCreateBookModalActive(false)}
+      />
+    </>
   );
 }

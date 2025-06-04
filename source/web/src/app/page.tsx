@@ -9,11 +9,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const { ok, status, data, message } = await api.livros.getAsync();
+  const booksResponse = await api.livros.getAsync();
+  const usuariosResponse = await api.usuarios.getAsync();
 
-  if (!ok || !data) return <p>Erro ao buscar livros.</p>;
+  if (!booksResponse.ok || !booksResponse.data)
+    return <p>Erro ao buscar livros.</p>;
 
-  console.log(ok, status, data, message);
-
-  return <ClientSide books={data} />;
+  return <ClientSide books={booksResponse.data} />;
 }
