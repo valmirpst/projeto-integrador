@@ -21,7 +21,8 @@ const variantStyles = {
   safe: styles.variantSafe,
 };
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: keyof typeof sizeStyles;
   variant?: keyof typeof variantStyles;
   loading?: boolean;
@@ -29,18 +30,45 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ size = "sm", variant = "primary", loading = false, disabled, children, width, className, ...rest }, ref) => {
-    const classes = cnModules(styles.buttonBase, sizeStyles[size], variantStyles[variant], className);
+  (
+    {
+      size = "sm",
+      variant = "primary",
+      loading = false,
+      disabled,
+      children,
+      width,
+      className,
+      ...rest
+    },
+    ref
+  ) => {
+    const classes = cnModules(
+      styles.buttonBase,
+      sizeStyles[size],
+      variantStyles[variant],
+      className
+    );
 
     return (
-      <button ref={ref} style={{ width }} className={classes} disabled={disabled || loading} {...rest}>
+      <button
+        ref={ref}
+        style={{ width }}
+        className={classes}
+        disabled={disabled || loading}
+        {...rest}
+      >
         {loading && (
           <span className={styles.loadingOverlay}>
             <CircleNotch className={styles.loader} />
           </span>
         )}
 
-        <span className={cnModules(styles.content, loading && styles.contentHidden)}>{children}</span>
+        <span
+          className={cnModules(styles.content, loading && styles.contentHidden)}
+        >
+          {children}
+        </span>
       </button>
     );
   }
