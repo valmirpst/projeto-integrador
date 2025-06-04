@@ -1,20 +1,10 @@
--- Buscar usuario e seu perfil
--- SELECT usuario.nome, perfil.nome FROM usuario
--- JOIN usuario_perfil
--- ON usuario_perfil.id_usuario = usuario.id
--- JOIN perfil
--- ON perfil.id = usuario_perfil.id_perfil;
-
-DROP TABLE IF EXISTS usuario_perfil;
 DROP TABLE IF EXISTS usuario_curso;
 DROP TABLE IF EXISTS livro_autor;
 DROP TABLE IF EXISTS livro_categoria;
 DROP TABLE IF EXISTS historico;
 DROP TABLE IF EXISTS curso;
-DROP TABLE IF EXISTS perfil;
 DROP TABLE IF EXISTS usuario;
 DROP TABLE IF EXISTS livro;
-DROP TABLE IF EXISTS categoria;
 
 DROP TYPE IF EXISTS perfil_enum;
 DROP TYPE IF EXISTS historico_enum;
@@ -123,23 +113,15 @@ CREATE TABLE IF NOT EXISTS historico (
 
 -- --------------------------------------------
 
-CREATE TABLE IF NOT EXISTS categoria (
-	id VARCHAR(40) PRIMARY KEY,
-	nome VARCHAR(80)
-);
-
 CREATE TABLE IF NOT EXISTS livro_categoria (
-	isbn_livro VARCHAR(20) PRIMARY KEY NOT NULL,
-	id_categoria VARCHAR(40),
+	isbn_livro VARCHAR(40) NOT NULL,
+	nome_categoria VARCHAR(80) NOT NULL,
 	tipo tipo_categoria_enum,
-	
+
+	PRIMARY KEY (isbn_livro, nome_categoria),
+
 	CONSTRAINT fk_isbn_livro FOREIGN KEY (isbn_livro) 
 		REFERENCES livro(isbn)
-		ON DELETE RESTRICT
-		ON UPDATE RESTRICT,
-		
-	CONSTRAINT fk_id_categoria FOREIGN KEY (id_categoria)
-		REFERENCES categoria(id)
-		ON DELETE RESTRICT
+		ON DELETE CASCADE
 		ON UPDATE RESTRICT
 );
