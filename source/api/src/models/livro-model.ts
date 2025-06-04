@@ -175,9 +175,24 @@ export class LivroModel {
   }
 
   static async getByIsbnAsync(isbn: LivroEntity["isbn"]): Promise<LivroEntity | undefined> {
-    const query = "SELECT * FROM livro WHERE isbn = $1";
+    const query = `
+      SELECT livro.*, array_agg(livro_autor.nome_autor) as autores
+      FROM livro
+      JOIN livro_autor ON livro.isbn = livro_autor.isbn_livro
+      WHERE livro.isbn = $1
+      GROUP BY livro.isbn
+    `;
+
     const res = await db.query(query, [isbn]);
 
-    return res.rows[0];
+    const categoriasQuery = `
+      SELECT livro_categoria.nome_categoria as nome, livro_categoria.tipo
+      FROM livro_categoria
+      WHERE livro_categoria.isbn_livro = $1
+    `;
+
+    const categoriasRes = await db.query(categoriasQuery, [isbn]);
+
+    return { ...res.rows[0], categorias: categoriasRes.rows };
   }
 }
