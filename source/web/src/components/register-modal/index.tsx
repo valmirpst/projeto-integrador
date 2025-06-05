@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Dialog } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
 import { Text } from "../ui/text";
@@ -8,6 +7,7 @@ import { Box } from "../ui/box";
 import styles from "./register-livro-modal.module.css";
 import { Button } from "../ui/button";
 import Img from "../ui/img";
+import { useState } from "react";
 import { api } from "@/lib/api";
 
 type PropsType = {
@@ -29,24 +29,12 @@ export default function RegisterLivroModal({ open, onOpenChange }: PropsType) {
     total_avaliacoes: 0,
     total_estrelas: 0,
   });
-  const [autor, setAutor] = useState<string>("");
-
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     id: string
   ) => {
     const { value } = e.target;
-    setForm((prev) => ({ ...prev, [id]: value }));
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const file = e.target.files?.[0];
-    const file = "testeeeeFileee";
-    if (file) {
-      setForm((prev) => ({ ...prev, img: file }));
-    }
   };
 
   const handleSubmitChange = async () => {
@@ -69,17 +57,9 @@ export default function RegisterLivroModal({ open, onOpenChange }: PropsType) {
         total_avaliacoes: 0,
         total_estrelas: 0,
       });
-      setPreviewUrl(null);
       onOpenChange(false);
     }
   };
-
-  function handleAutores(e: React.ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value;
-    // const autoresArray = value.split(",").map((autor) => autor.trim());
-    console.log(value);
-    // setForm((prev) => ({ ...prev, autores: [...autoresArray] }));
-  }
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -117,13 +97,6 @@ export default function RegisterLivroModal({ open, onOpenChange }: PropsType) {
             value={form.editora}
             onChange={(e) => handleChange(e, "editora")}
           />
-          <Input
-            id="autores"
-            label="Autores"
-            onBlur={handleAutores}
-            value={autor}
-            onChange={(e) => setAutor(e.target.value)}
-          />
           <Text>autores</Text>
 
           <label htmlFor="descricao" className={styles.label}>
@@ -153,22 +126,6 @@ export default function RegisterLivroModal({ open, onOpenChange }: PropsType) {
               }
             />
           </Box>
-        </Box>
-
-        <Box className={styles.modalImageContainer}>
-          <Img
-            className={styles.modalImage}
-            src={previewUrl || "/image-example.svg"}
-            alt="Pré-visualização da imagem"
-            width={220}
-            height={300}
-          />
-          <input
-            id="img"
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
         </Box>
 
         <Dialog.Actions className={styles.actions}>

@@ -7,6 +7,8 @@ import Img from "../ui/img";
 import { Text } from "../ui/text";
 import MenuItem from "./menu-item";
 import styles from "./menu.module.css";
+import { useState } from "react";
+import RegisterLivroModal from "../register-modal";
 
 const userMenu = [
   {
@@ -78,63 +80,73 @@ export default function Menu() {
   const isAdmin = false;
   const menuItems = isAdmin ? librarianMenu : userMenu;
 
+  const [isRegisterModalActive, setIsRegisterModalActive] = useState(false);
+
   return (
-    <Box className={styles.menuWrapper}>
-      <Box className={styles.menuHeader}>
-        <Img src="/logo.png" width={65} height={65} alt="logo" />
-        <Box>
-          <Text size="lg" weight="bold" color="gray50">
-            BiblioTech
-          </Text>
-          <Text size="xs" weight="light" color="gray50">
-            Nunca é tarde para começar a ler
-          </Text>
+    <>
+      <Box className={styles.menuWrapper}>
+        <Box className={styles.menuHeader}>
+          <Img src="/logo.png" width={65} height={65} alt="logo" />
+          <Box>
+            <Text size="lg" weight="bold" color="gray50">
+              BiblioTech
+            </Text>
+            <Text size="xs" weight="light" color="gray50">
+              Nunca é tarde para começar a ler
+            </Text>
+          </Box>
         </Box>
+
+        <Text className={styles.menuSectionTitle} size="lg" color="gray50">
+          {isAdmin ? "Gerencie a biblioteca" : "Descubra seu livro"}
+        </Text>
+
+        {menuItems.map((item) => (
+          <MenuItem
+            key={item.text}
+            url={item.url}
+            text={item.text}
+            icon={item.icon}
+          />
+        ))}
+
+        {!isAdmin && (
+          <>
+            <Box className={styles.menuDivider} />
+            {userSubMenu.map((item) => (
+              <MenuItem
+                key={item.text}
+                url={item.url}
+                text={item.text}
+                icon={item.icon}
+              />
+            ))}
+          </>
+        )}
+
+        <button onClick={() => setIsRegisterModalActive(true)}>
+          <Box className={styles.menuFooter}>
+            <Avatar src="" />
+            <Box>
+              <Text
+                className={styles.loginText}
+                size="md"
+                weight="bold"
+                color="gray50"
+              >
+                Entrar/Registrar
+              </Text>
+              <Text size="xs" weight="light" color="gray50">
+                Encerrar sessão
+              </Text>
+            </Box>
+          </Box>
+        </button>
       </Box>
-
-      <Text className={styles.menuSectionTitle} size="lg" color="gray50">
-        {isAdmin ? "Gerencie a biblioteca" : "Descubra seu livro"}
-      </Text>
-
-      {menuItems.map((item) => (
-        <MenuItem
-          key={item.text}
-          url={item.url}
-          text={item.text}
-          icon={item.icon}
-        />
-      ))}
-
-      {!isAdmin && (
-        <>
-          <Box className={styles.menuDivider} />
-          {userSubMenu.map((item) => (
-            <MenuItem
-              key={item.text}
-              url={item.url}
-              text={item.text}
-              icon={item.icon}
-            />
-          ))}
-        </>
-      )}
-
-      <Box className={styles.menuFooter}>
-        <Avatar src="" />
-        <Box>
-          <Text
-            className={styles.loginText}
-            size="md"
-            weight="bold"
-            color="gray50"
-          >
-            Entrar/Registrar
-          </Text>
-          <Text size="xs" weight="light" color="gray50">
-            Encerrar sessão
-          </Text>
-        </Box>
-      </Box>
-    </Box>
+      <RegisterLivroModal
+        open={isRegisterModalActive}
+        onOpenChange={() => setIsRegisterModalActive(false)}
+      />
+    </>
   );
 }
