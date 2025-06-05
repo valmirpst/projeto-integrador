@@ -17,14 +17,14 @@ type PropsType = {
 
 export default function RegisterLivroModal({ open, onOpenChange }: PropsType) {
   const [form, setForm] = useState({
-    isbn: "",
+    isbn: "oiiii",
     titulo: "",
     edicao: "",
     genero: "",
     editora: "",
     descricao: "",
     qtd_disponivel: 1,
-    autores: [],
+    autores: [] as string[],
     caminho_img: "",
     total_avaliacoes: 0,
     total_estrelas: 0,
@@ -42,19 +42,22 @@ export default function RegisterLivroModal({ open, onOpenChange }: PropsType) {
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("teste");
     // const file = e.target.files?.[0];
     const file = "testeeeeFileee";
     if (file) {
-      setForm((prev) => ({ ...prev, img: file }));
+      setForm((prev) => ({ ...prev, caminho_img: file }));
+      setPreviewUrl(URL.createObjectURL(e.target.files![0]));
     }
   };
 
   const handleSubmitChange = async () => {
+    console.log("form", form);
     const isValid = Object.values(form).every(
       (value) => value !== "" && value !== null
     );
 
-    if (!isValid) {
+    if (isValid) {
       await api.livros.postAsync({ payload: form });
       setForm({
         isbn: "",
@@ -64,7 +67,7 @@ export default function RegisterLivroModal({ open, onOpenChange }: PropsType) {
         editora: "",
         descricao: "",
         qtd_disponivel: 1,
-        autores: [],
+        autores: [] as string[],
         caminho_img: "",
         total_avaliacoes: 0,
         total_estrelas: 0,
@@ -74,11 +77,11 @@ export default function RegisterLivroModal({ open, onOpenChange }: PropsType) {
     }
   };
 
-  function handleAutores(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleAutor(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
-    // const autoresArray = value.split(",").map((autor) => autor.trim());
-    console.log(value);
-    // setForm((prev) => ({ ...prev, autores: [...autoresArray] }));
+    e.target.blur();
+    setForm((prev) => ({ ...form, autores: [...prev.autores, value] }));
+    setAutor("");
   }
 
   return (
@@ -120,11 +123,11 @@ export default function RegisterLivroModal({ open, onOpenChange }: PropsType) {
           <Input
             id="autores"
             label="Autores"
-            onBlur={handleAutores}
+            onBlur={handleAutor}
             value={autor}
             onChange={(e) => setAutor(e.target.value)}
           />
-          <Text>autores</Text>
+          <Text>{form.autores.join(" ")}</Text>
 
           <label htmlFor="descricao" className={styles.label}>
             Descrição

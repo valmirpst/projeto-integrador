@@ -28,6 +28,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       startIcon,
       endIcon,
       className,
+      onBlur,
       ...rest
     },
     ref
@@ -68,7 +69,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           <input
             onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onBlur={(e) => {
+              if (onBlur) {
+                onBlur(e);
+              }
+              setIsFocused(false);
+            }}
             spellCheck={false}
             className={styles.input}
             ref={ref}
