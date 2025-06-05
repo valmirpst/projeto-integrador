@@ -55,7 +55,7 @@ const apiFnBase = async <T, P>({
 
   const stringifiedParams = normalizedParams.toString();
 
-  const baseURL = url || ENV.API_URL;
+  const baseURL = "http://localhost:3333/api";
 
   const fetchUrl =
     stringifiedParams.length > 0
@@ -145,14 +145,16 @@ function createApi<TModel, TParams>(endpoint: string) {
         options: data?.options,
         params: data?.params,
       }),
-    postAsync: async <T = TModel>(data: PostAsyncPayload<T, TParams>) =>
-      apiFnBase<T, TParams>({
+    postAsync: async <T = TModel>(data: PostAsyncPayload<T, TParams>) => {
+      console.log("postAsync", data);
+      return apiFnBase<T, TParams>({
         endpoint: endpoint,
         method: "POST",
         options: data.options,
         params: data.params,
         payload: data.payload,
-      }),
+      });
+    },
     putAsync: async <T = TModel>(
       id: number,
       data: PutAsyncPayload<T, TParams>

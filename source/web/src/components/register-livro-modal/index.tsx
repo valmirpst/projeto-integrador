@@ -7,6 +7,9 @@ import { Text } from "../ui/text";
 import { Box } from "../ui/box";
 import styles from "./register-livro-modal.module.css";
 import { Button } from "../ui/button";
+import Img from "../ui/img";
+import { api } from "@/lib/api";
+import Select from "../ui/select";
 
 type PropsType = {
   open: boolean;
@@ -21,13 +24,46 @@ export default function RegisterLivroModal({ open, onOpenChange }: PropsType) {
     editora: "",
     descricao: "",
     quantidade: 1,
+    img: "",
   });
 
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    id: string
   ) => {
-    const { id, value } = e.target;
+    const { value } = e.target;
     setForm((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // const file = e.target.files?.[0];
+    const file = "testeeeeFileee";
+    if (file) {
+      setForm((prev) => ({ ...prev, img: file }));
+    }
+  };
+
+  const handleSubmitChange = async () => {
+    const isValid = Object.values(form).every(
+      (value) => value !== "" && value !== null
+    );
+
+    if (isValid) {
+      await api.livros.postAsync({ payload: form });
+      setForm({
+        titulo: "",
+        edicao: "",
+        genero: "",
+        editora: "",
+        descricao: "",
+        quantidade: 1,
+        img: "",
+      });
+      setPreviewUrl(null);
+      onOpenChange(false);
+    }
   };
 
   return (
@@ -36,73 +72,87 @@ export default function RegisterLivroModal({ open, onOpenChange }: PropsType) {
         <Text className={styles.addLivro}>Adicionar Livro</Text>
       </Dialog.Trigger>
 
-      <Dialog.Content width={600} className={styles.modalContent}>
-        <Dialog.Title className={styles.modalTitle}>Bem-vindo</Dialog.Title>
-        <Dialog.Close />
-
-        <Input
-          id="titulo"
-          label="Título"
-          value={form.titulo}
-          onChange={handleChange}
-        />
-
-        <Box className={styles.row}>
+      <Dialog.Content width={800} className={styles.modalContent}>
+        <Box className={styles.modalInputs}>
+          <Dialog.Title className={styles.modalTitle}>Bem-vindo</Dialog.Title>
+          <Dialog.Close />
           <Input
-            id="edicao"
-            label="Edição"
-            value={form.edicao}
-            onChange={handleChange}
+            id="titulo"
+            label="Título"
+            value={form.titulo}
+            onChange={(e) => handleChange(e, "titulo")}
           />
+          <Box className={styles.row}>
+            <Input
+              id="edicao"
+              label="Edição"
+              value={form.edicao}
+              onChange={(e) => handleChange(e, "edicao")}
+            />
+            <Input
+              id="genero"
+              label="Gênero"
+              value={form.genero}
+              onChange={(e) => handleChange(e, "genero")}
+            />
+          </Box>
           <Input
-            id="genero"
-            label="Gênero"
-            value={form.genero}
-            onChange={handleChange}
+            id="editora"
+            label="Editora"
+            value={form.editora}
+            onChange={(e) => handleChange(e, "editora")}
           />
+          <Select label="Autores" options={["teste", "teste1"]} />
+          <label htmlFor="descricao" className={styles.label}>
+            Descrição
+          </label>
+          <textarea
+            id="descricao"
+            className={styles.textarea}
+            value={form.descricao}
+            onChange={(e) => handleChange(e, "descricao")}
+          />
+          <Box className={styles.footer}>
+            <label htmlFor="quantidade" className={styles.label}>
+              Quantidade
+            </label>
+            <input
+              id="quantidade"
+              type="number"
+              min={1}
+              className={styles.inputSmall}
+              value={form.quantidade}
+              onChange={(e) =>
+                setForm((prev) => ({
+                  ...prev,
+                  quantidade: parseInt(e.target.value),
+                }))
+              }
+            />
+          </Box>
         </Box>
 
-        <Input
-          id="editora"
-          label="Editora"
-          value={form.editora}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="descricao" className={styles.label}>
-          Descrição
-        </label>
-        <textarea
-          id="descricao"
-          className={styles.textarea}
-          value={form.descricao}
-          onChange={handleChange}
-        />
-
-        <Box className={styles.footer}>
-          <label htmlFor="quantidade" className={styles.label}>
-            Quantidade
-          </label>
+        <Box className={styles.modalImageContainer}>
+          <Img
+            className={styles.modalImage}
+            src={previewUrl || "/image-example.svg"}
+            alt="Pré-visualização da imagem"
+            width={220}
+            height={300}
+          />
           <input
-            id="quantidade"
-            type="number"
-            min={1}
-            className={styles.inputSmall}
-            value={form.quantidade}
-            onChange={(e) =>
-              setForm((prev) => ({
-                ...prev,
-                quantidade: parseInt(e.target.value),
-              }))
-            }
+            id="img"
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
           />
         </Box>
 
         <Dialog.Actions className={styles.actions}>
           <Dialog.Close asChild>
-            <Button variant="tertiary">Adicionar livro</Button>
+            <Button variant="tertiary">Cancelar</Button>
           </Dialog.Close>
-          <Button>Adicionar livro</Button>
+          <Button onClick={handleSubmitChange}>Adicionar livro</Button>
         </Dialog.Actions>
       </Dialog.Content>
     </Dialog.Root>
