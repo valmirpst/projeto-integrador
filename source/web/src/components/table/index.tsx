@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import styles from "./table.module.css";
-import Img from "../ui/img";
 import { CaretLeft, CaretRight } from "phosphor-react";
 import { Text } from "../ui/text";
 import { Box } from "../ui/box";
@@ -24,6 +24,8 @@ type Props<T> = {
 
 export default function Table<T>(props: Props<T>) {
   const { items, columns } = props;
+
+  console.log(items);
 
   const [page, setPage] = useState(1);
 
@@ -68,8 +70,11 @@ export default function Table<T>(props: Props<T>) {
                   {columns[key]?.image &&
                     typeof item[columns[key].image] === "string" &&
                     typeof item[key] === "string" && (
-                      <Img
+                      <img
                         src={item[columns[key].image] as string}
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "";
+                        }}
                         alt={item[key] as string}
                         width={40}
                         height={60}
@@ -78,6 +83,8 @@ export default function Table<T>(props: Props<T>) {
                   {typeof item[key] === "string" ||
                   typeof item[key] === "number"
                     ? item[key]
+                    : Array.isArray(item[key])
+                    ? item[key].join(" - ")
                     : null}
                 </td>
               ))}
