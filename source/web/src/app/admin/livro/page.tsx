@@ -1,3 +1,4 @@
+import { api } from "@/lib/api";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 
@@ -7,6 +8,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return {};
 }
 
-export default function Home() {
-  return <ClientSide />;
+export default async function Livro() {
+  const booksResponse = await api.livros.getAsync();
+
+  if (!booksResponse.ok || !booksResponse.data)
+    return <p>Erro ao buscar livros.</p>;
+
+  return <ClientSide books={booksResponse.data} />;
 }

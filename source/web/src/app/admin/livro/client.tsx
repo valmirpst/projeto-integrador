@@ -2,7 +2,6 @@
 import { Box } from "@/components/ui/box";
 import styles from "./livro.module.css";
 import stylesAdmin from "../admin.module.css";
-import { books } from "@/mock/book";
 import Table, { ColumnType } from "@/components/table";
 import { BookType } from "@/@types/book";
 import { Text } from "@/components/ui/text";
@@ -12,7 +11,11 @@ import Select from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import RegisterLivroModal from "@/components/register-livro-modal";
 
-export default function LivroClient() {
+type PropsType = {
+  books: BookType[];
+};
+
+export default function LivroClient({ books }: PropsType) {
   const [searchValue, setSearchValue] = useState("");
   const [isCreateBookModalActive, setIsCreateBookModalActive] = useState(false);
 
@@ -22,8 +25,8 @@ export default function LivroClient() {
       proporcion: 2.5,
       image: "caminho_img",
     },
-    autor: {
-      title: "Autor",
+    autores: {
+      title: "Autor(es)",
       proporcion: 2,
     },
     editora: {
@@ -91,7 +94,7 @@ export default function LivroClient() {
             </Box>
           </Box>
         </Box>
-        <Table items={books} columns={columns}></Table>
+        <Table items={books.slice(1, 16)} columns={columns}></Table>
       </Box>
       <RegisterLivroModal
         open={isCreateBookModalActive}

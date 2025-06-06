@@ -9,5 +9,5 @@ export type BookType = {
   descricao: string;
   total_avaliacoes: number;
   total_estrelas: string;
-  autor: string;
+  autor: string[];
 };
