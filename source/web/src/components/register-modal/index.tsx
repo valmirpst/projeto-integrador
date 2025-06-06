@@ -2,9 +2,8 @@
 
 import { Dialog } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
-import { Text } from "../ui/text";
 import { Box } from "../ui/box";
-import styles from "./register-livro-modal.module.css";
+import styles from "./register-user-modal.module.css";
 import { Button } from "../ui/button";
 import Img from "../ui/img";
 import { useState } from "react";
@@ -15,125 +14,111 @@ type PropsType = {
   onOpenChange: (open: boolean) => void;
 };
 
-export default function RegisterLivroModal({ open, onOpenChange }: PropsType) {
+export default function RegisterUserModal({ open, onOpenChange }: PropsType) {
   const [form, setForm] = useState({
-    isbn: "",
-    titulo: "",
-    edicao: "",
-    genero: "",
-    editora: "",
-    descricao: "",
-    qtd_disponivel: 1,
-    autores: [],
-    caminho_img: "",
-    total_avaliacoes: 0,
-    total_estrelas: 0,
+    nome: "",
+    perfil: "",
+    registroAcademico: "",
+    ciape: "",
+    telefone: "",
+    nascimento: "",
+    email: "",
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement>,
     id: string
   ) => {
     const { value } = e.target;
+    setForm((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleSubmitChange = async () => {
-    const isValid = Object.values(form).every(
-      (value) => value !== "" && value !== null
-    );
+  const handleSubmit = async () => {
+    const isValid = Object.values(form).every((v) => v !== "");
+    if (!isValid) return;
 
-    if (!isValid) {
-      await api.livros.postAsync({ payload: form });
-      setForm({
-        isbn: "",
-        titulo: "",
-        edicao: "",
-        genero: "",
-        editora: "",
-        descricao: "",
-        qtd_disponivel: 1,
-        autores: [],
-        caminho_img: "",
-        total_avaliacoes: 0,
-        total_estrelas: 0,
-      });
-      onOpenChange(false);
-    }
+    await api.usuarios.postAsync({ payload: form });
+    onOpenChange(false);
   };
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Trigger asChild>
-        <Text className={styles.addLivro}>Adicionar Livro</Text>
-      </Dialog.Trigger>
-
-      <Dialog.Content width={800} className={styles.modalContent}>
-        <Box className={styles.modalInputs}>
-          <Dialog.Title className={styles.modalTitle}>Bem-vindo</Dialog.Title>
-          <Dialog.Close />
-          <Input
-            id="titulo"
-            label="Título"
-            value={form.titulo}
-            onChange={(e) => handleChange(e, "titulo")}
+      <Dialog.Content width={900} className={styles.modalContent}>
+        <Box className={styles.modalImageContainer}>
+          <Img
+            src="/library.jpg"
+            alt=""
+            width={337}
+            height={497}
+            className={styles.modalImage}
           />
-          <Box className={styles.row}>
-            <Input
-              id="edicao"
-              label="Edição"
-              value={form.edicao}
-              onChange={(e) => handleChange(e, "edicao")}
-            />
-            <Input
-              id="genero"
-              label="Gênero"
-              value={form.genero}
-              onChange={(e) => handleChange(e, "genero")}
-            />
-          </Box>
-          <Input
-            id="editora"
-            label="Editora"
-            value={form.editora}
-            onChange={(e) => handleChange(e, "editora")}
-          />
-          <Text>autores</Text>
-
-          <label htmlFor="descricao" className={styles.label}>
-            Descrição
-          </label>
-          <textarea
-            id="descricao"
-            className={styles.textarea}
-            value={form.descricao}
-            onChange={(e) => handleChange(e, "descricao")}
-          />
-          <Box className={styles.footer}>
-            <label htmlFor="quantidade" className={styles.label}>
-              Quantidade
-            </label>
-            <input
-              id="quantidade"
-              type="number"
-              min={1}
-              className={styles.inputSmall}
-              value={form.qtd_disponivel}
-              onChange={(e) =>
-                setForm((prev) => ({
-                  ...prev,
-                  quantidade: parseInt(e.target.value),
-                }))
-              }
-            />
-          </Box>
         </Box>
 
-        <Dialog.Actions className={styles.actions}>
-          <Dialog.Close asChild>
-            <Button variant="tertiary">Cancelar</Button>
-          </Dialog.Close>
-          <Button onClick={handleSubmitChange}>Adicionar livro</Button>
-        </Dialog.Actions>
+        <Box className={styles.modalInputs}>
+          <Dialog.Title className={styles.modalTitle}>Cadastro</Dialog.Title>
+          <Dialog.Close />
+
+          <Box className={styles.row}>
+            <Input
+              id="nome"
+              label="Nome" className={styles.labelCinza}
+              value={form.nome}
+              onChange={(e) => handleChange(e, "nome")}
+            />
+            <Input
+              id="perfil"
+              label="Perfil" className={styles.labelCinza}
+              value={form.perfil}
+              onChange={(e) => handleChange(e, "perfil")}
+              placeholder="Aluno, professor..."
+            />
+          </Box>
+
+          <Box className={styles.row}>
+            <Input
+              id="registroAcademico"
+              label="Registro Acadêmico" className={styles.labelCinza}
+              value={form.registroAcademico}
+              onChange={(e) => handleChange(e, "registroAcademico")}
+            />
+            <Input
+              id="ciape"
+              label="Ciape" className={styles.labelCinza}
+              value={form.ciape}
+              onChange={(e) => handleChange(e, "ciape")}
+            />
+          </Box>
+
+          <Box className={styles.row}>
+            <Input
+              id="telefone"
+              label="Telefone" className={styles.labelCinza}
+              value={form.telefone}
+              onChange={(e) => handleChange(e, "telefone")}
+            />
+            <Input
+              id="nascimento"
+              label="Nascimento"  className={styles.labelCinza}
+              type="date"
+              value={form.nascimento}
+              onChange={(e) => handleChange(e, "nascimento")}
+            />
+          </Box>
+
+          <Input
+            id="email"
+            label="E-mail" className={styles.labelCinza}
+            value={form.email}
+            onChange={(e) => handleChange(e, "email")}
+          />
+
+          <Dialog.Actions className={styles.actions}>
+            <Dialog.Close asChild>
+              <Button variant="tertiary">Cancelar</Button>
+            </Dialog.Close>
+            <Button onClick={handleSubmit}>Cadastrar</Button>
+          </Dialog.Actions>
+        </Box>
       </Dialog.Content>
     </Dialog.Root>
   );
