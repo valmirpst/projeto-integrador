@@ -1,16 +1,19 @@
-.modalContent {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 1rem;
+.modalContainer {
   padding: 2rem 3rem;
   background: white;
   border-radius: 8px;
 }
 
+.modalContent {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 1.5rem;
+}
+
 .modalInputs {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .modalImageContainer {
@@ -25,6 +28,7 @@
 
 .modalImage {
   object-fit: cover;
+  border-radius: 0.5rem;
 }
 
 .modalTitle {
@@ -46,12 +50,14 @@
 }
 
 .label {
+  display: block;
   font-size: 14px;
   margin-bottom: 4px;
 }
 
 .textarea {
   min-height: 80px;
+  width: 100%;
   padding: 8px;
   font-size: 14px;
   resize: vertical;
