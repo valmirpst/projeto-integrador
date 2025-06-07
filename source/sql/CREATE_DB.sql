@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS livro_autor (
 -- --------------------------------------------
 
 CREATE TABLE IF NOT EXISTS historico (
+	id VARCHAR(40) PRIMARY KEY NOT NULL,
 	isbn_livro VARCHAR(40) NOT NULL,
 	id_usuario VARCHAR(40) NOT NULL,
 	id_bibliotecario VARCHAR(40) NOT NULL,
@@ -93,8 +94,6 @@ CREATE TABLE IF NOT EXISTS historico (
 	atualizado_em TIMESTAMPTZ,
 	status historico_enum,
 	
-	PRIMARY KEY (isbn_livro, id_usuario),
-
 	CONSTRAINT fk_isbn_livro FOREIGN KEY (isbn_livro)
 		REFERENCES livro(isbn)
 		ON DELETE CASCADE
