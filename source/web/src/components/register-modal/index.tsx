@@ -8,6 +8,7 @@ import { Button } from "../ui/button";
 import Img from "../ui/img";
 import { useState } from "react";
 import { api } from "@/lib/api";
+import Select from "../ui/select";
 
 type PropsType = {
   open: boolean;
@@ -25,10 +26,7 @@ export default function RegisterUserModal({ open, onOpenChange }: PropsType) {
     email: "",
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: string
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
     const { value } = e.target;
     setForm((prev) => ({ ...prev, [id]: value }));
   };
@@ -61,29 +59,38 @@ export default function RegisterUserModal({ open, onOpenChange }: PropsType) {
           <Box className={styles.row}>
             <Input
               id="nome"
-              label="Nome" className={styles.labelCinza}
+              label="Nome"
+              className={styles.labelCinza}
               value={form.nome}
               onChange={(e) => handleChange(e, "nome")}
             />
-            <Input
+            <Select
+              label="Perfil"
+              options={["aluno", "professor"]}
+              width={187}
+            />
+            {/* <Input
               id="perfil"
-              label="Perfil" className={styles.labelCinza}
+              label="Perfil"
+              className={styles.labelCinza}
               value={form.perfil}
               onChange={(e) => handleChange(e, "perfil")}
               placeholder="Aluno, professor..."
-            />
+            /> */}
           </Box>
 
           <Box className={styles.row}>
             <Input
               id="registroAcademico"
-              label="Registro Acadêmico" className={styles.labelCinza}
+              label="Registro Acadêmico"
+              className={styles.labelCinza}
               value={form.registroAcademico}
               onChange={(e) => handleChange(e, "registroAcademico")}
             />
             <Input
               id="ciape"
-              label="Ciape" className={styles.labelCinza}
+              label="Ciape"
+              className={styles.labelCinza}
               value={form.ciape}
               onChange={(e) => handleChange(e, "ciape")}
             />
@@ -92,13 +99,15 @@ export default function RegisterUserModal({ open, onOpenChange }: PropsType) {
           <Box className={styles.row}>
             <Input
               id="telefone"
-              label="Telefone" className={styles.labelCinza}
+              label="Telefone"
+              className={styles.labelCinza}
               value={form.telefone}
               onChange={(e) => handleChange(e, "telefone")}
             />
             <Input
               id="nascimento"
-              label="Nascimento"  className={styles.labelCinza}
+              label="Nascimento"
+              className={styles.labelCinza}
               type="date"
               value={form.nascimento}
               onChange={(e) => handleChange(e, "nascimento")}
@@ -107,7 +116,8 @@ export default function RegisterUserModal({ open, onOpenChange }: PropsType) {
 
           <Input
             id="email"
-            label="E-mail" className={styles.labelCinza}
+            label="E-mail"
+            className={styles.labelCinza}
             value={form.email}
             onChange={(e) => handleChange(e, "email")}
           />
