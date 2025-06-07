@@ -1,87 +1,137 @@
-INSERT INTO usuario (id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil) VALUES
-('u1', 'ra001', NULL, 'Ana', 'Silva', '2000-03-15', 'ana.silva@example.com', '11988887777', 'aluno'),
-('u2', NULL, 'siape002', 'Carlos', 'Souza', '1980-06-22', 'carlos.souza@example.com', '11999998888', 'professor'),
-('u3', NULL, 'siape003', 'Fernanda', 'Dias', '1975-11-02', 'fernanda.dias@example.com', '11997776666', 'bibliotecario'),
-('u4', 'ra004', NULL, 'Lucas', 'Oliveira', '2001-08-09', 'lucas.oliveira@example.com', '11993332222', 'aluno'),
-('u5', NULL, 'siape005', 'Patrícia', 'Lima', '1985-01-25', 'patricia.lima@example.com', '11992221111', 'professor');
-
 INSERT INTO curso (id, nome) VALUES
-('c1', 'Engenharia'),
-('c2', 'Direito'),
-('c3', 'Medicina'),
-('c4', 'Arquitetura'),
-('c5', 'Ciência da Computação');
+('c1', 'Engenharia da Computação'),
+('c2', 'Ciência da Computação'),
+('c3', 'Sistemas de Informação'),
+('c4', 'Engenharia Elétrica'),
+('c5', 'Matemática'),
+('c6', 'Física'),
+('c7', 'Química'),
+('c8', 'História'),
+('c9', 'Geografia'),
+('c10', 'Letras'),
+('c11', 'Administração'),
+('c12', 'Contabilidade'),
+('c13', 'Direito'),
+('c14', 'Biomedicina'),
+('c15', 'Enfermagem'),
+('c16', 'Medicina'),
+('c17', 'Farmácia'),
+('c18', 'Pedagogia'),
+('c19', 'Arquitetura'),
+('c20', 'Design');
+
+INSERT INTO usuario (id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil) VALUES
+('u1', 'RA001', NULL, 'João', 'Silva', '2000-01-01', 'joao@gmail.com', '11999990001', 'aluno'),
+('u2', 'RA002', NULL, 'Maria', 'Souza', '2001-02-03', 'maria@gmail.com', '11999990002', 'aluno'),
+('u3', NULL, 'SI001', 'Carlos', 'Oliveira', '1980-03-04', 'carlos@utfpr.edu', '11999990003', 'professor'),
+('u4', NULL, 'SI002', 'Ana', 'Lima', '1975-04-05', 'ana@utfpr.edu', '11999990004', 'professor'),
+('u5', NULL, 'SI003', 'Roberto', 'Mendes', '1970-05-06', 'roberto@utfpr.edu', '11999990005', 'bibliotecario'),
+('u6', 'RA003', NULL, 'Paula', 'Dias', '2002-06-07', 'paula@gmail.com', '11999990006', 'aluno'),
+('u7', 'RA004', NULL, 'Lucas', 'Ferreira', '2003-07-08', 'lucas@gmail.com', '11999990007', 'aluno'),
+('u8', 'RA005', NULL, 'Fernanda', 'Castro', '2001-08-09', 'fernanda@gmail.com', '11999990008', 'aluno'),
+('u9', NULL, 'SI004', 'Sérgio', 'Almeida', '1985-09-10', 'sergio@utfpr.edu', '11999990009', 'professor'),
+('u10', NULL, 'SI005', 'Mariana', 'Pereira', '1988-10-11', 'mariana@utfpr.edu', '11999990010', 'bibliotecario'),
+('u11', 'RA006', NULL, 'Eduardo', 'Lopes', '2000-01-12', 'eduardo@gmail.com', '11999990011', 'aluno'),
+('u12', 'RA007', NULL, 'Jéssica', 'Moreira', '2002-02-13', 'jessica@gmail.com', '11999990012', 'aluno'),
+('u13', 'RA008', NULL, 'Thiago', 'Rocha', '2001-03-14', 'thiago@gmail.com', '11999990013', 'aluno'),
+('u14', NULL, 'SI006', 'Patrícia', 'Santos', '1987-04-15', 'patricia@utfpr.edu', '11999990014', 'professor'),
+('u15', NULL, 'SI007', 'Renato', 'Teixeira', '1982-05-16', 'renato@utfpr.edu', '11999990015', 'bibliotecario'),
+('u16', 'RA009', NULL, 'Camila', 'Ribeiro', '2000-06-17', 'camila@gmail.com', '11999990016', 'aluno'),
+('u17', 'RA010', NULL, 'Rafael', 'Martins', '2001-07-18', 'rafael@gmail.com', '11999990017', 'aluno'),
+('u18', 'RA011', NULL, 'Juliana', 'Barros', '2002-08-19', 'juliana@gmail.com', '11999990018', 'aluno'),
+('u19', 'RA012', NULL, 'Felipe', 'Nunes', '2003-09-20', 'felipe@gmail.com', '11999990019', 'aluno'),
+('u20', 'RA013', NULL, 'Larissa', 'Vieira', '2001-10-21', 'larissa@gmail.com', '11999990020', 'aluno');
 
 INSERT INTO usuario_curso (id_usuario, id_curso) VALUES
-('u1', 'c5'),
-('u4', 'c1'),
-('u1', 'c1'),
-('u4', 'c5'),
-('u5', 'c2'); -- professora atuando como orientadora em Direito
+('u1', 'c1'), ('u2', 'c1'), ('u6', 'c2'), ('u7', 'c2'), ('u8', 'c3'),
+('u11', 'c3'), ('u12', 'c4'), ('u13', 'c5'), ('u16', 'c6'), ('u17', 'c6'),
+('u18', 'c7'), ('u19', 'c8'), ('u20', 'c9'), ('u1', 'c9'), ('u6', 'c10'),
+('u2', 'c11'), ('u7', 'c12'), ('u8', 'c13'), ('u11', 'c14'), ('u12', 'c15');
 
 INSERT INTO livro (isbn, titulo, edicao, editora, qtd_disponivel, genero, caminho_img, descricao, total_avaliacoes, total_estrelas) VALUES
-('isbn001', 'Introdução à Programação', '1ª', 'Pearson', 3, 'Tecnologia', '/img/prog.jpg', 'Livro introdutório sobre lógica e algoritmos.', 10, 45),
-('isbn002', 'Direito Constitucional', '3ª', 'Saraiva', 2, 'Jurídico', '/img/const.jpg', 'Obra essencial para estudantes de Direito.', 7, 35),
-('isbn003', 'Anatomia Humana', '2ª', 'Elsevier', 4, 'Saúde', '/img/anatomia.jpg', 'Manual completo de anatomia médica.', 5, 25),
-('isbn004', 'História da Arte', '1ª', 'Moderna', 1, 'Artes', '/img/arte.jpg', 'Estudo sobre a evolução da arte no ocidente.', 6, 30),
-('isbn005', 'Estruturas de Dados', '4ª', 'Bookman', 5, 'Tecnologia', '/img/ed.jpg', 'Livro sobre listas, árvores e algoritmos.', 12, 55),
-('isbn006', 'Lógica para Computação', '2ª', 'Campus', 3, 'Tecnologia', '/img/logica.jpg', 'Fundamentos de lógica aplicada à ciência da computação.', 9, 41),
-('isbn007', 'Psicologia do Desenvolvimento', '1ª', 'Vozes', 2, 'Psicologia', '/img/psico.jpg', 'Teorias sobre o crescimento psicológico do ser humano.', 6, 27),
-('isbn008', 'Matemática Financeira', '3ª', 'Atlas', 5, 'Finanças', '/img/matfin.jpg', 'Aplicações práticas de matemática no contexto financeiro.', 8, 36),
-('isbn009', 'Física Clássica', '4ª', 'LTC', 4, 'Ciência', '/img/fisica.jpg', 'Estudo aprofundado da física newtoniana.', 10, 48),
-('isbn010', 'Química Geral', '1ª', 'Moderna', 6, 'Ciência', '/img/quimica.jpg', 'Conceitos básicos da química para iniciantes.', 4, 18),
-('isbn011', 'Marketing Digital', '2ª', 'Saraiva', 3, 'Administração', '/img/marketing.jpg', 'Conceitos e estratégias de marketing no meio digital.', 7, 30),
-('isbn012', 'Gramática da Língua Portuguesa', '5ª', 'Atual', 8, 'Linguística', '/img/gramatica.jpg', 'Referência completa sobre a gramática do português.', 12, 56),
-('isbn013', 'Economia Brasileira', '2ª', 'Contexto', 3, 'Economia', '/img/economia.jpg', 'Análise da evolução da economia no Brasil.', 6, 28),
-('isbn014', 'Gestão de Projetos', '3ª', 'Atlas', 4, 'Administração', '/img/projetos.jpg', 'Guia prático de gerenciamento de projetos.', 11, 50),
-('isbn015', 'Didática Geral', '4ª', 'Cortez', 5, 'Educação', '/img/didatica.jpg', 'Princípios e métodos de ensino na educação básica.', 7, 32);
-
-
+('isbn1', 'Introdução à Programação', '1ª', 'Pearson', 10, 'Tecnologia', 'img1.jpg', 'Aprenda lógica de programação.', 15, 65),
+('isbn2', 'Algoritmos', '2ª', 'Campus', 5, 'Tecnologia', 'img2.jpg', 'Estruturas e algoritmos básicos.', 10, 45),
+('isbn3', 'Cálculo I', '3ª', 'LTC', 7, 'Matemática', 'img3.jpg', 'Funções, limites e derivadas.', 20, 80),
+('isbn4', 'História do Brasil', '2ª', 'Saraiva', 4, 'História', 'img4.jpg', 'Períodos históricos.', 8, 36),
+('isbn5', 'Química Geral', '1ª', 'Atlas', 6, 'Química', 'img5.jpg', 'Introdução à química.', 12, 50),
+('isbn6', 'Física Mecânica', '3ª', 'Bookman', 3, 'Física', 'img6.jpg', 'Movimento e forças.', 9, 40),
+('isbn7', 'Design Digital', '2ª', 'Elsevier', 5, 'Design', 'img7.jpg', 'Conceitos de design.', 11, 52),
+('isbn8', 'Arquitetura Moderna', '1ª', 'Moderna', 4, 'Arquitetura', 'img8.jpg', 'Arquitetura no século XX.', 7, 33),
+('isbn9', 'Farmacologia', '1ª', 'Guanabara Koogan', 2, 'Saúde', 'img9.jpg', 'Medicamentos e tratamentos.', 5, 22),
+('isbn10', 'Administração Geral', '3ª', 'Atlas', 8, 'Administração', 'img10.jpg', 'Teorias administrativas.', 14, 60),
+('isbn11', 'Contabilidade Básica', '1ª', 'Atlas', 6, 'Contabilidade', 'img11.jpg', 'Conceitos iniciais.', 10, 40),
+('isbn12', 'Direito Constitucional', '2ª', 'RT', 5, 'Direito', 'img12.jpg', 'Leis e constituições.', 9, 38),
+('isbn13', 'Biomedicina Moderna', '1ª', 'Manole', 4, 'Biomedicina', 'img13.jpg', 'Estudos biomédicos.', 7, 30),
+('isbn14', 'Pedagogia da Autonomia', '2ª', 'Paz e Terra', 9, 'Educação', 'img14.jpg', 'Paulo Freire.', 13, 55),
+('isbn15', 'Enfermagem Básica', '1ª', 'LTC', 3, 'Enfermagem', 'img15.jpg', 'Procedimentos clínicos.', 6, 25),
+('isbn16', 'Letras e Linguística', '1ª', 'Companhia das Letras', 5, 'Linguística', 'img16.jpg', 'Estudos de linguagem.', 8, 34),
+('isbn17', 'Geografia Física', '2ª', 'Atual', 4, 'Geografia', 'img17.jpg', 'Territórios e natureza.', 10, 45),
+('isbn18', 'Redação Científica', '1ª', 'Contexto', 7, 'Acadêmico', 'img18.jpg', 'Como escrever TCCs.', 12, 50),
+('isbn19', 'Programação Web', '2ª', 'Érica', 5, 'Tecnologia', 'img19.jpg', 'HTML, CSS e JS.', 9, 39),
+('isbn20', 'Banco de Dados', '1ª', 'Bookman', 6, 'Tecnologia', 'img20.jpg', 'Modelagem e SQL.', 11, 48);
 
 INSERT INTO livro_autor (isbn_livro, nome_autor) VALUES
-('isbn001', 'João Pereira'),
-('isbn002', 'Maria Tavares'),
-('isbn003', 'Luiz Eduardo'),
-('isbn004', 'Sofia Mendes'),
-('isbn005', 'Carlos Henrique'),
-('isbn006', 'Ricardo Leite'),
-('isbn007', 'Sandra Freitas'),
-('isbn008', 'Joana Martins'),
-('isbn009', 'Fernando Costa'),
-('isbn010', 'Amanda Torres'),
-('isbn011', 'Bruno Medeiros'),
-('isbn012', 'Letícia Ramos'),
-('isbn013', 'Henrique Lopes'),
-('isbn014', 'Cláudia Moraes'),
-('isbn015', 'Marcos Almeida');
+('isbn1', 'João Neto'),
+('isbn2', 'Carlos Silva'),
+('isbn3', 'Ana Martins'),
+('isbn4', 'Marcos Lima'),
+('isbn5', 'Paulo Santos'),
+('isbn6', 'Fernanda Dias'),
+('isbn7', 'Letícia Rocha'),
+('isbn8', 'Renato Ribeiro'),
+('isbn9', 'Juliana Moura'),
+('isbn10', 'Sérgio Araújo'),
+('isbn11', 'Cláudia Teixeira'),
+('isbn12', 'Lucas Freitas'),
+('isbn13', 'Amanda Nogueira'),
+('isbn14', 'Paulo Freire'),
+('isbn15', 'Rita Bastos'),
+('isbn16', 'Joana Prado'),
+('isbn17', 'Helena Duarte'),
+('isbn18', 'César Oliveira'),
+('isbn19', 'Felipe Barreto'),
+('isbn20', 'Bruno Costa');
 
-INSERT INTO historico (isbn_livro, id_usuario, id_bibliotecario, criado_em, atualizado_em, status) VALUES
-('isbn001', 'u1', 'u3', NOW() - INTERVAL '10 days', NOW() - INTERVAL '5 days', 'ativo'),
-('isbn002', 'u4', 'u3', NOW() - INTERVAL '20 days', NOW() - INTERVAL '10 days', 'inativo'),
-('isbn003', 'u1', 'u3', NOW() - INTERVAL '7 days', NOW() - INTERVAL '2 days', 'ativo'),
-('isbn004', 'u4', 'u3', NOW() - INTERVAL '30 days', NOW() - INTERVAL '1 day', 'inativo'),
-('isbn005', 'u1', 'u3', NOW() - INTERVAL '3 days', NOW(), 'ativo');
+INSERT INTO livro_categoria (isbn_livro, nome_categoria, tipo) VALUES
+('isbn1', 'Tecnologia', 'categoria'),
+('isbn1', 'Programação', 'subcategoria'),
+('isbn2', 'Tecnologia', 'categoria'),
+('isbn3', 'Matemática', 'categoria'),
+('isbn4', 'História', 'categoria'),
+('isbn5', 'Ciências', 'categoria'),
+('isbn6', 'Física', 'categoria'),
+('isbn7', 'Design', 'categoria'),
+('isbn8', 'Arquitetura', 'categoria'),
+('isbn9', 'Saúde', 'categoria'),
+('isbn10', 'Administração', 'categoria'),
+('isbn11', 'Contabilidade', 'categoria'),
+('isbn12', 'Direito', 'categoria'),
+('isbn13', 'Biomedicina', 'categoria'),
+('isbn14', 'Educação', 'categoria'),
+('isbn15', 'Saúde', 'categoria'),
+('isbn16', 'Linguística', 'categoria'),
+('isbn17', 'Geografia', 'categoria'),
+('isbn18', 'Acadêmico', 'categoria'),
+('isbn19', 'Tecnologia', 'categoria');
 
-INSERT INTO categoria (id, nome) VALUES
-('cat1', 'Tecnologia'),
-('cat2', 'Direito'),
-('cat3', 'Saúde'),
-('cat4', 'Artes'),
-('cat5', 'Educação'),
-('isbn006', 'cat1', 'categoria'),     -- Tecnologia
-('isbn007', 'cat5', 'categoria'),     -- Educação
-('isbn008', 'cat5', 'subcategoria'),  -- Finanças como subcategoria de Educação
-('isbn009', 'cat5', 'subcategoria'),  -- Física como parte da Educação
-('isbn010', 'cat5', 'subcategoria'),
-('isbn011', 'cat5', 'subcategoria'),
-('isbn012', 'cat5', 'categoria'),     -- Educação
-('isbn013', 'cat5', 'subcategoria'),  -- Economia
-('isbn014', 'cat5', 'categoria'),     -- Administração como parte de Educação
-('isbn015', 'cat5', 'categoria');     -- Educação
-
-INSERT INTO livro_categoria (isbn_livro, id_categoria, tipo) VALUES
-('isbn001', 'cat1', 'categoria'),
-('isbn002', 'cat2', 'categoria'),
-('isbn003', 'cat3', 'categoria'),
-('isbn004', 'cat4', 'categoria'),
-('isbn005', 'cat1', 'categoria');
+INSERT INTO historico (id, isbn_livro, id_usuario, id_bibliotecario, criado_em, atualizado_em, status) VALUES
+('h1', 'isbn1', 'u1', 'u5', NOW(), NOW(), 'ativo'),
+('h2', 'isbn2', 'u2', 'u5', NOW(), NOW(), 'ativo'),
+('h3', 'isbn3', 'u6', 'u5', NOW(), NOW(), 'ativo'),
+('h4', 'isbn4', 'u7', 'u5', NOW(), NOW(), 'ativo'),
+('h5', 'isbn5', 'u8', 'u5', NOW(), NOW(), 'ativo'),
+('h6', 'isbn6', 'u11', 'u5', NOW(), NOW(), 'ativo'),
+('h7', 'isbn7', 'u12', 'u5', NOW(), NOW(), 'ativo'),
+('h8', 'isbn8', 'u13', 'u5', NOW(), NOW(), 'ativo'),
+('h9', 'isbn9', 'u16', 'u5', NOW(), NOW(), 'ativo'),
+('h10', 'isbn10', 'u17', 'u5', NOW(), NOW(), 'ativo'),
+('h11', 'isbn11', 'u18', 'u5', NOW(), NOW(), 'inativo'),
+('h12', 'isbn12', 'u19', 'u5', NOW(), NOW(), 'inativo'),
+('h13', 'isbn13', 'u20', 'u5', NOW(), NOW(), 'ativo'),
+('h14', 'isbn14', 'u1', 'u5', NOW(), NOW(), 'ativo'),
+('h15', 'isbn15', 'u2', 'u5', NOW(), NOW(), 'ativo'),
+('h16', 'isbn16', 'u6', 'u5', NOW(), NOW(), 'ativo'),
+('h17', 'isbn17', 'u7', 'u5', NOW(), NOW(), 'ativo'),
+('h18', 'isbn18', 'u8', 'u5', NOW(), NOW(), 'ativo'),
+('h19', 'isbn19', 'u11', 'u5', NOW(), NOW(), 'ativo'),
+('h20', 'isbn20', 'u12', 'u5', NOW(), NOW(), 'ativo');
