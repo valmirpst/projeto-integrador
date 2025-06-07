@@ -5,6 +5,7 @@ import { CaretLeft, CaretRight } from "phosphor-react";
 import { Text } from "../ui/text";
 import { Box } from "../ui/box";
 import { useState } from "react";
+import { BookType } from "@/@types/book";
 
 type ColumnItemType<T> = {
   title: string;
@@ -20,21 +21,21 @@ export type ColumnType<T> = Partial<{
 type Props<T> = {
   items: T[];
   columns: ColumnType<T>;
+  handleTrash: (item: T) => void;
 };
 
 export default function Table<T>(props: Props<T>) {
-  const { items, columns } = props;
-
-  console.log(items);
+  const { items, columns, handleTrash } = props;
 
   const [page, setPage] = useState(1);
 
   const keys = Object.keys(columns || {}) as (keyof T)[];
   const values = Object.values(columns || {}) as ColumnItemType<T>[];
 
-  const gridColumns = values.reduce((acc, value) => {
-    return acc + `${value.proporcion}fr `;
-  }, "");
+  const gridColumns =
+    values.reduce((acc, value) => {
+      return acc + `${value.proporcion}fr `;
+    }, "") + "1fr 1fr";
 
   const itemsPerPage = 10;
   const totalPages = Number((items.length / itemsPerPage).toFixed(0));
@@ -53,6 +54,8 @@ export default function Table<T>(props: Props<T>) {
               {column.title}
             </th>
           ))}
+          <th>edit</th>
+          <th>trash</th>
         </tr>
       </thead>
       <tbody>
@@ -88,6 +91,12 @@ export default function Table<T>(props: Props<T>) {
                     : null}
                 </td>
               ))}
+              <td>
+                <button>edit</button>
+              </td>
+              <td>
+                <button onClick={() => handleTrash(item)}>trash</button>
+              </td>
             </tr>
           ))}
       </tbody>

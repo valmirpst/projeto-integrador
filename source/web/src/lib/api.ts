@@ -168,7 +168,7 @@ function createApi<TModel, TParams>(endpoint: string) {
         params: data.params,
       }),
     deleteAsync: async <T = null>(
-      id: number,
+      id: string,
       data?: DeleteAsyncPayload<TParams>
     ) =>
       apiFnBase<T, TParams>({

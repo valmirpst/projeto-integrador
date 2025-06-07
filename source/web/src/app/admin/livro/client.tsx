@@ -10,6 +10,7 @@ import { useState } from "react";
 import Select from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import RegisterLivroModal from "@/components/register-livro-modal";
+import { api } from "@/lib/api";
 
 type PropsType = {
   books: BookType[];
@@ -45,9 +46,15 @@ export default function LivroClient({ books }: PropsType) {
     qtd_disponivel: {
       title: "Disponível",
       proporcion: 1,
-      justify: "center",
     },
   };
+
+  function handleTrash(book: BookType) {
+    async function deleteBook() {
+      await api.livros.deleteAsync(book.isbn);
+    }
+    deleteBook();
+  }
 
   return (
     <>
@@ -94,7 +101,11 @@ export default function LivroClient({ books }: PropsType) {
             </Box>
           </Box>
         </Box>
-        <Table items={books.slice(1, 16)} columns={columns}></Table>
+        <Table
+          items={books.slice(1, 16)}
+          columns={columns}
+          handleTrash={handleTrash}
+        ></Table>
       </Box>
       <RegisterLivroModal
         open={isCreateBookModalActive}
