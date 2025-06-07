@@ -1,5 +1,6 @@
 import { db } from "../core/database";
 import { LivroEntity } from "./entities/livro-entity";
+import { CategoriaEnum } from "./primitives/enumerations";
 
 export class LivroModel {
   static async getAsync() {
@@ -13,7 +14,20 @@ export class LivroModel {
 
     const res = await db.query(query);
 
-    return res.rows;
+    const categoriasQuery = `
+      SELECT livro_categoria.nome_categoria as nome, livro_categoria.tipo
+      FROM livro_categoria
+      WHERE livro_categoria.isbn_livro = $1
+    `;
+
+    const livrosComCategorias = await Promise.all(
+      res.rows.map(async livro => {
+        const categoriasRes = await db.query(categoriasQuery, [livro.isbn]);
+        return { ...livro, categorias: categoriasRes.rows };
+      })
+    );
+
+    return livrosComCategorias;
   }
 
   static async postAsync(livro: LivroEntity) {
@@ -29,6 +43,7 @@ export class LivroModel {
       total_avaliacoes,
       total_estrelas,
       autores,
+      categorias,
     } = livro;
 
     const values = [
@@ -56,9 +71,15 @@ export class LivroModel {
         VALUES($1, $2)
       `;
 
-    autores.forEach(async autor => await db.query(livro_autor_query, [isbn, autor]));
+    const livro_categoria_query = `
+        INSERT INTO livro_categoria(isbn_livro, nome_categoria, tipo)
+        VALUES($1, $2, $3)
+      `;
 
-    return { ...res.rows[0], autores };
+    autores.forEach(async autor => await db.query(livro_autor_query, [isbn, autor]));
+    categorias.forEach(async categoria => await db.query(livro_categoria_query, [isbn, categoria.nome, categoria.tipo]));
+
+    return { ...res.rows[0], autores, categorias };
   }
 
   static async putAsync(isbn: string, livro: LivroEntity) {
@@ -74,6 +95,7 @@ export class LivroModel {
       total_avaliacoes,
       total_estrelas,
       autores,
+      categorias,
     } = livro;
 
     if (livroIsbn !== isbn) {
@@ -115,7 +137,6 @@ export class LivroModel {
     autores.forEach((autor, i) => {
       autores_string += `${i == 0 ? "" : ","}'${autor}'`;
     });
-    console.log(autores_string);
 
     const livro_autor_query = `
       DELETE FROM livro_autor
@@ -127,7 +148,18 @@ export class LivroModel {
 
     await db.query(livro_autor_query);
 
-    return { ...res.rows[0], autores };
+    await db.query("DELETE FROM livro_categoria WHERE isbn_livro = $1", [isbn]);
+
+    const livro_categoria_query = `
+      INSERT INTO livro_categoria(isbn_livro, nome_categoria, tipo)
+      VALUES($1, $2, $3)
+    `;
+
+    categorias.forEach(async categoria => {
+      await db.query(livro_categoria_query, [isbn, categoria.nome, CategoriaEnum[categoria.tipo]]);
+    });
+
+    return { ...res.rows[0], autores, categorias };
   }
 
   static async deleteAsync(isbn: string) {
@@ -143,9 +175,24 @@ export class LivroModel {
   }
 
   static async getByIsbnAsync(isbn: LivroEntity["isbn"]): Promise<LivroEntity | undefined> {
-    const query = "SELECT * FROM livro WHERE isbn = $1";
+    const query = `
+      SELECT livro.*, array_agg(livro_autor.nome_autor) as autores
+      FROM livro
+      JOIN livro_autor ON livro.isbn = livro_autor.isbn_livro
+      WHERE livro.isbn = $1
+      GROUP BY livro.isbn
+    `;
+
     const res = await db.query(query, [isbn]);
 
-    return res.rows[0];
+    const categoriasQuery = `
+      SELECT livro_categoria.nome_categoria as nome, livro_categoria.tipo
+      FROM livro_categoria
+      WHERE livro_categoria.isbn_livro = $1
+    `;
+
+    const categoriasRes = await db.query(categoriasQuery, [isbn]);
+
+    return { ...res.rows[0], categorias: categoriasRes.rows };
   }
 }

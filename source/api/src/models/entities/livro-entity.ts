@@ -1,3 +1,5 @@
+import { Categoria } from "../schemas/livro-schema";
+
 export class LivroEntity {
   public isbn!: string;
   public titulo!: string;
@@ -10,6 +12,7 @@ export class LivroEntity {
   public total_avaliacoes: number = 0;
   public total_estrelas: number = 0;
   public autores!: string[];
+  public categorias!: Categoria[];
 
   constructor(livro: LivroEntity) {
     Object.assign(this, livro);
