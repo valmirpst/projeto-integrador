@@ -54,6 +54,17 @@ export class UsuarioModel {
       VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *
     `;
 
+    const cursos = await db.query("SELECT id FROM curso");
+    const cursoIds = cursos.rows.map((curso: { id: string }) => curso.id);
+
+    if (id_cursos.length > 0) {
+      id_cursos.forEach(id_curso => {
+        if (id_curso && !cursoIds.includes(id_curso)) {
+          throw new Error(`Curso com id ${id_curso} não encontrado.`);
+        }
+      });
+    }
+
     const res = await db.query(query, values);
 
     const cursoQuery = `
@@ -102,7 +113,16 @@ export class UsuarioModel {
       `;
     await db.query(cursoDeleteQuery, [id]);
 
+    const cursos = await db.query("SELECT id FROM curso");
+    const cursoIds = cursos.rows.map((curso: { id: string }) => curso.id);
+
     if (id_cursos.length > 0) {
+      id_cursos.forEach(id_curso => {
+        if (id_curso && !cursoIds.includes(id_curso)) {
+          throw new Error(`Curso com id ${id_curso} não encontrado.`);
+        }
+      });
+
       const cursoQuery = `
         INSERT INTO usuario_curso(id_usuario, id_curso)
         VALUES($1, $2)

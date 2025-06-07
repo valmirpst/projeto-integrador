@@ -28,9 +28,19 @@ export class HistoricoModel {
 
     const date = new Date(Date.now() - 3 * 60 * 60 * 1000); // Ajuste de fuso horário para UTC-3
 
+    const livro = await db.query("SELECT isbn FROM livro WHERE isbn = $1", [isbn_livro]);
+    if (livro.rows.length === 0) {
+      throw new Error(`Livro com isbn ${isbn_livro} não encontrado.`);
+    }
+
     const usuario = await db.query("SELECT id FROM usuario WHERE id = $1", [id_usuario]);
     if (usuario.rows.length === 0) {
-      throw new Error("Usuário não encontrado.");
+      throw new Error(`Usuário com id ${id_usuario} não encontrado.`);
+    }
+
+    const bibliotecario = await db.query("SELECT id FROM usuario WHERE id = $1", [id_bibliotecario]);
+    if (bibliotecario.rows.length === 0) {
+      throw new Error(`Bibliotecário com id ${id_bibliotecario} não encontrado.`);
     }
 
     const query = `
