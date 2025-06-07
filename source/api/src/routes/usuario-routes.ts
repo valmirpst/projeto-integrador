@@ -5,22 +5,114 @@ const usuarioRoutes = Router();
 
 /**
  * @swagger
+ * tags:
+ *   - name: Usuarios
+ *     description: Gerenciamento de usuários do sistema
+ * components:
+ *   schemas:
+ *     Usuario:
+ *       type: object
+ *       required:
+ *         - id
+ *         - nome
+ *         - sobrenome
+ *         - data_nasc
+ *         - telefone
+ *         - perfil
+ *         - id_cursos
+ *       properties:
+ *         id:
+ *           type: string
+ *           example: "123e4567-e89b-12d3-a456-426614174000"
+ *         ra:
+ *           type: string
+ *           nullable: true
+ *           example: "2023123456"
+ *         siape:
+ *           type: string
+ *           nullable: true
+ *           example: "1234567"
+ *         nome:
+ *           type: string
+ *           example: "João"
+ *         sobrenome:
+ *           type: string
+ *           example: "Silva"
+ *         data_nasc:
+ *           type: string
+ *           format: date
+ *           example: "2000-01-01"
+ *         email:
+ *           type: string
+ *           example: "joao.silva@email.com"
+ *         telefone:
+ *           type: string
+ *           example: "(43) 99999-9999"
+ *         perfil:
+ *           type: string
+ *           enum: [bibliotecario, aluno, professor, "0", "1", "2"]
+ *           example: "aluno"
+ *         id_cursos:
+ *           type: array
+ *           items:
+ *             type: string
+ *           example: ["curso1", "curso2"]
+ *
  * /usuarios:
  *   get:
- *     summary: Lista todos os usuarios
+ *     summary: Lista todos os usuários
  *     tags: [Usuarios]
  *     responses:
  *       200:
- *         description: Lista de usuarios
+ *         description: Lista de usuários
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Usuario'
  *   post:
- *     summary: Adiciona um id
+ *     summary: Adiciona um usuário
  *     tags: [Usuarios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Usuario'
+ *           example:
+ *             id: "123e4567-e89b-12d3-a456-426614174000"
+ *             ra: "2023123456"
+ *             siape: null
+ *             nome: "João"
+ *             sobrenome: "Silva"
+ *             data_nasc: "2000-01-01"
+ *             email: "joao.silva@email.com"
+ *             telefone: "(43) 99999-9999"
+ *             perfil: "aluno"
+ *             id_cursos: ["curso1", "curso2"]
  *     responses:
  *       201:
- *         description: Usuario adicionado
+ *         description: Usuário adicionado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Usuario'
+ *       400:
+ *         description: Dados inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 error:
+ *                   type: object
+ *
  * /usuarios/{id}:
  *   get:
- *     summary: Busca um id
+ *     summary: Busca um usuário pelo ID
  *     tags: [Usuarios]
  *     parameters:
  *       - in: path
@@ -28,11 +120,25 @@ const usuarioRoutes = Router();
  *         required: true
  *         schema:
  *           type: string
+ *         description: ID do usuário
  *     responses:
  *       200:
- *         description: Usuario atualizado
+ *         description: Usuário encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Usuario'
+ *       404:
+ *         description: Usuário não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  *   put:
- *     summary: Atualiza um id
+ *     summary: Atualiza um usuário pelo ID
  *     tags: [Usuarios]
  *     parameters:
  *       - in: path
@@ -40,11 +146,42 @@ const usuarioRoutes = Router();
  *         required: true
  *         schema:
  *           type: string
+ *         description: ID do usuário
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Usuario'
  *     responses:
  *       200:
- *         description: Usuario atualizado
+ *         description: Usuário atualizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Usuario'
+ *       400:
+ *         description: Dados inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 error:
+ *                   type: object
+ *       404:
+ *         description: Usuário não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  *   delete:
- *     summary: Exclui um id
+ *     summary: Exclui um usuário pelo ID
  *     tags: [Usuarios]
  *     parameters:
  *       - in: path
@@ -52,9 +189,26 @@ const usuarioRoutes = Router();
  *         required: true
  *         schema:
  *           type: string
+ *         description: ID do usuário
  *     responses:
  *       200:
- *         description: Usuario excluido
+ *         description: Usuário excluído
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: Usuário não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 
 usuarioRoutes.get("/", UsuarioController.getAsync);
