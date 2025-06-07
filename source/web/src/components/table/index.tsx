@@ -5,7 +5,6 @@ import { CaretLeft, CaretRight } from "phosphor-react";
 import { Text } from "../ui/text";
 import { Box } from "../ui/box";
 import { useState } from "react";
-import { BookType } from "@/@types/book";
 
 type ColumnItemType<T> = {
   title: string;

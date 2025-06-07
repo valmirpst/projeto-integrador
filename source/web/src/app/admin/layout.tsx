@@ -1,4 +1,3 @@
-import { inter } from "@/lib/fonts";
 import type { Metadata } from "next";
 import { Box } from "@/components/ui/box";
 import styles from "./admin.module.css";
@@ -17,11 +16,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="pt-br">
-      <body className={`${inter.variable} ${inter.className}`}>
-        <Box className={styles.adminGlobalContainer}>{children}</Box>
-      </body>
-    </html>
-  );
+  return <Box className={styles.adminGlobalContainer}>{children}</Box>;
 }
