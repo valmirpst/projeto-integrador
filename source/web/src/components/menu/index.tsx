@@ -9,6 +9,7 @@ import MenuItem from "./menu-item";
 import styles from "./menu.module.css";
 import { useState } from "react";
 import RegisterLivroModal from "../register-modal";
+import { UserType } from "@/@types/user";
 
 const userMenu = [
   {
@@ -76,8 +77,12 @@ const userSubMenu = [
   },
 ];
 
-export default function Menu() {
-  const isAdmin = false;
+type PropsType = {
+  user: UserType;
+};
+
+export default function Menu({ user }: PropsType) {
+  const isAdmin = (user.perfil = "bibliotecario");
   const menuItems = isAdmin ? librarianMenu : userMenu;
 
   const [isRegisterModalActive, setIsRegisterModalActive] = useState(false);
