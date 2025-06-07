@@ -26,18 +26,26 @@ const perfilProperties: Record<
 export class UsuarioModel {
   static async getAsync() {
     const query = `
-      SELECT * FROM usuario
+      SELECT usuario.*, array_agg(usuario_curso.id_curso) as id_cursos
+      FROM usuario
+      LEFT JOIN usuario_curso ON usuario.id = usuario_curso.id_usuario
+      GROUP BY usuario.id
+      ORDER BY usuario.id ASC
     `;
 
     const res = await db.query(query);
 
-    const usuarios = res.rows.map(usuario => ({ ...usuario, ...perfilProperties[PerfilEnum[usuario.perfil]] }));
+    const usuarios = res.rows.map(usuario => ({
+      ...usuario,
+      ...perfilProperties[PerfilEnum[usuario.perfil]],
+      id_cursos: usuario.id_cursos.filter((id: string) => id != null) || [],
+    }));
 
     return usuarios;
   }
 
   static async postAsync(usuario: UsuarioEntity) {
-    const { id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil } = usuario;
+    const { id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil, id_cursos } = usuario;
 
     const values = [id, ra, siape, nome, sobrenome, data_nasc, email, telefone, PerfilEnum[perfil]];
 
@@ -46,13 +54,31 @@ export class UsuarioModel {
       VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *
     `;
 
+    const cursos = await db.query("SELECT id FROM curso");
+    const cursoIds = cursos.rows.map((curso: { id: string }) => curso.id);
+
+    if (id_cursos.length > 0) {
+      id_cursos.forEach(id_curso => {
+        if (id_curso && !cursoIds.includes(id_curso)) {
+          throw new Error(`Curso com id ${id_curso} não encontrado.`);
+        }
+      });
+    }
+
     const res = await db.query(query, values);
 
-    return { ...res.rows[0], ...perfilProperties[perfil] };
+    const cursoQuery = `
+      INSERT INTO usuario_curso(id_usuario, id_curso)
+      VALUES($1, $2)
+    `;
+
+    id_cursos?.forEach(async id_curso => await db.query(cursoQuery, [id, id_curso]));
+
+    return { ...res.rows[0], ...perfilProperties[perfil], id_cursos };
   }
 
   static async putAsync(id: string, usuario: UsuarioEntity) {
-    const { id: usuarioId, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil } = usuario;
+    const { id: usuarioId, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil, id_cursos } = usuario;
 
     if (usuarioId !== id) {
       throw new Error("O id enviado no parâmetro é diferente do enviado no corpo da requisição.");
@@ -77,7 +103,37 @@ export class UsuarioModel {
 
     const res = await db.query(query, values);
 
-    return { ...res.rows[0], ...perfilProperties[PerfilEnum[res.rows[0].perfil]] };
+    if (res.rows.length === 0) {
+      throw new Error("Usuário não encontrado.");
+    }
+
+    const cursoDeleteQuery = `
+        DELETE FROM usuario_curso
+        WHERE id_usuario = $1
+      `;
+    await db.query(cursoDeleteQuery, [id]);
+
+    const cursos = await db.query("SELECT id FROM curso");
+    const cursoIds = cursos.rows.map((curso: { id: string }) => curso.id);
+
+    if (id_cursos.length > 0) {
+      id_cursos.forEach(id_curso => {
+        if (id_curso && !cursoIds.includes(id_curso)) {
+          throw new Error(`Curso com id ${id_curso} não encontrado.`);
+        }
+      });
+
+      const cursoQuery = `
+        INSERT INTO usuario_curso(id_usuario, id_curso)
+        VALUES($1, $2)
+      `;
+
+      id_cursos.forEach(async id_curso => {
+        await db.query(cursoQuery, [id, id_curso]);
+      });
+    }
+
+    return { ...res.rows[0], ...perfilProperties[PerfilEnum[res.rows[0].perfil]], id_cursos: id_cursos || [] };
   }
 
   static async deleteAsync(id: string) {
@@ -93,12 +149,22 @@ export class UsuarioModel {
   }
 
   static async getByIdAsync(id: UsuarioEntity["id"]): Promise<UsuarioEntity | undefined> {
-    const query = "SELECT * FROM usuario WHERE id = $1";
+    const query = `
+      SELECT usuario.*, array_agg(usuario_curso.id_curso) as id_cursos
+      FROM usuario
+      LEFT JOIN usuario_curso ON usuario.id = usuario_curso.id_usuario
+      WHERE usuario.id = $1
+      GROUP BY usuario.id
+    `;
     const res = await db.query(query, [id]);
 
     if (res.rows.length === 0) return undefined;
 
-    const usuario = { ...res.rows[0], ...perfilProperties[PerfilEnum[res.rows[0].perfil]] };
+    const usuario = {
+      ...res.rows[0],
+      ...perfilProperties[PerfilEnum[res.rows[0].perfil]],
+      id_cursos: res.rows[0].id_cursos.filter((id: string) => id != null) || [],
+    };
 
     return usuario;
   }

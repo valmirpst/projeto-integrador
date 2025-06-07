@@ -10,4 +10,5 @@ export const usuarioSchema = z.object({
   email: z.string(),
   telefone: z.string(),
   perfil: z.enum(["bibliotecario", "aluno", "professor", "0", "1", "2"]),
+  id_cursos: z.array(z.string().optional().nullable()),
 });

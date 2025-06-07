@@ -67,14 +67,7 @@ INSERT INTO categoria (id, nome) VALUES
 ('cat2', 'Direito'),
 ('cat3', 'Saúde'),
 ('cat4', 'Artes'),
-('cat5', 'Educação');
-
-INSERT INTO livro_categoria (isbn_livro, id_categoria, tipo) VALUES
-('isbn001', 'cat1', 'categoria'),
-('isbn002', 'cat2', 'categoria'),
-('isbn003', 'cat3', 'categoria'),
-('isbn004', 'cat4', 'categoria'),
-('isbn005', 'cat1', 'categoria'),
+('cat5', 'Educação'),
 ('isbn006', 'cat1', 'categoria'),     -- Tecnologia
 ('isbn007', 'cat5', 'categoria'),     -- Educação
 ('isbn008', 'cat5', 'subcategoria'),  -- Finanças como subcategoria de Educação
@@ -85,3 +78,10 @@ INSERT INTO livro_categoria (isbn_livro, id_categoria, tipo) VALUES
 ('isbn013', 'cat5', 'subcategoria'),  -- Economia
 ('isbn014', 'cat5', 'categoria'),     -- Administração como parte de Educação
 ('isbn015', 'cat5', 'categoria');     -- Educação
+
+INSERT INTO livro_categoria (isbn_livro, id_categoria, tipo) VALUES
+('isbn001', 'cat1', 'categoria'),
+('isbn002', 'cat2', 'categoria'),
+('isbn003', 'cat3', 'categoria'),
+('isbn004', 'cat4', 'categoria'),
+('isbn005', 'cat1', 'categoria');
