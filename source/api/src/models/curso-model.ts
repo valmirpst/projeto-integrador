@@ -1,27 +1,6 @@
 import { db } from "../core/database";
 import { CursoEntity } from "./entities/curso-entity";
 
-const perfilProperties: Record<
-  string,
-  {
-    tempo_emprestimo_dias: number;
-    valor_multa_dia: number;
-  }
-> = {
-  "0": {
-    tempo_emprestimo_dias: 30,
-    valor_multa_dia: 5,
-  },
-  "1": {
-    tempo_emprestimo_dias: 7,
-    valor_multa_dia: 2,
-  },
-  "2": {
-    tempo_emprestimo_dias: 14,
-    valor_multa_dia: 7,
-  },
-};
-
 export class CursoModel {
   static async getAsync() {
     const query = `
@@ -54,7 +33,6 @@ export class CursoModel {
   static async putAsync(id: string, curso: CursoEntity) {
     const { id: cursoId, nome } = curso;
 
-    console.log(id, cursoId);
     if (cursoId !== id) {
       throw new Error("O id enviado no parâmetro é diferente do enviado no corpo da requisição.");
     }
