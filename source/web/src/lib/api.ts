@@ -2,6 +2,7 @@ import { BookType } from "@/@types/book";
 import { ApiResponse } from "@/@types/requests/api-response";
 import { ReturnType } from "@/@types/requests/return-type";
 import { ENV } from "./env";
+import { UserType } from "@/@types/user";
 
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -138,7 +139,7 @@ function createApi<TModel, TParams>(endpoint: string) {
         options: data?.options,
         params: data?.params,
       }),
-    getByIdAsync: async (id: number, data?: GetAsyncPayload<TParams>) =>
+    getByIdAsync: async (id: string, data?: GetAsyncPayload<TParams>) =>
       apiFnBase<TModel, TParams>({
         endpoint: `${endpoint}/${id}`,
         method: "GET",
@@ -181,5 +182,5 @@ function createApi<TModel, TParams>(endpoint: string) {
 
 export const api = {
   livros: createApi<BookType, unknown>("/livros"),
-  usuarios: createApi<BookType, unknown>("/usuarios"),
+  usuarios: createApi<UserType, unknown>("/usuarios"),
 };
