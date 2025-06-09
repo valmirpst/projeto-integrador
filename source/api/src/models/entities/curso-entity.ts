@@ -1,8 +1,4 @@
-export class CursoEntity {
-  public id!: string;
-  nome!: string;
+import { z } from "zod";
+import { cursoSchema } from "../schemas/curso-schema";
 
-  constructor(curso: CursoEntity) {
-    Object.assign(this, curso);
-  }
-}
+export type CursoEntity = z.infer<typeof cursoSchema>;

@@ -1,22 +1,15 @@
 import { db } from "../core/database";
+import { BadRequestError } from "../exceptions/errors";
+import { IModel } from "../interfaces/i-model";
+import { QueryableModelBase } from "./abstract/queryable-model-base";
 import { CursoEntity } from "./entities/curso-entity";
 
-export class CursoModel {
-  static async getAsync() {
-    const query = `
-      SELECT * FROM curso
-      ORDER BY id ASC
-    `;
+export class CursoModel extends QueryableModelBase<CursoEntity> implements IModel<CursoEntity> {
+  protected primaryKey: string = "id";
+  protected tableName: string = "curso";
 
-    const res = await db.query(query);
-
-    const cursos = res.rows;
-
-    return cursos;
-  }
-
-  static async postAsync(curso: CursoEntity) {
-    const { id, nome } = curso;
+  async createAsync(data: CursoEntity): Promise<CursoEntity> {
+    const { id, nome } = data;
 
     const values = [id, nome];
 
@@ -25,16 +18,16 @@ export class CursoModel {
       VALUES($1, $2) RETURNING *
     `;
 
-    const res = await db.query(query, values);
+    const res = await db.query<CursoEntity>(query, values);
 
     return { ...res.rows[0] };
   }
 
-  static async putAsync(id: string, curso: CursoEntity) {
+  async updateAsync(id: string, curso: CursoEntity): Promise<CursoEntity> {
     const { id: cursoId, nome } = curso;
 
     if (cursoId !== id) {
-      throw new Error("O id enviado no parâmetro é diferente do enviado no corpo da requisição.");
+      throw new BadRequestError("O id enviado no parâmetro é diferente do enviado no corpo da requisição.");
     }
 
     const values = [nome, id];
@@ -46,29 +39,8 @@ export class CursoModel {
       RETURNING *
   `;
 
-    const res = await db.query(query, values);
+    const res = await db.query<CursoEntity>(query, values);
 
     return { ...res.rows[0] };
-  }
-
-  static async deleteAsync(id: string) {
-    const values = [id];
-
-    const query = `
-      DELETE FROM curso
-      WHERE id = $1
-    `;
-
-    const res = await db.query(query, values);
-    return res.rows[0];
-  }
-
-  static async getByIdAsync(id: CursoEntity["id"]): Promise<CursoEntity | undefined> {
-    const query = "SELECT * FROM curso WHERE id = $1";
-    const res = await db.query(query, [id]);
-
-    if (res.rows.length === 0) return undefined;
-
-    return res.rows[0];
   }
 }
