@@ -1,5 +1,8 @@
 import { Router } from "express";
 import { LivroController } from "../controllers/livro-controller";
+import { validateMiddleware } from "../middlewares/validate-middleware";
+import { livroSchema } from "../models/schemas/livro-schema";
+import { wrapController } from "./wrappers/wrap-controller";
 
 const livroRoutes = Router();
 
@@ -221,10 +224,12 @@ const livroRoutes = Router();
  *                   type: string
  */
 
-livroRoutes.get("/", LivroController.getAsync);
-livroRoutes.post("/", LivroController.postAsync);
-livroRoutes.put("/:isbn", LivroController.putAsync);
-livroRoutes.delete("/:isbn", LivroController.deleteAsync);
-livroRoutes.get("/:isbn", LivroController.getByIsbnAsync);
+const livroController = new LivroController();
+
+livroRoutes.get("/", wrapController(livroController.getAsync, livroController));
+livroRoutes.post("/", validateMiddleware(livroSchema), wrapController(livroController.createAsync, livroController));
+livroRoutes.put("/:isbn", validateMiddleware(livroSchema), wrapController(livroController.updateAsync, livroController));
+livroRoutes.delete("/:isbn", wrapController(livroController.deleteAsync, livroController));
+livroRoutes.get("/:isbn", wrapController(livroController.getByIdAsync, livroController));
 
 export { livroRoutes };

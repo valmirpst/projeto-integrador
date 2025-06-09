@@ -1,5 +1,8 @@
 import { Router } from "express";
 import { HistoricoController } from "../controllers/historico-controller";
+import { validateMiddleware } from "../middlewares/validate-middleware";
+import { historicoSchema } from "../models/schemas/historico-schema";
+import { wrapController } from "./wrappers/wrap-controller";
 
 const historicoRoutes = Router();
 
@@ -223,10 +226,20 @@ const historicoRoutes = Router();
  *                   type: string
  */
 
-historicoRoutes.get("/", HistoricoController.getAsync);
-historicoRoutes.post("/", HistoricoController.postAsync);
-historicoRoutes.put("/:id", HistoricoController.putAsync);
-historicoRoutes.delete("/:id", HistoricoController.deleteAsync);
-historicoRoutes.get("/:id", HistoricoController.getByIdAsync);
+const historicoController = new HistoricoController();
+
+historicoRoutes.get("/", wrapController(historicoController.getAsync, historicoController));
+historicoRoutes.post(
+  "/",
+  validateMiddleware(historicoSchema),
+  wrapController(historicoController.createAsync, historicoController)
+);
+historicoRoutes.put(
+  "/:id",
+  validateMiddleware(historicoSchema),
+  wrapController(historicoController.updateAsync, historicoController)
+);
+historicoRoutes.delete("/:id", wrapController(historicoController.deleteAsync, historicoController));
+historicoRoutes.get("/:id", wrapController(historicoController.getByIdAsync, historicoController));
 
 export { historicoRoutes };

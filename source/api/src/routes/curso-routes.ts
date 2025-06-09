@@ -1,5 +1,8 @@
 import { Router } from "express";
 import { CursoController } from "../controllers/curso-controller";
+import { validateMiddleware } from "../middlewares/validate-middleware";
+import { cursoSchema } from "../models/schemas/curso-schema";
+import { wrapController } from "./wrappers/wrap-controller";
 
 const cursoRoutes = Router();
 
@@ -169,10 +172,12 @@ const cursoRoutes = Router();
  *                   type: string
  */
 
-cursoRoutes.get("/", CursoController.getAsync);
-cursoRoutes.post("/", CursoController.postAsync);
-cursoRoutes.put("/:id", CursoController.putAsync);
-cursoRoutes.delete("/:id", CursoController.deleteAsync);
-cursoRoutes.get("/:id", CursoController.getByIdAsync);
+const cursoController = new CursoController();
+
+cursoRoutes.get("/", wrapController(cursoController.getAsync, cursoController));
+cursoRoutes.post("/", validateMiddleware(cursoSchema), wrapController(cursoController.createAsync, cursoController));
+cursoRoutes.put("/:id", validateMiddleware(cursoSchema), wrapController(cursoController.updateAsync, cursoController));
+cursoRoutes.delete("/:id", wrapController(cursoController.deleteAsync, cursoController));
+cursoRoutes.get("/:id", wrapController(cursoController.getByIdAsync, cursoController));
 
 export { cursoRoutes };

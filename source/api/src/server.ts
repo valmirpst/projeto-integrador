@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { env } from "./env";
+import { handleErrorMiddleware } from "./middlewares/handle-error-middleware";
 import { router } from "./routes";
 import { swaggerOptions } from "./swagger/options";
 
@@ -12,6 +13,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api", router);
+
+app.use(handleErrorMiddleware);
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(swaggerOptions)));
 
