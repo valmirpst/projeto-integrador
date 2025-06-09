@@ -6,19 +6,25 @@ import Table, { ColumnType } from "@/components/table";
 import { BookType } from "@/@types/book";
 import { Text } from "@/components/ui/text";
 import Search from "@/components/search";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import RegisterLivroModal from "@/components/register-livro-modal";
 import { api } from "@/lib/api";
 
-type PropsType = {
-  books: BookType[];
-};
-
-export default function LivroClient({ books }: PropsType) {
+export default function LivroClient() {
+  const [books, setBooks] = useState<BookType[]>([]);
   const [searchValue, setSearchValue] = useState("");
   const [isCreateBookModalActive, setIsCreateBookModalActive] = useState(false);
+
+  const loadBooks = async () => {
+    const res = await api.livros.getAsync();
+    if (res.data) setBooks(res.data);
+  };
+
+  useEffect(() => {
+    loadBooks();
+  }, []);
 
   const columns: ColumnType<BookType> = {
     titulo: {
@@ -49,11 +55,15 @@ export default function LivroClient({ books }: PropsType) {
     },
   };
 
-  function handleTrash(book: BookType) {
-    async function deleteBook() {
-      await api.livros.deleteAsync(book.isbn);
-    }
-    deleteBook();
+  async function handleTrash(book: BookType) {
+    await api.livros.deleteAsync(book.isbn);
+    await loadBooks();
+  }
+
+  function handleEdit(book: BookType) {}
+
+  if (!books) {
+    return <Text>Erro ao carregar os livros.</Text>;
   }
 
   return (
@@ -105,7 +115,8 @@ export default function LivroClient({ books }: PropsType) {
           items={books.slice(1, 16)}
           columns={columns}
           handleTrash={handleTrash}
-        ></Table>
+          handleEdit={handleEdit}
+        />
       </Box>
       <RegisterLivroModal
         open={isCreateBookModalActive}

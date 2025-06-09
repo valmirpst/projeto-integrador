@@ -15,12 +15,18 @@ export default async function Home() {
   const userResponse = await api.usuarios.getByIdAsync("u10");
 
   if (userResponse.ok && userResponse.data?.perfil === "bibliotecario") {
-    redirect("/admin/dashboard"); // <- redireciona imediatamente
+    redirect("/admin/dashboard");
   }
 
   if (!booksResponse.ok || !booksResponse.data) {
     return <p>Erro ao buscar livros.</p>;
   }
 
-  return <ClientSide books={booksResponse.data} />;
+  return (
+    <html>
+      <body>
+        <ClientSide books={booksResponse.data} />
+      </body>
+    </html>
+  );
 }
