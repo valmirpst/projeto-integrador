@@ -157,7 +157,7 @@ function createApi<TModel, TParams>(endpoint: string) {
       });
     },
     putAsync: async <T = TModel>(
-      id: number,
+      id: string,
       data: PutAsyncPayload<T, TParams>
     ) =>
       apiFnBase<T, TParams>({

@@ -62,7 +62,6 @@ export default function Table<T>(props: Props<T>) {
         {items
           .slice((page - 1) * itemsPerPage, page * itemsPerPage)
           .map((item, index) => {
-            console.log(item);
             return (
               <tr key={index} style={{ gridTemplateColumns: gridColumns }}>
                 {keys.map((key, index) => (

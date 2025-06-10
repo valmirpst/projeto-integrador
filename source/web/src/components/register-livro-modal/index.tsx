@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
 import { Text } from "../ui/text";
@@ -11,7 +11,7 @@ import Img from "../ui/img";
 import { api } from "@/lib/api";
 import { BookType } from "@/@types/book";
 
-type PropsType = {
+export type PropsRegisterLivroModalType = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   formdata?: BookType;
@@ -22,26 +22,32 @@ export default function RegisterLivroModal({
   open,
   onOpenChange,
   formdata,
-}: PropsType) {
-  const [form, setForm] = useState<BookType>(
-    formdata || {
-      isbn: "oiii4",
-      titulo: "",
-      edicao: "",
-      genero: "",
-      editora: "",
-      descricao: "",
-      qtd_disponivel: 1,
-      autores: [] as string[],
-      caminho_img: "",
-      total_avaliacoes: 0,
-      total_estrelas: 0,
-      categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
-    }
-  );
+  update,
+}: PropsRegisterLivroModalType) {
+  const [form, setForm] = useState<BookType>({
+    isbn: "oiii4",
+    titulo: "",
+    edicao: "",
+    genero: "",
+    editora: "",
+    descricao: "",
+    qtd_disponivel: 1,
+    autores: [] as string[],
+    caminho_img: "",
+    total_avaliacoes: 0,
+    total_estrelas: 0,
+    categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
+  });
   const [autor, setAutor] = useState<string>("");
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (formdata) {
+      setForm(formdata);
+      setPreviewUrl(formdata.caminho_img || null);
+    }
+  }, [formdata]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -66,7 +72,11 @@ export default function RegisterLivroModal({
     );
 
     if (isValid) {
-      await api.livros.postAsync({ payload: form });
+      if (update) {
+        await api.livros.putAsync(form.isbn, { payload: form });
+      } else {
+        await api.livros.postAsync({ payload: form });
+      }
       setForm({
         isbn: "",
         titulo: "",
@@ -189,7 +199,9 @@ export default function RegisterLivroModal({
           <Dialog.Close asChild>
             <Button variant="tertiary">Cancelar</Button>
           </Dialog.Close>
-          <Button onClick={handleSubmitChange}>Adicionar livro</Button>
+          <Button onClick={handleSubmitChange}>
+            {update ? "Atualizar livro" : "Adicionar livro"}
+          </Button>
         </Dialog.Actions>
       </Dialog.Content>
     </Dialog.Root>

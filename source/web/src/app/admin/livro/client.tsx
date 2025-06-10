@@ -9,13 +9,18 @@ import Search from "@/components/search";
 import { useEffect, useState } from "react";
 import Select from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import RegisterLivroModal from "@/components/register-livro-modal";
+import RegisterLivroModal, {
+  PropsRegisterLivroModalType,
+} from "@/components/register-livro-modal";
 import { api } from "@/lib/api";
 
 export default function LivroClient() {
   const [books, setBooks] = useState<BookType[]>([]);
   const [searchValue, setSearchValue] = useState("");
   const [isCreateBookModalActive, setIsCreateBookModalActive] = useState(false);
+  const [livroEditProps, setLivroEditProps] = useState<
+    Partial<PropsRegisterLivroModalType>
+  >({});
 
   const loadBooks = async () => {
     const res = await api.livros.getAsync();
@@ -55,12 +60,25 @@ export default function LivroClient() {
     },
   };
 
+  function onOpenChange() {
+    loadBooks();
+    setIsCreateBookModalActive(false);
+    setLivroEditProps({});
+  }
+
   async function handleTrash(book: BookType) {
     await api.livros.deleteAsync(book.isbn);
     await loadBooks();
   }
 
-  function handleEdit(book: BookType) {}
+  function handleEdit(book: BookType) {
+    setLivroEditProps({
+      open: true,
+      onOpenChange: onOpenChange,
+      formdata: book,
+      update: true,
+    });
+  }
 
   if (!books) {
     return <Text>Erro ao carregar os livros.</Text>;
@@ -120,10 +138,8 @@ export default function LivroClient() {
       </Box>
       <RegisterLivroModal
         open={isCreateBookModalActive}
-        onOpenChange={() => {
-          loadBooks();
-          setIsCreateBookModalActive(false);
-        }}
+        onOpenChange={onOpenChange}
+        {...livroEditProps}
       />
     </>
   );
