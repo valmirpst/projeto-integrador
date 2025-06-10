@@ -3,7 +3,12 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 import { Plus, X } from "phosphor-react";
-import { ComponentPropsWithoutRef, ComponentRef, DetailedHTMLProps, forwardRef } from "react";
+import {
+  ComponentPropsWithoutRef,
+  ComponentRef,
+  DetailedHTMLProps,
+  forwardRef,
+} from "react";
 import { Button } from "../button";
 import styles from "./dialog.module.css";
 
@@ -15,7 +20,11 @@ const DialogTrigger = forwardRef<
   ComponentRef<typeof DialogPrimitive.Trigger>,
   ComponentPropsWithoutRef<typeof DialogPrimitive.Trigger>
 >(({ className, ...rest }, forwardedRef) => (
-  <DialogPrimitive.Trigger ref={forwardedRef} className={`${!rest.asChild && styles.trigger} ${className}`} {...rest}>
+  <DialogPrimitive.Trigger
+    ref={forwardedRef}
+    className={`${!rest.asChild && styles.trigger} ${className}`}
+    {...rest}
+  >
     {rest.children || <Plus size={16} />}
   </DialogPrimitive.Trigger>
 ));
@@ -25,19 +34,25 @@ const DialogOverlay = forwardRef<
   ComponentRef<typeof DialogPrimitive.Overlay>,
   ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
 >(({ className, ...rest }, forwardedRef) => (
-  <DialogPrimitive.Overlay ref={forwardedRef} className={`${styles.overlay} ${className}`} {...rest} />
+  <DialogPrimitive.Overlay
+    ref={forwardedRef}
+    className={`${styles.overlay} ${className}`}
+    {...rest}
+  />
 ));
 DialogOverlay.displayName = "DialogOverlay";
 
 const DialogContent = forwardRef<
   ComponentRef<typeof DialogPrimitive.Content>,
-  ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & { width?: string | number }
+  ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
+    width?: string | number;
+  }
 >(({ className, onClick, width, ...rest }, forwardedRef) => (
   <Dialog.Portal>
     <Dialog.Overlay />
     <DialogPrimitive.Content
       ref={forwardedRef}
-      onClick={e => {
+      onClick={(e: any) => {
         e.stopPropagation();
         onClick?.(e);
       }}
@@ -53,7 +68,11 @@ const DialogTitle = forwardRef<
   ComponentRef<typeof DialogPrimitive.Title>,
   ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 >(({ className, ...rest }, forwardedRef) => (
-  <DialogPrimitive.Title ref={forwardedRef} className={`${styles.title} ${className}`} {...rest} />
+  <DialogPrimitive.Title
+    ref={forwardedRef}
+    className={`${styles.title} ${className}`}
+    {...rest}
+  />
 ));
 DialogTitle.displayName = "DialogTitle";
 
@@ -61,13 +80,24 @@ const DialogDescription = forwardRef<
   ComponentRef<typeof DialogPrimitive.Description>,
   ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
 >(({ className, ...rest }, forwardedRef) => (
-  <DialogPrimitive.Description ref={forwardedRef} className={`${styles.description} ${className}`} {...rest} />
+  <DialogPrimitive.Description
+    ref={forwardedRef}
+    className={`${styles.description} ${className}`}
+    {...rest}
+  />
 ));
 DialogDescription.displayName = "DialogDescription";
 
-const DialogActions = forwardRef<HTMLDivElement, DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>>(
-  ({ className, ...rest }, forwardedRef) => <div ref={forwardedRef} className={`${styles.actions} ${className}`} {...rest} />
-);
+const DialogActions = forwardRef<
+  HTMLDivElement,
+  DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+>(({ className, ...rest }, forwardedRef) => (
+  <div
+    ref={forwardedRef}
+    className={`${styles.actions} ${className}`}
+    {...rest}
+  />
+));
 DialogActions.displayName = "DialogActions";
 
 const DialogClose = forwardRef<
@@ -76,12 +106,24 @@ const DialogClose = forwardRef<
 >(({ className, ...rest }, forwardedRef) =>
   rest.children ? (
     rest.asChild ? (
-      <DialogPrimitive.Close ref={forwardedRef} className={className} {...rest} />
+      <DialogPrimitive.Close
+        ref={forwardedRef}
+        className={className}
+        {...rest}
+      />
     ) : (
-      <DialogPrimitive.Close ref={forwardedRef} className={`${styles.close} ${styles.close_button} ${className}`} {...rest} />
+      <DialogPrimitive.Close
+        ref={forwardedRef}
+        className={`${styles.close} ${styles.close_button} ${className}`}
+        {...rest}
+      />
     )
   ) : (
-    <DialogPrimitive.Close ref={forwardedRef} className={`${styles.close} ${styles.close_x} ${className}`} {...rest}>
+    <DialogPrimitive.Close
+      ref={forwardedRef}
+      className={`${styles.close} ${styles.close_x} ${className}`}
+      {...rest}
+    >
       <X size={16} />
     </DialogPrimitive.Close>
   )

@@ -2,17 +2,34 @@
 import { Box } from "@/components/ui/box";
 import styles from "./livro.module.css";
 import stylesAdmin from "../admin.module.css";
-import { books } from "@/mock/book";
 import Table, { ColumnType } from "@/components/table";
 import { BookType } from "@/@types/book";
 import { Text } from "@/components/ui/text";
 import Search from "@/components/search";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import RegisterLivroModal, {
+  PropsRegisterLivroModalType,
+} from "@/components/register-livro-modal";
+import { api } from "@/lib/api";
 
-export default function HomeClient() {
+export default function LivroClient() {
+  const [books, setBooks] = useState<BookType[]>([]);
   const [searchValue, setSearchValue] = useState("");
+  const [isCreateBookModalActive, setIsCreateBookModalActive] = useState(false);
+  const [livroEditProps, setLivroEditProps] = useState<
+    Partial<PropsRegisterLivroModalType>
+  >({});
+
+  const loadBooks = async () => {
+    const res = await api.livros.getAsync();
+    if (res.data) setBooks(res.data);
+  };
+
+  useEffect(() => {
+    loadBooks();
+  }, []);
 
   const columns: ColumnType<BookType> = {
     titulo: {
@@ -20,8 +37,8 @@ export default function HomeClient() {
       proporcion: 2.5,
       image: "caminho_img",
     },
-    autor: {
-      title: "Autor",
+    autores: {
+      title: "Autor(es)",
       proporcion: 2,
     },
     editora: {
@@ -40,50 +57,90 @@ export default function HomeClient() {
     qtd_disponivel: {
       title: "Disponível",
       proporcion: 1,
-      justify: "center",
     },
   };
 
+  function onOpenChange() {
+    loadBooks();
+    setIsCreateBookModalActive(false);
+    setLivroEditProps({});
+  }
+
+  async function handleTrash(book: BookType) {
+    await api.livros.deleteAsync(book.isbn);
+    await loadBooks();
+  }
+
+  function handleEdit(book: BookType) {
+    setLivroEditProps({
+      open: true,
+      onOpenChange: onOpenChange,
+      formdata: book,
+      update: true,
+    });
+  }
+
+  if (!books) {
+    return <Text>Erro ao carregar os livros.</Text>;
+  }
+
   return (
-    <Box className={styles.adminBookWrapper}>
-      <Text as="h1" className={stylesAdmin.adminTitle}>
-        Livros
-      </Text>
-      <Box className={stylesAdmin.adminFilterContainer}>
-        <Box className={stylesAdmin.adminFilters}>
-          <Search
-            className={stylesAdmin.adminSearch}
-            value={searchValue}
-            setState={setSearchValue}
-            width={500}
-          />
-          <Box className={stylesAdmin.adminSelectContainer}>
-            <Select
-              options={books.map((value) => value.genero)}
-              label="Gênero"
-              width={200}
+    <>
+      <Box className={styles.adminBookWrapper}>
+        <Text as="h1" className={stylesAdmin.adminTitle}>
+          Livros
+        </Text>
+        <Box className={stylesAdmin.adminFilterContainer}>
+          <Box className={stylesAdmin.adminFilters}>
+            <Search
+              className={stylesAdmin.adminSearch}
+              value={searchValue}
+              setState={setSearchValue}
+              width={500}
             />
-            <Select
-              options={books.map((value) => value.editora)}
-              label="Editora"
-              width={200}
-            />
+            <Box className={stylesAdmin.adminSelectContainer}>
+              <Select
+                options={books.map((value) => value.genero)}
+                label="Gênero"
+                width={200}
+              />
+              <Select
+                options={books.map((value) => value.editora)}
+                label="Editora"
+                width={200}
+              />
+            </Box>
+            <Button
+              className={stylesAdmin.adminButton}
+              size="sm"
+              width={120}
+              onClick={() => setIsCreateBookModalActive(true)}
+            >
+              Cadastrar
+            </Button>
           </Box>
-          <Button className={stylesAdmin.adminButton} size="sm" width={120}>
-            Cadastrar
-          </Button>
-        </Box>
-        <Box className={stylesAdmin.adminOtherInformations}>
-          <Text color="gray400">{books.length} produtos encontrados</Text>
-          <Box className={stylesAdmin.adminCleanFilters}>
-            <Text color="primary300" weight="bold">
-              Limpar filtros
-            </Text>
-            <Text>Filtros selecionados</Text>
+          <Box className={stylesAdmin.adminOtherInformations}>
+            <Text color="gray400">{books.length} produtos encontrados</Text>
+            <Box className={stylesAdmin.adminCleanFilters}>
+              <Text color="primary300" weight="bold">
+                Limpar filtros
+              </Text>
+              <Text>Filtros selecionados</Text>
+            </Box>
           </Box>
         </Box>
+        <Table
+          items={books}
+          columns={columns}
+          handleTrash={handleTrash}
+          handleEdit={handleEdit}
+        />
       </Box>
-      <Table items={books} columns={columns}></Table>
-    </Box>
+      <RegisterLivroModal
+        open={isCreateBookModalActive}
+        onOpenChange={onOpenChange}
+        {...livroEditProps}
+      />
+    </>
   );
 }

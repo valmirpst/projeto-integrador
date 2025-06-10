@@ -14,7 +14,7 @@ export default function Livros({ book }: Props) {
   return (
     <Box>
       <Image
-        src={caminho_img}
+        src={"https://m.media-amazon.com/images/I/61pt9lG-PvL.jpg"}
         alt={titulo}
         width={160}
         height={240}

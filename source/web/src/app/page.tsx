@@ -1,6 +1,8 @@
+// app/page.tsx
+import { redirect } from "next/navigation";
 import { api } from "@/lib/api";
-import { Metadata } from "next";
 import dynamic from "next/dynamic";
+import { Metadata } from "next";
 
 const ClientSide = dynamic(() => import("./client"));
 
@@ -9,11 +11,22 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const { ok, status, data, message } = await api.livros.getAsync();
+  const booksResponse = await api.livros.getAsync();
+  const userResponse = await api.usuarios.getByIdAsync("u10");
 
-  if (!ok || !data) return <p>Erro ao buscar livros.</p>;
+  if (userResponse.ok && userResponse.data?.perfil === "bibliotecario") {
+    redirect("/admin/dashboard");
+  }
 
-  console.log(ok, status, data, message);
+  if (!booksResponse.ok || !booksResponse.data) {
+    return <p>Erro ao buscar livros.</p>;
+  }
 
-  return <ClientSide books={data} />;
+  return (
+    <html>
+      <body>
+        <ClientSide books={booksResponse.data} />
+      </body>
+    </html>
+  );
 }

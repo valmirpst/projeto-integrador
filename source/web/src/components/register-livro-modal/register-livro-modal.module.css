@@ -1,0 +1,98 @@
+.modalContainer {
+  padding: 2rem 3rem;
+  background: white;
+  border-radius: 8px;
+}
+
+.modalContent {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 1.5rem;
+}
+
+.modalInputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modalImageContainer {
+  justify-self: center;
+  align-self: center;
+}
+
+.modalImageContainer img {
+  margin: auto;
+  margin-bottom: 1rem;
+}
+
+.modalImage {
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.modalTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.addLivro {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.textarea {
+  min-height: 80px;
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  resize: vertical;
+  border: 1px solid var(--gray-700);
+  border-radius: 4px;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.inputSmall {
+  width: 60px;
+  padding: 6px;
+  font-size: 14px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.cancel {
+  color: #888;
+  cursor: pointer;
+}
+
+.confirm {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}

@@ -1,7 +1,8 @@
-import { Book } from "@/@types/boook";
+import { BookType } from "@/@types/book";
 import { ApiResponse } from "@/@types/requests/api-response";
 import { ReturnType } from "@/@types/requests/return-type";
 import { ENV } from "./env";
+import { UserType } from "@/@types/user";
 
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -55,11 +56,14 @@ const apiFnBase = async <T, P>({
 
   const stringifiedParams = normalizedParams.toString();
 
-  const baseURL = url || ENV.API_URL;
+  const baseURL = "http://localhost:3333/api";
 
   const fetchUrl =
     stringifiedParams.length > 0
-      ? `${baseURL?.replace(/\/$/, "")}/${endpoint.replace(/^\//, "")}?${stringifiedParams}`
+      ? `${baseURL?.replace(/\/$/, "")}/${endpoint.replace(
+          /^\//,
+          ""
+        )}?${stringifiedParams}`
       : `${baseURL?.replace(/\/$/, "")}/${endpoint.replace(/^\//, "")}`;
 
   try {
@@ -67,10 +71,14 @@ const apiFnBase = async <T, P>({
       ...options,
       method,
       headers: { ...COMMON_HEADERS, ...options?.headers },
-      body: ["POST", "PUT"].includes(method) ? JSON.stringify(payload) : undefined,
+      body: ["POST", "PUT"].includes(method)
+        ? JSON.stringify(payload)
+        : undefined,
     });
 
-    const bodyText = [204, 205, 304].includes(res.status) ? null : await res.text();
+    const bodyText = [204, 205, 304].includes(res.status)
+      ? null
+      : await res.text();
 
     let data: ApiResponse<T> | null = null;
     if (bodyText) {
@@ -90,7 +98,10 @@ const apiFnBase = async <T, P>({
         ok: false,
         status: res.status,
         message:
-          data && typeof data === "object" && "message" in data && typeof data.message == "string"
+          data &&
+          typeof data === "object" &&
+          "message" in data &&
+          typeof data.message == "string"
             ? data.message
             : res.statusText || "Erro inesperado da API.",
       };
@@ -128,22 +139,27 @@ function createApi<TModel, TParams>(endpoint: string) {
         options: data?.options,
         params: data?.params,
       }),
-    getByIdAsync: async (id: number, data?: GetAsyncPayload<TParams>) =>
+    getByIdAsync: async (id: string, data?: GetAsyncPayload<TParams>) =>
       apiFnBase<TModel, TParams>({
         endpoint: `${endpoint}/${id}`,
         method: "GET",
         options: data?.options,
         params: data?.params,
       }),
-    postAsync: async <T = TModel>(data: PostAsyncPayload<T, TParams>) =>
-      apiFnBase<T, TParams>({
+    postAsync: async <T = TModel>(data: PostAsyncPayload<T, TParams>) => {
+      console.log("postAsync", data);
+      return apiFnBase<T, TParams>({
         endpoint: endpoint,
         method: "POST",
         options: data.options,
         params: data.params,
         payload: data.payload,
-      }),
-    putAsync: async <T = TModel>(id: number, data: PutAsyncPayload<T, TParams>) =>
+      });
+    },
+    putAsync: async <T = TModel>(
+      id: string,
+      data: PutAsyncPayload<T, TParams>
+    ) =>
       apiFnBase<T, TParams>({
         endpoint: `${endpoint}/${id}`,
         method: "PUT",
@@ -151,7 +167,10 @@ function createApi<TModel, TParams>(endpoint: string) {
         payload: data.payload,
         params: data.params,
       }),
-    deleteAsync: async <T = null>(id: number, data?: DeleteAsyncPayload<TParams>) =>
+    deleteAsync: async <T = null>(
+      id: string,
+      data?: DeleteAsyncPayload<TParams>
+    ) =>
       apiFnBase<T, TParams>({
         endpoint: `${endpoint}/${id}`,
         method: "DELETE",
@@ -162,5 +181,6 @@ function createApi<TModel, TParams>(endpoint: string) {
 }
 
 export const api = {
-  livros: createApi<Book, unknown>("/livros"),
+  livros: createApi<BookType, unknown>("/livros"),
+  usuarios: createApi<UserType, unknown>("/usuarios"),
 };

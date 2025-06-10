@@ -16,11 +16,3 @@
 .menuItem:hover p {
   color: var(--primary-300);
 }
-
-.menuItem:hover svg path {
-  stroke: var(--primary-300);
-}
-
-.menuItem:hover svg path {
-  stroke: var(--primary-300);
-}

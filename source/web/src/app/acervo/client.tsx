@@ -1,15 +1,19 @@
 "use client";
 
 import styles from "./acervo.module.css";
-import { books } from "@/mock/book";
 import Livros from "./componente-livro";
 import { Box } from "@/components/ui/box";
 import Search from "@/components/search";
 import { useState } from "react";
 import Select from "@/components/ui/select";
 import { Text } from "@/components/ui/text";
+import { BookType } from "@/@types/book";
 
-export default function AcervoClient() {
+type HomeClientProps = {
+  books: BookType[];
+};
+
+export default function AcervoClient({ books }: HomeClientProps) {
   const [searchValue, setSearchValue] = useState("");
 
   return (

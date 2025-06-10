@@ -7,6 +7,6 @@ export async function generateMetadata(): Promise<Metadata> {
   return {};
 }
 
-export default function Home() {
+export default async function Livro() {
   return <ClientSide />;
 }

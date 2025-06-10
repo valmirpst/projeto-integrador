@@ -10,7 +10,7 @@ export default function Img(props: Props) {
   const classes = cnModules(styles.img, className);
 
   return (
-    <Image
+    <img
       className={classes}
       src={src}
       width={width}
