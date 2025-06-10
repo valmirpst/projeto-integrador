@@ -9,26 +9,36 @@ import styles from "./register-livro-modal.module.css";
 import { Button } from "../ui/button";
 import Img from "../ui/img";
 import { api } from "@/lib/api";
+import { BookType } from "@/@types/book";
 
 type PropsType = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  formdata?: BookType;
+  update?: boolean;
 };
 
-export default function RegisterLivroModal({ open, onOpenChange }: PropsType) {
-  const [form, setForm] = useState({
-    isbn: "oiiii",
-    titulo: "",
-    edicao: "",
-    genero: "",
-    editora: "",
-    descricao: "",
-    qtd_disponivel: 1,
-    autores: [] as string[],
-    caminho_img: "",
-    total_avaliacoes: 0,
-    total_estrelas: 0,
-  });
+export default function RegisterLivroModal({
+  open,
+  onOpenChange,
+  formdata,
+}: PropsType) {
+  const [form, setForm] = useState<BookType>(
+    formdata || {
+      isbn: "oiii4",
+      titulo: "",
+      edicao: "",
+      genero: "",
+      editora: "",
+      descricao: "",
+      qtd_disponivel: 1,
+      autores: [] as string[],
+      caminho_img: "",
+      total_avaliacoes: 0,
+      total_estrelas: 0,
+      categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
+    }
+  );
   const [autor, setAutor] = useState<string>("");
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -69,6 +79,7 @@ export default function RegisterLivroModal({ open, onOpenChange }: PropsType) {
         caminho_img: "",
         total_avaliacoes: 0,
         total_estrelas: 0,
+        categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
       });
       setPreviewUrl(null);
       onOpenChange(false);

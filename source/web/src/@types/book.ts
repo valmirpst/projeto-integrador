@@ -1,3 +1,5 @@
+import { CategoryType } from "./category";
+
 export type BookType = {
   isbn: string;
   titulo: string;
@@ -8,6 +10,7 @@ export type BookType = {
   caminho_img: string;
   descricao: string;
   total_avaliacoes: number;
-  total_estrelas: string;
+  total_estrelas: number;
   autores: string[];
+  categorias: CategoryType[];
 };

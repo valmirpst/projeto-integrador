@@ -112,7 +112,7 @@ export default function LivroClient() {
           </Box>
         </Box>
         <Table
-          items={books.slice(1, 16)}
+          items={books}
           columns={columns}
           handleTrash={handleTrash}
           handleEdit={handleEdit}
@@ -120,7 +120,10 @@ export default function LivroClient() {
       </Box>
       <RegisterLivroModal
         open={isCreateBookModalActive}
-        onOpenChange={() => setIsCreateBookModalActive(false)}
+        onOpenChange={() => {
+          loadBooks();
+          setIsCreateBookModalActive(false);
+        }}
       />
     </>
   );
