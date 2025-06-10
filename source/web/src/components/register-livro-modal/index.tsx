@@ -25,7 +25,7 @@ export default function RegisterLivroModal({
   update,
 }: PropsRegisterLivroModalType) {
   const [form, setForm] = useState<BookType>({
-    isbn: "oiii4",
+    isbn: "",
     titulo: "",
     edicao: "",
     genero: "",
@@ -112,12 +112,20 @@ export default function RegisterLivroModal({
               Registrar Livro
             </Dialog.Title>
             <Dialog.Close />
-            <Input
-              id="titulo"
-              label="Título"
-              value={form.titulo}
-              onChange={(e) => handleChange(e, "titulo")}
-            />
+            <Box className={styles.row}>
+              <Input
+                id="isbn"
+                label="ISBN"
+                value={form.isbn}
+                onChange={(e) => handleChange(e, "isbn")}
+              />
+              <Input
+                id="titulo"
+                label="Título"
+                value={form.titulo}
+                onChange={(e) => handleChange(e, "titulo")}
+              />
+            </Box>
             <Box className={styles.row}>
               <Input
                 id="edicao"
