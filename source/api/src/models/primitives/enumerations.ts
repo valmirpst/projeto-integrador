@@ -1,7 +1,7 @@
 export enum PerfilEnum {
-  bibliotecario = 0,
-  aluno = 1,
-  professor = 2,
+  bibliotecario = "bibliotecario",
+  aluno = "aluno",
+  professor = "professor",
 }
 
 export enum CategoriaEnum {

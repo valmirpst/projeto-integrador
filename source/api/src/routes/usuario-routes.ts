@@ -1,5 +1,8 @@
 import { Router } from "express";
 import { UsuarioController } from "../controllers/usuario-controller";
+import { validateMiddleware } from "../middlewares/validate-middleware";
+import { usuarioSchema } from "../models/schemas/usuario-schema";
+import { wrapController } from "./wrappers/wrap-controller";
 
 const usuarioRoutes = Router();
 
@@ -211,10 +214,12 @@ const usuarioRoutes = Router();
  *                   type: string
  */
 
-usuarioRoutes.get("/", UsuarioController.getAsync);
-usuarioRoutes.post("/", UsuarioController.postAsync);
-usuarioRoutes.put("/:id", UsuarioController.putAsync);
-usuarioRoutes.delete("/:id", UsuarioController.deleteAsync);
-usuarioRoutes.get("/:id", UsuarioController.getByIdAsync);
+const usuarioController = new UsuarioController();
+
+usuarioRoutes.get("/", wrapController(usuarioController.getAsync, usuarioController));
+usuarioRoutes.post("/", validateMiddleware(usuarioSchema), wrapController(usuarioController.createAsync, usuarioController));
+usuarioRoutes.put("/:id", validateMiddleware(usuarioSchema), wrapController(usuarioController.updateAsync, usuarioController));
+usuarioRoutes.delete("/:id", wrapController(usuarioController.deleteAsync, usuarioController));
+usuarioRoutes.get("/:id", wrapController(usuarioController.getByIdAsync, usuarioController));
 
 export { usuarioRoutes };

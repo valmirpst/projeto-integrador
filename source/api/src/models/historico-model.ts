@@ -1,45 +1,38 @@
 import { db } from "../core/database";
+import { IModel } from "../interfaces/i-model";
+import { QueryableModelBase } from "./abstract/queryable-model-base";
 import { HistoricoEntity } from "./entities/historico-entity";
 import { HistoricoFilter } from "./filters/historico-filter";
+import { HistoricoSchema } from "./schemas/historico-schema";
 
-export class HistoricoModel {
-  static async getAsync(queryParams?: HistoricoFilter) {
-    const queryParamsMap = Object.entries(queryParams || {});
+export class HistoricoModel
+  extends QueryableModelBase<HistoricoEntity, HistoricoFilter>
+  implements IModel<HistoricoEntity, HistoricoFilter>
+{
+  protected primaryKey: string = "id";
+  protected tableName: string = "historico";
 
-    const query = `
-      SELECT * FROM historico
-      ${
-        queryParamsMap.length > 0
-          ? queryParamsMap.map(([key, value], i) => `${i === 0 ? "WHERE" : "AND"} ${key} = '${value}'`).join(" ")
-          : ""
-      }
-      ORDER BY isbn_livro, id_usuario ASC
-    `;
+  async createAsync(data: HistoricoSchema): Promise<HistoricoEntity> {
+    const { isbn_livro, id_usuario, id_bibliotecario, status } = data;
 
-    const res = await db.query(query);
-
-    return res.rows;
-  }
-
-  static async postAsync(historico: HistoricoEntity) {
-    const { id, isbn_livro, id_usuario, id_bibliotecario, status } = historico;
+    const id = crypto.randomUUID();
 
     const values = [id, isbn_livro, id_usuario, id_bibliotecario, status];
 
     const date = new Date(Date.now() - 3 * 60 * 60 * 1000); // Ajuste de fuso horário para UTC-3
 
     const livro = await db.query("SELECT isbn FROM livro WHERE isbn = $1", [isbn_livro]);
-    if (livro.rows.length === 0) {
+    if (livro.rowCount === 0) {
       throw new Error(`Livro com isbn ${isbn_livro} não encontrado.`);
     }
 
     const usuario = await db.query("SELECT id FROM usuario WHERE id = $1", [id_usuario]);
-    if (usuario.rows.length === 0) {
+    if (usuario.rowCount === 0) {
       throw new Error(`Usuário com id ${id_usuario} não encontrado.`);
     }
 
     const bibliotecario = await db.query("SELECT id FROM usuario WHERE id = $1", [id_bibliotecario]);
-    if (bibliotecario.rows.length === 0) {
+    if (bibliotecario.rowCount === 0) {
       throw new Error(`Bibliotecário com id ${id_bibliotecario} não encontrado.`);
     }
 
@@ -48,30 +41,30 @@ export class HistoricoModel {
       VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *
     `;
 
-    const res = await db.query(query, [...values, date, date]);
+    const res = await db.query<HistoricoEntity>(query, [...values, date, date]);
 
-    return { ...res.rows[0] };
+    return res.rows[0];
   }
 
-  static async putAsync(id: string, historico: HistoricoEntity) {
-    const { id: historicoId, isbn_livro, id_usuario, id_bibliotecario, status } = historico;
+  async updateAsync(id: string, data: HistoricoEntity): Promise<HistoricoEntity> {
+    const { id: historicoId, isbn_livro, id_usuario, id_bibliotecario, status } = data;
 
     if (historicoId !== id) {
       throw new Error("O id enviado no parâmetro é diferente do enviado no corpo da requisição.");
     }
 
     const livro = await db.query("SELECT isbn FROM livro WHERE isbn = $1", [isbn_livro]);
-    if (livro.rows.length === 0) {
+    if (livro.rowCount === 0) {
       throw new Error("Livro não encontrado.");
     }
 
     const usuario = await db.query("SELECT id FROM usuario WHERE id = $1", [id_usuario]);
-    if (usuario.rows.length === 0) {
+    if (usuario.rowCount === 0) {
       throw new Error("Usuário não encontrado.");
     }
 
     const bibliotecario = await db.query("SELECT id FROM usuario WHERE id = $1", [id_bibliotecario]);
-    if (bibliotecario.rows.length === 0) {
+    if (bibliotecario.rowCount === 0) {
       throw new Error("Bibliotecário não encontrado.");
     }
 
@@ -86,28 +79,7 @@ export class HistoricoModel {
       RETURNING *
   `;
 
-    const res = await db.query(query, values);
-
-    return { ...res.rows[0] };
-  }
-
-  static async deleteAsync(id: string) {
-    const values = [id];
-
-    const query = `
-      DELETE FROM historico
-      WHERE id = $1
-    `;
-
-    const res = await db.query(query, values);
-    return res.rows[0];
-  }
-
-  static async getByIdAsync(id: HistoricoEntity["id"]): Promise<HistoricoEntity | undefined> {
-    const query = "SELECT * FROM historico WHERE id = $1";
-    const res = await db.query(query, [id]);
-
-    if (res.rows.length === 0) return undefined;
+    const res = await db.query<HistoricoEntity>(query, values);
 
     return res.rows[0];
   }

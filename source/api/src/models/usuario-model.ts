@@ -1,4 +1,8 @@
 import { db } from "../core/database";
+import { NotFoundError } from "../exceptions/errors";
+import { IModel } from "../interfaces/i-model";
+import { DeletableModelBase } from "./abstract/deletable-model-base";
+import { CursoEntity } from "./entities/curso-entity";
 import { UsuarioEntity } from "./entities/usuario-entity";
 import { PerfilEnum } from "./primitives/enumerations";
 
@@ -23,38 +27,41 @@ const perfilProperties: Record<
   },
 };
 
-export class UsuarioModel {
-  static async getAsync() {
+export class UsuarioModel extends DeletableModelBase implements IModel<UsuarioEntity> {
+  protected tableName: string = "usuario";
+  protected primaryKey: string = "id";
+
+  async queryAsync(): Promise<UsuarioEntity[]> {
     const query = `
-      SELECT usuario.*, array_agg(usuario_curso.id_curso) as id_cursos
-      FROM usuario
-      LEFT JOIN usuario_curso ON usuario.id = usuario_curso.id_usuario
-      GROUP BY usuario.id
-      ORDER BY usuario.id ASC
+      SELECT ${this.tableName}.*, array_agg(usuario_curso.id_curso) as id_cursos
+      FROM ${this.tableName}
+      LEFT JOIN usuario_curso ON ${this.tableName}.id = usuario_curso.id_usuario
+      GROUP BY ${this.tableName}.id
+      ORDER BY ${this.tableName}.id ASC
     `;
 
-    const res = await db.query(query);
+    const res = await db.query<UsuarioEntity>(query);
 
     const usuarios = res.rows.map(usuario => ({
       ...usuario,
       ...perfilProperties[PerfilEnum[usuario.perfil]],
-      id_cursos: usuario.id_cursos.filter((id: string) => id != null) || [],
+      id_cursos: usuario.id_cursos.filter(id => id != null) || [],
     }));
 
     return usuarios;
   }
 
-  static async postAsync(usuario: UsuarioEntity) {
-    const { id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil, id_cursos } = usuario;
+  async createAsync(data: UsuarioEntity): Promise<UsuarioEntity> {
+    const { id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil, id_cursos } = data;
 
     const values = [id, ra, siape, nome, sobrenome, data_nasc, email, telefone, PerfilEnum[perfil]];
 
     const query = `
-      INSERT INTO usuario(id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil)
+      INSERT INTO ${this.tableName}(id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil)
       VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *
     `;
 
-    const cursos = await db.query("SELECT id FROM curso");
+    const cursos = await db.query<CursoEntity>("SELECT id FROM curso");
     const cursoIds = cursos.rows.map((curso: { id: string }) => curso.id);
 
     if (id_cursos.length > 0) {
@@ -65,7 +72,7 @@ export class UsuarioModel {
       });
     }
 
-    const res = await db.query(query, values);
+    const res = await db.query<UsuarioEntity>(query, values);
 
     const cursoQuery = `
       INSERT INTO usuario_curso(id_usuario, id_curso)
@@ -77,8 +84,8 @@ export class UsuarioModel {
     return { ...res.rows[0], ...perfilProperties[perfil], id_cursos };
   }
 
-  static async putAsync(id: string, usuario: UsuarioEntity) {
-    const { id: usuarioId, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil, id_cursos } = usuario;
+  async updateAsync(id: string, data: UsuarioEntity): Promise<UsuarioEntity> {
+    const { id: usuarioId, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil, id_cursos } = data;
 
     if (usuarioId !== id) {
       throw new Error("O id enviado no parâmetro é diferente do enviado no corpo da requisição.");
@@ -87,7 +94,7 @@ export class UsuarioModel {
     const values = [ra, siape, nome, sobrenome, data_nasc, email, telefone, PerfilEnum[perfil], id];
 
     const query = `
-      UPDATE usuario
+      UPDATE ${this.tableName}
       SET
         ra = $1,
         siape = $2,
@@ -101,7 +108,7 @@ export class UsuarioModel {
       RETURNING *
   `;
 
-    const res = await db.query(query, values);
+    const res = await db.query<UsuarioEntity>(query, values);
 
     if (res.rows.length === 0) {
       throw new Error("Usuário não encontrado.");
@@ -113,7 +120,7 @@ export class UsuarioModel {
       `;
     await db.query(cursoDeleteQuery, [id]);
 
-    const cursos = await db.query("SELECT id FROM curso");
+    const cursos = await db.query<CursoEntity>("SELECT id FROM curso");
     const cursoIds = cursos.rows.map((curso: { id: string }) => curso.id);
 
     if (id_cursos.length > 0) {
@@ -136,34 +143,22 @@ export class UsuarioModel {
     return { ...res.rows[0], ...perfilProperties[PerfilEnum[res.rows[0].perfil]], id_cursos: id_cursos || [] };
   }
 
-  static async deleteAsync(id: string) {
-    const values = [id];
-
+  async queryByIdAsync(id: string): Promise<UsuarioEntity> {
     const query = `
-      DELETE FROM usuario
-      WHERE id = $1
+      SELECT ${this.tableName}.*, array_agg(usuario_curso.id_curso) as id_cursos
+      FROM ${this.tableName}
+      LEFT JOIN usuario_curso ON ${this.tableName}.id = usuario_curso.id_usuario
+      WHERE ${this.tableName}.id = $1
+      GROUP BY ${this.tableName}.id
     `;
+    const res = await db.query<UsuarioEntity>(query, [id]);
 
-    const res = await db.query(query, values);
-    return res.rows[0];
-  }
-
-  static async getByIdAsync(id: UsuarioEntity["id"]): Promise<UsuarioEntity | undefined> {
-    const query = `
-      SELECT usuario.*, array_agg(usuario_curso.id_curso) as id_cursos
-      FROM usuario
-      LEFT JOIN usuario_curso ON usuario.id = usuario_curso.id_usuario
-      WHERE usuario.id = $1
-      GROUP BY usuario.id
-    `;
-    const res = await db.query(query, [id]);
-
-    if (res.rows.length === 0) return undefined;
+    if (res.rowCount === 0) throw new NotFoundError("Usuário não encontrado");
 
     const usuario = {
       ...res.rows[0],
       ...perfilProperties[PerfilEnum[res.rows[0].perfil]],
-      id_cursos: res.rows[0].id_cursos.filter((id: string) => id != null) || [],
+      id_cursos: res.rows[0].id_cursos.filter(id => id != null) || [],
     };
 
     return usuario;
