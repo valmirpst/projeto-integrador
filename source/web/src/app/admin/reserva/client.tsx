@@ -2,19 +2,24 @@
 import { Box } from "@/components/ui/box";
 import styles from "./reserve.module.css";
 import stylesAdmin from "../admin.module.css";
-import { reserves } from "@/mock/reserve";
 import Table, { ColumnType } from "@/components/table";
 import { Text } from "@/components/ui/text";
 import Search from "@/components/search";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { ReserveType } from "@/@types/reserve";
+import { api } from "@/lib/api";
 
 type EditarAtributo<T, K extends keyof T, V> = Omit<T, K> & { [P in K]: V };
 
-export default function HomeClient() {
+export default function ReserveClient() {
   const [searchValue, setSearchValue] = useState("");
+  const [reserves, setReserves] = useState<ReserveType[]>([]);
+
+  useEffect(() => {
+    loadReserves();
+  }, []);
 
   const columns: ColumnType<EditarAtributo<ReserveType, "criado_em", string>> =
     {
@@ -38,6 +43,11 @@ export default function HomeClient() {
       },
     };
 
+  const loadReserves = async () => {
+    const res = await api.reservas.getAsync();
+    if (res.data) setReserves(res.data);
+  };
+
   const reserverFormat = reserves.map((reserve) => {
     return {
       ...reserve,
@@ -48,6 +58,14 @@ export default function HomeClient() {
       }),
     };
   });
+
+  function handleTrash() {
+    console.log("trash");
+  }
+
+  function handleEdit() {
+    console.log("edit");
+  }
 
   return (
     <Box className={styles.adminBookWrapper}>
@@ -88,7 +106,12 @@ export default function HomeClient() {
           </Box>
         </Box>
       </Box>
-      <Table items={reserverFormat} columns={columns}></Table>
+      <Table
+        items={reserverFormat}
+        columns={columns}
+        handleTrash={handleTrash}
+        handleEdit={handleEdit}
+      />
     </Box>
   );
 }
