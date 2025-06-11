@@ -1,4 +1,5 @@
 export type ReserveType = {
+  id: string;
   id_usuario: string;
   isbn_livro: string;
   id_bibliotecario: string;

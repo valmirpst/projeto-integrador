@@ -13,6 +13,8 @@ import { api } from "@/lib/api";
 
 type EditarAtributo<T, K extends keyof T, V> = Omit<T, K> & { [P in K]: V };
 
+type ReserveItem = EditarAtributo<ReserveType, "criado_em", string>;
+
 export default function ReserveClient() {
   const [searchValue, setSearchValue] = useState("");
   const [reserves, setReserves] = useState<ReserveType[]>([]);
@@ -21,27 +23,26 @@ export default function ReserveClient() {
     loadReserves();
   }, []);
 
-  const columns: ColumnType<EditarAtributo<ReserveType, "criado_em", string>> =
-    {
-      isbn_livro: {
-        title: "Livro",
-        proporcion: 2.5,
-        // image: "caminho_img",
-      },
-      id_usuario: {
-        title: "Usuário",
-        proporcion: 2,
-      },
-      id_bibliotecario: {
-        title: "Bibliotecário(a)",
-        proporcion: 1.5,
-      },
-      criado_em: {
-        title: "Data",
-        proporcion: 2,
-        justify: "center",
-      },
-    };
+  const columns: ColumnType<ReserveItem> = {
+    isbn_livro: {
+      title: "Livro",
+      proporcion: 2.5,
+      // image: "caminho_img",
+    },
+    id_usuario: {
+      title: "Usuário",
+      proporcion: 2,
+    },
+    id_bibliotecario: {
+      title: "Bibliotecário(a)",
+      proporcion: 1.5,
+    },
+    criado_em: {
+      title: "Data",
+      proporcion: 2,
+      justify: "center",
+    },
+  };
 
   const loadReserves = async () => {
     const res = await api.reservas.getAsync();
@@ -59,8 +60,9 @@ export default function ReserveClient() {
     };
   });
 
-  function handleTrash() {
-    console.log("trash");
+  async function handleTrash(reserve: ReserveItem) {
+    await api.reservas.deleteAsync(reserve.id);
+    await loadReserves();
   }
 
   function handleEdit() {
