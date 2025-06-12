@@ -1,68 +1,7 @@
-.modalContent {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  background: var(--gray-100);
-  border-radius: 8px;
-  overflow: hidden;
-  padding: 0;
-}
-
-.modalImageContainer {
-  width: 100%;
-  height: 100%;
-}
-
-.modalImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.modalInputs {
+.successModal {
   display: flex;
-  flex-direction: column;
-  padding: 2rem;
-  gap: 16px;
-   
-}
-
-.modalInputs input {
-  color: var(--gray-400);           
- 
-}
-
-.modalInputs input::placeholder {
-  color: var(--gray-400);
-}
-
-.modalTitle {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-.row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-.labelCinza {
-  color: var(--gray-400);
-}
-
-
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 16px;
-  margin-top: 24px;
-} 
-
-.modalButton {
-  width: 100%;
-  padding: 8px;
-  border-radius: 4px;
-  background-color:var(--primary-700);
-  color: var(--gray-50);
-  border: none;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 20px;
 }

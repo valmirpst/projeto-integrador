@@ -86,7 +86,7 @@ export default function Menu() {
   const [isRegisterModalActive, setIsRegisterModalActive] = useState(false);
   const [user, setUser] = useState<UserType | null>()
 
-  const isAdmin = (user?.perfil === "bibliotecario");
+  const isAdmin = true;
   const menuItems = isAdmin ? librarianMenu : userMenu;
   
 
@@ -96,7 +96,7 @@ export default function Menu() {
       setUser(userResponse.data);
     }
     fetchUser()
-  })
+  }, [])
 
   return (
     <>
