@@ -8,8 +8,13 @@ import Img from "@/components/ui/img";
 import { Button } from "@/components/ui/button";
 import { Heart, ShareNetwork, Star } from "phosphor-react";
 import { theme } from "@/theme";
+import { BookType } from "@/@types/book";
 
-export default function LivroClient() {
+type PropsType = {
+  book: BookType;
+};
+
+export default function LivroClient({ book }: PropsType) {
   return (
     <Box className={styles.container}>
       <div className={styles.livroDetalhes}>
@@ -24,7 +29,7 @@ export default function LivroClient() {
         <div className={styles.conteudo}>
           <Box className={styles.livroHeader}>
             <Box>
-              <Text className={styles.titulo}>Crepúsculo</Text>
+              <Text className={styles.titulo}>{book.titulo}</Text>
               <Box className={styles.bookOptions}>
                 <Star size={32} className={styles.iconeEstrela}></Star>
                 <Star size={32} className={styles.iconeEstrela}></Star>
@@ -59,22 +64,7 @@ export default function LivroClient() {
             className={styles.descricao}
             style={{ color: theme.colors.gray700 }}
           >
-            Bella Swan se muda para Forks para viver com seu pai e logo se
-            interessa pelo misterioso Edward Cullen. Inicialmente, ele a evita,
-            mas depois revela que é um vampiro e que seu sangue é irresistível
-            para ele. Apesar do perigo, os dois se apaixonam e iniciam um
-            relacionamento proibido. <br />
-            <br />
-            A felicidade do casal é ameaçada quando um vampiro rastreador
-            chamado James decide caçar Bella. Ela tenta fugir com a ajuda da
-            família Cullen, mas acaba caindo em uma armadilha. James a ataca,
-            deixando-a gravemente ferida, e Edward precisa agir rapidamente para
-            salvar sua vida. <br />
-            <br />
-            Após se recuperar, Bella insiste que quer se tornar vampira para
-            ficar com Edward para sempre, mas ele recusa seu pedido. Apesar das
-            dificuldades, os dois continuam juntos, mas o futuro de seu
-            relacionamento permanece incerto.
+            {book.descricao}
           </Text>
         </div>
       </div>

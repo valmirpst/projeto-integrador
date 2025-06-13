@@ -21,16 +21,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const userResponse = await api.usuarios.getByIdAsync("u10");
-
-  if (!userResponse.data) return <Text>Erro ao buscar usuário</Text>;
 
   return (
     <html lang="pt-br">
       <body className={`${inter.variable} ${inter.className}`}>
         <GlobalContainer>
           <Box>
-            <Menu user={userResponse.data} />
+            <Menu />
           </Box>
           {children}
         </GlobalContainer>

@@ -7,9 +7,10 @@ import Img from "../ui/img";
 import { Text } from "../ui/text";
 import MenuItem from "./menu-item";
 import styles from "./menu.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RegisterLivroModal from "../register-modal";
 import { UserType } from "@/@types/user";
+import { api } from "@/lib/api";
 
 const userMenu = [
   {
@@ -81,11 +82,20 @@ type PropsType = {
   user: UserType;
 };
 
-export default function Menu({ user }: PropsType) {
-  const isAdmin = (user.perfil = "bibliotecario");
+export default function Menu() {
+  const [isRegisterModalActive, setIsRegisterModalActive] = useState(false);
+  const [user, setUser] = useState<UserType | null>();
+
+  const isAdmin = true;
   const menuItems = isAdmin ? librarianMenu : userMenu;
 
-  const [isRegisterModalActive, setIsRegisterModalActive] = useState(false);
+  useEffect(() => {
+    async function fetchUser() {
+      const userResponse = await api.usuarios.getByIdAsync("u10");
+      setUser(userResponse.data);
+    }
+    fetchUser();
+  }, []);
 
   return (
     <>

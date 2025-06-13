@@ -22,11 +22,5 @@ export default async function Home() {
     return <p>Erro ao buscar livros.</p>;
   }
 
-  return (
-    <html>
-      <body>
-        <ClientSide books={booksResponse.data} />
-      </body>
-    </html>
-  );
+  return <ClientSide books={booksResponse.data} />;
 }

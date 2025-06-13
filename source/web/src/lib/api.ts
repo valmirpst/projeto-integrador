@@ -3,6 +3,7 @@ import { ApiResponse } from "@/@types/requests/api-response";
 import { ReturnType } from "@/@types/requests/return-type";
 import { ENV } from "./env";
 import { UserType } from "@/@types/user";
+import { ReserveType } from "@/@types/reserve";
 
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -183,4 +184,5 @@ function createApi<TModel, TParams>(endpoint: string) {
 export const api = {
   livros: createApi<BookType, unknown>("/livros"),
   usuarios: createApi<UserType, unknown>("/usuarios"),
+  reservas: createApi<ReserveType, unknown>("/historico"),
 };
