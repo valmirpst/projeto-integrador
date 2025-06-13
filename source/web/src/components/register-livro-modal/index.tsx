@@ -180,7 +180,7 @@ export default function RegisterLivroModal({
                 onChange={(e) =>
                   setForm((prev) => ({
                     ...prev,
-                    quantidade: parseInt(e.target.value),
+                    qtd_disponivel: parseInt(e.target.value),
                   }))
                 }
               />

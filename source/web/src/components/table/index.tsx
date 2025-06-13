@@ -45,7 +45,7 @@ export default function Table<T>(props: Props<T>) {
 
   function handleConfirmationTrash(item: T) {
     setIsConfirmationTrashModalActive(true);
-    // handleTrash(item);
+    handleTrash(item);
   }
 
   return (

@@ -84,19 +84,18 @@ type PropsType = {
 
 export default function Menu() {
   const [isRegisterModalActive, setIsRegisterModalActive] = useState(false);
-  const [user, setUser] = useState<UserType | null>()
+  const [user, setUser] = useState<UserType | null>();
 
   const isAdmin = true;
   const menuItems = isAdmin ? librarianMenu : userMenu;
-  
 
   useEffect(() => {
     async function fetchUser() {
       const userResponse = await api.usuarios.getByIdAsync("u10");
       setUser(userResponse.data);
     }
-    fetchUser()
-  }, [])
+    fetchUser();
+  }, []);
 
   return (
     <>
