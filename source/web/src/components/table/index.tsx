@@ -6,12 +6,15 @@ import { Text } from "../ui/text";
 import { Box } from "../ui/box";
 import { useState } from "react";
 import ConfirmationTrashModal from "../confirmation-trash-modal";
+import Link from "next/link";
+import { BookType } from "@/@types/book";
 
 type ColumnItemType<T> = {
   title: string;
   proporcion: number;
   image?: keyof T;
   justify?: "start" | "center" | "end";
+  link?: "string";
 };
 
 export type ColumnType<T> = Partial<{
@@ -23,10 +26,11 @@ type Props<T> = {
   columns: ColumnType<T>;
   handleTrash: (item: T) => void;
   handleEdit: (item: T) => void;
+  type?: "book";
 };
 
 export default function Table<T>(props: Props<T>) {
-  const { items, columns, handleTrash, handleEdit } = props;
+  const { items, columns, handleTrash, handleEdit, type } = props;
 
   const [page, setPage] = useState(1);
   const [isConfirmationTrashModalActive, setIsConfirmationTrashModalActive] =
@@ -80,25 +84,34 @@ export default function Table<T>(props: Props<T>) {
                         justifyContent: columns[key]?.justify,
                       }}
                     >
-                      {columns[key]?.image &&
-                        typeof item[columns[key].image] === "string" &&
-                        typeof item[key] === "string" && (
-                          <img
-                            src={item[columns[key].image] as string}
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).src = "";
-                            }}
-                            alt={item[key] as string}
-                            width={40}
-                            height={60}
-                          />
-                        )}
-                      {typeof item[key] === "string" ||
-                      typeof item[key] === "number"
-                        ? item[key]
-                        : Array.isArray(item[key])
-                        ? item[key].join(" - ")
-                        : null}
+                      <Link
+                        href={
+                          type === "book"
+                            ? `/livro/${(item as BookType).isbn}`
+                            : ""
+                        }
+                        className={styles.link}
+                      >
+                        {columns[key]?.image &&
+                          typeof item[columns[key].image] === "string" &&
+                          typeof item[key] === "string" && (
+                            <img
+                              src={item[columns[key].image] as string}
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = "";
+                              }}
+                              alt={item[key] as string}
+                              width={40}
+                              height={60}
+                            />
+                          )}
+                        {typeof item[key] === "string" ||
+                        typeof item[key] === "number"
+                          ? item[key]
+                          : Array.isArray(item[key])
+                          ? item[key].join(" - ")
+                          : null}
+                      </Link>
                     </td>
                   ))}
                   <td>

@@ -82,3 +82,11 @@
   background-color: var(--gray-50) !important;
   border-top: 0.125rem solid var(--gray-200);
 }
+
+.link {
+  display: grid;
+  align-items: center;
+  color: var(--gray-700);
+  text-decoration: none;
+  height: 3.75rem;
+}
