@@ -135,6 +135,7 @@ export default function LivroClient() {
           columns={columns}
           handleTrash={handleTrash}
           handleEdit={handleEdit}
+          type="book"
         />
       </Box>
       <RegisterLivroModal
