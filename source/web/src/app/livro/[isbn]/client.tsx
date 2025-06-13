@@ -8,8 +8,13 @@ import Img from "@/components/ui/img";
 import { Button } from "@/components/ui/button";
 import { Heart, ShareNetwork, Star } from "phosphor-react";
 import { theme } from "@/theme";
+import { BookType } from "@/@types/book";
 
-export default function LivroClient() {
+type PropsType = {
+  book: BookType;
+};
+
+export default function LivroClient({ book }: PropsType) {
   return (
     <Box className={styles.container}>
       <div className={styles.livroDetalhes}>
