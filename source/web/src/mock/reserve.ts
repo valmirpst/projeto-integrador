@@ -2,6 +2,7 @@ import { ReserveType } from "@/@types/reserve";
 
 export const reserves: ReserveType[] = [
   {
+    id: "1",
     id_usuario: "user1",
     isbn_livro: "isbn1",
     id_bibliotecario: "bibliotecario1",
@@ -11,6 +12,7 @@ export const reserves: ReserveType[] = [
     favorito: true,
   },
   {
+    id: "2",
     id_usuario: "user2",
     isbn_livro: "isbn2",
     id_bibliotecario: "bibliotecario2",
@@ -20,6 +22,7 @@ export const reserves: ReserveType[] = [
     favorito: false,
   },
   {
+    id: "3",
     id_usuario: "user3",
     isbn_livro: "isbn3",
     id_bibliotecario: "bibliotecario3",
@@ -29,6 +32,7 @@ export const reserves: ReserveType[] = [
     favorito: true,
   },
   {
+    id: "4",
     id_usuario: "user4",
     isbn_livro: "isbn4",
     id_bibliotecario: "bibliotecario4",
@@ -38,6 +42,7 @@ export const reserves: ReserveType[] = [
     favorito: false,
   },
   {
+    id: "5",
     id_usuario: "user5",
     isbn_livro: "isbn5",
     id_bibliotecario: "bibliotecario5",
@@ -47,6 +52,7 @@ export const reserves: ReserveType[] = [
     favorito: false,
   },
   {
+    id: "6",
     id_usuario: "user6",
     isbn_livro: "isbn6",
     id_bibliotecario: "bibliotecario6",
@@ -56,6 +62,7 @@ export const reserves: ReserveType[] = [
     favorito: true,
   },
   {
+    id: "7",
     id_usuario: "user7",
     isbn_livro: "isbn7",
     id_bibliotecario: "bibliotecario7",
@@ -65,6 +72,7 @@ export const reserves: ReserveType[] = [
     favorito: true,
   },
   {
+    id: "8",
     id_usuario: "user8",
     isbn_livro: "isbn8",
     id_bibliotecario: "bibliotecario8",
@@ -74,6 +82,7 @@ export const reserves: ReserveType[] = [
     favorito: false,
   },
   {
+    id: "9",
     id_usuario: "user9",
     isbn_livro: "isbn9",
     id_bibliotecario: "bibliotecario9",
@@ -83,6 +92,7 @@ export const reserves: ReserveType[] = [
     favorito: true,
   },
   {
+    id: "10",
     id_usuario: "user10",
     isbn_livro: "isbn10",
     id_bibliotecario: "bibliotecario10",
@@ -92,6 +102,7 @@ export const reserves: ReserveType[] = [
     favorito: false,
   },
   {
+    id: "11",
     id_usuario: "user11",
     isbn_livro: "isbn11",
     id_bibliotecario: "bibliotecario11",
@@ -101,6 +112,7 @@ export const reserves: ReserveType[] = [
     favorito: true,
   },
   {
+    id: "12",
     id_usuario: "user12",
     isbn_livro: "isbn12",
     id_bibliotecario: "bibliotecario12",
@@ -110,6 +122,7 @@ export const reserves: ReserveType[] = [
     favorito: true,
   },
   {
+    id: "13",
     id_usuario: "user13",
     isbn_livro: "isbn13",
     id_bibliotecario: "bibliotecario13",
@@ -119,6 +132,7 @@ export const reserves: ReserveType[] = [
     favorito: false,
   },
   {
+    id: "14",
     id_usuario: "user14",
     isbn_livro: "isbn14",
     id_bibliotecario: "bibliotecario14",
@@ -128,6 +142,7 @@ export const reserves: ReserveType[] = [
     favorito: true,
   },
   {
+    id: "15",
     id_usuario: "user15",
     isbn_livro: "isbn15",
     id_bibliotecario: "bibliotecario15",
@@ -137,6 +152,7 @@ export const reserves: ReserveType[] = [
     favorito: false,
   },
   {
+    id: "16",
     id_usuario: "user16",
     isbn_livro: "isbn16",
     id_bibliotecario: "bibliotecario16",
@@ -146,6 +162,7 @@ export const reserves: ReserveType[] = [
     favorito: true,
   },
   {
+    id: "17",
     id_usuario: "user17",
     isbn_livro: "isbn17",
     id_bibliotecario: "bibliotecario17",
@@ -155,6 +172,7 @@ export const reserves: ReserveType[] = [
     favorito: false,
   },
   {
+    id: "18",
     id_usuario: "user18",
     isbn_livro: "isbn18",
     id_bibliotecario: "bibliotecario18",
@@ -164,6 +182,7 @@ export const reserves: ReserveType[] = [
     favorito: true,
   },
   {
+    id: "19",
     id_usuario: "user19",
     isbn_livro: "isbn19",
     id_bibliotecario: "bibliotecario19",

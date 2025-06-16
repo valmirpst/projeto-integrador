@@ -9,8 +9,12 @@ export async function generateMetadata(): Promise<Metadata> {
   return {};
 }
 
-export default async function Livro({ params }: { params: { isbn: string } }) {
-  const { isbn } = params;
+type LivroProps = {
+  params: Promise<{ isbn: string }>;
+};
+
+export default async function Livro({ params }: LivroProps) {
+  const { isbn } = await params;
 
   const booksResponse = await api.livros.getByIdAsync(isbn);
 
