@@ -1,16 +1,23 @@
 import cors from "cors";
 import express, { Request, Response } from "express";
+import path from "path";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+import { fileURLToPath } from "url";
 import { env } from "./env";
 import { handleErrorMiddleware } from "./middlewares/handle-error-middleware";
 import { router } from "./routes";
 import { swaggerOptions } from "./swagger/options";
 
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use("/images", express.static(path.join(dirname, "..", "public", "images")));
 
 app.use("/api", router);
 

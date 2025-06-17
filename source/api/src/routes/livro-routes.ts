@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { LivroController } from "../controllers/livro-controller";
+import upload from "../core/upload";
 import { validateMiddleware } from "../middlewares/validate-middleware";
 import { livroSchema } from "../models/schemas/livro-schema";
 import { wrapController } from "./wrappers/wrap-controller";
@@ -222,6 +223,58 @@ const livroRoutes = Router();
  *               properties:
  *                 message:
  *                   type: string
+ * /livros/{isbn}/upload:
+ *   post:
+ *     summary: Faz upload da imagem de capa do livro
+ *     tags: [Livros]
+ *     parameters:
+ *       - in: path
+ *         name: isbn
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ISBN do livro
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               book_cover:
+ *                 type: string
+ *                 format: binary
+ *                 description: Arquivo da imagem de capa do livro
+ *     responses:
+ *       200:
+ *         description: Upload realizado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 filename:
+ *                   type: string
+ *       400:
+ *         description: Nenhum arquivo enviado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: Livro não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 
 const livroController = new LivroController();
@@ -231,5 +284,11 @@ livroRoutes.post("/", validateMiddleware(livroSchema), wrapController(livroContr
 livroRoutes.put("/:isbn", validateMiddleware(livroSchema), wrapController(livroController.updateAsync, livroController));
 livroRoutes.delete("/:isbn", wrapController(livroController.deleteAsync, livroController));
 livroRoutes.get("/:isbn", wrapController(livroController.getByIdAsync, livroController));
+livroRoutes.post(
+  "/:isbn/upload",
+  wrapController(livroController.checkExistsAsync, livroController),
+  upload.single("book_cover"),
+  wrapController(livroController.uploadAsync, livroController)
+);
 
 export { livroRoutes };
