@@ -13,15 +13,15 @@ const perfilProperties: Record<
     valor_multa_dia: number;
   }
 > = {
-  "0": {
+  aluno: {
     tempo_emprestimo_dias: 30,
     valor_multa_dia: 5,
   },
-  "1": {
+  bibliotecario: {
     tempo_emprestimo_dias: 7,
     valor_multa_dia: 2,
   },
-  "2": {
+  professor: {
     tempo_emprestimo_dias: 14,
     valor_multa_dia: 7,
   },
