@@ -2,6 +2,7 @@ import { QueryResultRow } from "pg";
 import { db } from "../../core/database";
 import { NotFoundError } from "../../exceptions/errors";
 import { IQueryableModel } from "../../interfaces/i-model";
+import { StatusEnum } from "../primitives/enumerations";
 import { DeletableModelBase } from "./deletable-model-base";
 
 export abstract class QueryableModelBase<TEntity extends QueryResultRow, TFilter = Record<string, any>>
@@ -11,6 +12,8 @@ export abstract class QueryableModelBase<TEntity extends QueryResultRow, TFilter
   async queryAsync(queryParams?: TFilter): Promise<TEntity[]> {
     const queryParamsMap = Object.entries(queryParams || {});
 
+    const hasStatus = await this.hasStatusColumn();
+
     const query = `
       SELECT * FROM ${this.tableName}
       ${
@@ -18,9 +21,13 @@ export abstract class QueryableModelBase<TEntity extends QueryResultRow, TFilter
           ? queryParamsMap.map(([key, value], i) => `${i === 0 ? "WHERE" : "AND"} ${key} = '${value}'`).join(" ")
           : ""
       }
+      ${
+        hasStatus && this.tableName != "historico"
+          ? `${queryParamsMap.length > 0 ? "AND" : "WHERE"} status = '${StatusEnum.ativo}'`
+          : ""
+      }
       ORDER BY ${this.primaryKey} ASC
     `;
-
     const res = await db.query<TEntity>(query);
 
     return res.rows;
@@ -38,5 +45,18 @@ export abstract class QueryableModelBase<TEntity extends QueryResultRow, TFilter
     if (res.rowCount === 0) throw new NotFoundError(`${tableName} não encontrado`);
 
     return res.rows[0];
+  }
+
+  async hasStatusColumn(): Promise<boolean> {
+    const res = await db.query(
+      `
+    SELECT column_name
+    FROM information_schema.columns
+    WHERE table_name = $1 AND column_name = 'status'
+  `,
+      [this.tableName]
+    );
+
+    return res.rowCount ? res.rowCount > 0 : false;
   }
 }
