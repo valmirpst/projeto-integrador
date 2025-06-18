@@ -24,7 +24,6 @@ export default function LivroClient() {
 
   const loadBooks = async () => {
     const res = await api.livros.getAsync();
-    console.log(res);
     if (res.data) setBooks(res.data);
   };
 

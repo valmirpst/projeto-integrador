@@ -7,6 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {};
 }
 
-export default function Reserva() {
+export default function Reserva
+() {
   return <ClientSide />;
 }
