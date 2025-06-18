@@ -9,15 +9,15 @@ import { handleErrorMiddleware } from "./middlewares/handle-error-middleware";
 import { router } from "./routes";
 import { swaggerOptions } from "./swagger/options";
 
-const filename = fileURLToPath(import.meta.url);
-const dirname = path.dirname(filename);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.use("/images", express.static(path.join(dirname, "..", "public", "images")));
+app.use("/images", express.static(path.join(__dirname, "..", "public", "images")));
 
 app.use("/api", router);
 
