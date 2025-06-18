@@ -51,6 +51,13 @@ const librarianMenu = [
     text: "Reserva",
     url: "/admin/reserva",
   },
+  {
+    icon: (
+      <Icon.AddressBook width={20} height={20} color={theme.colors.gray100} />
+    ),
+    text: "Usuário",
+    url: "/admin/usuario",
+  },
 ];
 
 const userSubMenu = [
