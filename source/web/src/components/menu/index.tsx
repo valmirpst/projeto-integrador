@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import RegisterLivroModal from "../register-modal";
 import { UserType } from "@/@types/user";
 import { api } from "@/lib/api";
+import RegisterReserveModal from "../register-reserve-modal";
 
 const userMenu = [
   {
@@ -158,7 +159,7 @@ export default function Menu() {
           </Box>
         </button>
       </Box>
-      <RegisterLivroModal
+      <RegisterReserveModal
         open={isRegisterModalActive}
         onOpenChange={() => setIsRegisterModalActive(false)}
       />
