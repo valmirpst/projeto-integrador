@@ -10,7 +10,9 @@ import Select from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
 import { UserType } from "@/@types/user";
-import { PropsRegisterModalType } from "@/components/register-modal";
+import RegisterUserModal, {
+  PropsRegisterModalType,
+} from "@/components/register-modal";
 
 type EditarAtributo<T, K extends keyof T, V> = Omit<T, K> & { [P in K]: V };
 
@@ -19,13 +21,20 @@ type EditarAtributo<T, K extends keyof T, V> = Omit<T, K> & { [P in K]: V };
 export default function UsuarioClient() {
   const [searchValue, setSearchValue] = useState("");
   const [users, setUsers] = useState<UserType[]>([]);
-  const [livroEditProps, setLivroEditProps] = useState<
+  const [isCreateUserModalActive, setIsCreateUserModalActive] = useState(false);
+  const [userEditProps, setUserEditProps] = useState<
     Partial<PropsRegisterModalType>
   >({});
 
   useEffect(() => {
     loadUsers();
   }, []);
+
+  function onOpenChange() {
+    loadUsers();
+    setIsCreateUserModalActive(false);
+    setUserEditProps({});
+  }
 
   const columns: ColumnType<UserType> = {
     nome: {
@@ -64,8 +73,13 @@ export default function UsuarioClient() {
     await loadUsers();
   }
 
-  function handleEdit() {
-    console.log("edit");
+  function handleEdit(user: UserType) {
+    setUserEditProps({
+      open: true,
+      onOpenChange: onOpenChange,
+      formdata: user,
+      update: true,
+    });
   }
 
   return (
@@ -88,7 +102,12 @@ export default function UsuarioClient() {
               width={200}
             />
           </Box>
-          <Button className={stylesAdmin.adminButton} size="sm" width={120}>
+          <Button
+            className={stylesAdmin.adminButton}
+            size="sm"
+            width={120}
+            onClick={() => setIsCreateUserModalActive(true)}
+          >
             Cadastrar
           </Button>
         </Box>
@@ -107,6 +126,11 @@ export default function UsuarioClient() {
         columns={columns}
         handleTrash={handleTrash}
         handleEdit={handleEdit}
+      />
+      <RegisterUserModal
+        open={isCreateUserModalActive}
+        onOpenChange={onOpenChange}
+        {...userEditProps}
       />
     </Box>
   );
