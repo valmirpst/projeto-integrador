@@ -7,11 +7,11 @@ DROP TABLE IF EXISTS usuario;
 DROP TABLE IF EXISTS livro;
 
 DROP TYPE IF EXISTS perfil_enum;
-DROP TYPE IF EXISTS historico_enum;
+DROP TYPE IF EXISTS status_enum;
 DROP TYPE IF EXISTS tipo_categoria_enum;
 
 CREATE TYPE perfil_enum AS ENUM('bibliotecario', 'aluno', 'professor');
-CREATE TYPE historico_enum AS ENUM('ativo', 'inativo');
+CREATE TYPE status_enum AS ENUM('ativo', 'inativo');
 CREATE TYPE tipo_categoria_enum AS ENUM('subcategoria', 'categoria');
 
 -- --------------------------------------------
@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS usuario (
 	data_nasc DATE,
 	email VARCHAR(80),
 	telefone VARCHAR(20),
-	perfil perfil_enum
+	perfil perfil_enum,
+	status status_enum DEFAULT 'ativo'
 );
 
 -- --------------------------------------------
@@ -66,7 +67,8 @@ CREATE TABLE IF NOT EXISTS livro (
 	caminho_img TEXT,
 	descricao TEXT,
 	total_avaliacoes INTEGER,
-	total_estrelas INTEGER
+	total_estrelas INTEGER,
+	status status_enum DEFAULT 'ativo'
 );
 
 -- --------------------------------------------
@@ -92,7 +94,7 @@ CREATE TABLE IF NOT EXISTS historico (
 	id_bibliotecario VARCHAR(40) NOT NULL,
 	criado_em TIMESTAMPTZ,
 	atualizado_em TIMESTAMPTZ,
-	status historico_enum,
+	status status_enum DEFAULT 'ativo',
 	
 	CONSTRAINT fk_isbn_livro FOREIGN KEY (isbn_livro)
 		REFERENCES livro(isbn)
