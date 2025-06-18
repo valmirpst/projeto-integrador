@@ -4,7 +4,7 @@ import { IModel } from "../interfaces/i-model";
 import { DeletableModelBase } from "./abstract/deletable-model-base";
 import { CursoEntity } from "./entities/curso-entity";
 import { UsuarioEntity } from "./entities/usuario-entity";
-import { PerfilEnum } from "./primitives/enumerations";
+import { PerfilEnum, StatusEnum } from "./primitives/enumerations";
 
 const perfilProperties: Record<
   string,
@@ -36,6 +36,7 @@ export class UsuarioModel extends DeletableModelBase implements IModel<UsuarioEn
       SELECT ${this.tableName}.*, array_agg(usuario_curso.id_curso) as id_cursos
       FROM ${this.tableName}
       LEFT JOIN usuario_curso ON ${this.tableName}.id = usuario_curso.id_usuario
+      WHERE status = '${StatusEnum.ativo}'
       GROUP BY ${this.tableName}.id
       ORDER BY ${this.tableName}.id ASC
     `;
@@ -115,9 +116,9 @@ export class UsuarioModel extends DeletableModelBase implements IModel<UsuarioEn
     }
 
     const cursoDeleteQuery = `
-        DELETE FROM usuario_curso
-        WHERE id_usuario = $1
-      `;
+      DELETE FROM usuario_curso
+      WHERE id_usuario = $1
+    `;
     await db.query(cursoDeleteQuery, [id]);
 
     const cursos = await db.query<CursoEntity>("SELECT id FROM curso");

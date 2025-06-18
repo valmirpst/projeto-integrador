@@ -13,4 +13,5 @@ export const usuarioSchema = z.object({
     message: "O campo 'perfil' é requerido mas não foi informado.",
   }),
   id_cursos: z.array(z.string().optional().nullable()),
+  status: z.enum(["ativo", "inativo"]).optional(),
 });

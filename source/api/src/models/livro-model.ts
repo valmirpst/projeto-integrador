@@ -3,7 +3,7 @@ import { BadRequestError, NotFoundError } from "../exceptions/errors";
 import { IModel } from "../interfaces/i-model";
 import { DeletableModelBase } from "./abstract/deletable-model-base";
 import { LivroEntity } from "./entities/livro-entity";
-import { CategoriaEnum } from "./primitives/enumerations";
+import { CategoriaEnum, StatusEnum } from "./primitives/enumerations";
 import { Categoria } from "./schemas/livro-schema";
 
 export class LivroModel extends DeletableModelBase implements IModel<LivroEntity> {
@@ -15,6 +15,7 @@ export class LivroModel extends DeletableModelBase implements IModel<LivroEntity
       SELECT ${this.tableName}.*, array_agg(livro_autor.nome_autor) as autores
       FROM ${this.tableName}
       JOIN livro_autor ON ${this.tableName}.isbn = livro_autor.isbn_livro
+      WHERE status = '${StatusEnum.ativo}'
       GROUP BY ${this.tableName}.isbn
       ORDER BY ${this.tableName}.isbn ASC
     `;

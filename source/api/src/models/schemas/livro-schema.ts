@@ -20,4 +20,5 @@ export const livroSchema = z.object({
   total_estrelas: z.number().default(0).optional(),
   autores: z.array(z.string(), { message: "O campo 'autores' é requerido mas não foi informado." }),
   categorias: z.array(categoriaSchema, { message: "O campo 'categorias' é requerido mas não foi informado." }),
+  status: z.enum(["ativo", "inativo"]).optional(),
 });
