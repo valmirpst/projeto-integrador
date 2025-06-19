@@ -14,6 +14,8 @@ export abstract class QueryableModelBase<TEntity extends QueryResultRow, TFilter
 
     const hasStatus = await this.hasStatusColumn();
 
+    const hasStatusParam = queryParamsMap.some(([key]) => key === "status");
+
     const query = `
       SELECT * FROM ${this.tableName}
       ${
@@ -22,12 +24,13 @@ export abstract class QueryableModelBase<TEntity extends QueryResultRow, TFilter
           : ""
       }
       ${
-        hasStatus && this.tableName != "historico"
+        hasStatus && !hasStatusParam && this.tableName != "historico"
           ? `${queryParamsMap.length > 0 ? "AND" : "WHERE"} status = '${StatusEnum.ativo}'`
           : ""
       }
       ORDER BY ${this.primaryKey} ASC
     `;
+
     const res = await db.query<TEntity>(query);
 
     return res.rows;
