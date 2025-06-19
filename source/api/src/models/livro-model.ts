@@ -1,26 +1,23 @@
 import { db } from "../core/database";
-import { BadRequestError, NotFoundError } from "../exceptions/errors";
+import { BadRequestError } from "../exceptions/errors";
 import { IModel } from "../interfaces/i-model";
-import { DeletableModelBase } from "./abstract/deletable-model-base";
+import { QueryableModelBase } from "./abstract/queryable-model-base";
 import { LivroEntity } from "./entities/livro-entity";
-import { CategoriaEnum, StatusEnum } from "./primitives/enumerations";
+import { CategoriaEnum } from "./primitives/enumerations";
 import { Categoria } from "./schemas/livro-schema";
 
-export class LivroModel extends DeletableModelBase implements IModel<LivroEntity> {
+export class LivroModel extends QueryableModelBase<LivroEntity> implements IModel<LivroEntity> {
   protected primaryKey: string = "isbn";
   protected tableName: string = "livro";
 
-  async queryAsync(): Promise<LivroEntity[]> {
-    const query = `
-      SELECT ${this.tableName}.*, array_agg(livro_autor.nome_autor) as autores
-      FROM ${this.tableName}
-      JOIN livro_autor ON ${this.tableName}.isbn = livro_autor.isbn_livro
-      WHERE status = '${StatusEnum.ativo}'
-      GROUP BY ${this.tableName}.isbn
-      ORDER BY ${this.tableName}.isbn ASC
-    `;
+  override async queryAsync(queryParams?: Record<string, any> | undefined): Promise<LivroEntity[]> {
+    const data = await super.queryAsync(queryParams);
 
-    const result = await db.query<Omit<LivroEntity, "categorias">>(query);
+    const autoresQuery = `
+      SELECT array_agg(livro_autor.nome_autor) as autores
+      FROM livro_autor
+      WHERE livro_autor.isbn_livro = $1
+    `;
 
     const categoriasQuery = `
       SELECT livro_categoria.nome_categoria as nome, livro_categoria.tipo
@@ -28,14 +25,15 @@ export class LivroModel extends DeletableModelBase implements IModel<LivroEntity
       WHERE livro_categoria.isbn_livro = $1
     `;
 
-    const livrosComCategorias = await Promise.all(
-      result.rows.map(async livro => {
+    const livros = await Promise.all(
+      data.map(async livro => {
+        const autoresRes = await db.query<{ autores: string[] }>(autoresQuery, [livro.isbn]);
         const categoriasRes = await db.query<Categoria>(categoriasQuery, [livro.isbn]);
-        return { ...livro, categorias: categoriasRes.rows };
+        return { ...livro, autores: autoresRes.rows[0]?.autores || [], categorias: categoriasRes.rows };
       })
     );
 
-    return livrosComCategorias;
+    return livros;
   }
 
   async createAsync(data: LivroEntity): Promise<LivroEntity> {
@@ -53,6 +51,11 @@ export class LivroModel extends DeletableModelBase implements IModel<LivroEntity
     ];
 
     const { isbn, autores, categorias } = data;
+
+    const existingLivro = await db.query<LivroEntity>("SELECT * FROM livro WHERE isbn = $1", [isbn]);
+    if (existingLivro.rowCount && existingLivro.rowCount > 0) {
+      throw new BadRequestError(`Livro com ISBN ${isbn} já existe.`);
+    }
 
     const query = `
       INSERT INTO livro(isbn, descricao, edicao, editora, genero, qtd_disponivel, titulo, caminho_img, total_avaliacoes, total_estrelas)
@@ -79,30 +82,6 @@ export class LivroModel extends DeletableModelBase implements IModel<LivroEntity
     return livro;
   }
 
-  async queryByIdAsync(id: string): Promise<LivroEntity> {
-    const query = `
-      SELECT livro.*, array_agg(livro_autor.nome_autor) as autores
-      FROM livro
-      JOIN livro_autor ON livro.isbn = livro_autor.isbn_livro
-      WHERE livro.isbn = $1
-      GROUP BY livro.isbn
-  `;
-
-    const res = await db.query<LivroEntity>(query, [id]);
-
-    if (res.rowCount === 0) throw new NotFoundError("Livro não encontrado");
-
-    const categoriasQuery = `
-      SELECT livro_categoria.nome_categoria as nome, livro_categoria.tipo
-      FROM livro_categoria
-      WHERE livro_categoria.isbn_livro = $1
-  `;
-
-    const categoriasRes = await db.query<Categoria>(categoriasQuery, [id]);
-
-    return { ...res.rows[0], categorias: categoriasRes.rows };
-  }
-
   async updateAsync(id: string, data: LivroEntity): Promise<LivroEntity> {
     const values = [
       data.descricao,
@@ -117,7 +96,7 @@ export class LivroModel extends DeletableModelBase implements IModel<LivroEntity
       id,
     ];
 
-    const { isbn, autores, categorias } = data;
+    const { isbn, autores, categorias, status } = data;
 
     if (isbn !== id) {
       throw new BadRequestError("O ISBN enviado no parâmetro é diferente do enviado no corpo da requisição.");
@@ -135,6 +114,7 @@ export class LivroModel extends DeletableModelBase implements IModel<LivroEntity
         caminho_img = $7,
         total_avaliacoes = $8,
         total_estrelas = $9
+        ${status != undefined ? `, status = '${status}'` : ""}
       WHERE isbn = $10
       RETURNING *
   `;
@@ -168,5 +148,27 @@ export class LivroModel extends DeletableModelBase implements IModel<LivroEntity
     });
 
     return { ...res.rows[0], autores, categorias };
+  }
+
+  override async queryByIdAsync(id: string): Promise<LivroEntity> {
+    const data = await super.queryByIdAsync(id);
+
+    const autoresQuery = `
+      SELECT array_agg(livro_autor.nome_autor) as autores
+      FROM livro_autor
+      WHERE livro_autor.isbn_livro = $1
+    `;
+
+    const autoresRes = await db.query<{ autores: string[] }>(autoresQuery, [id]);
+
+    const categoriasQuery = `
+      SELECT livro_categoria.nome_categoria as nome, livro_categoria.tipo
+      FROM livro_categoria
+      WHERE livro_categoria.isbn_livro = $1
+    `;
+
+    const categoriasRes = await db.query<Categoria>(categoriasQuery, [id]);
+
+    return { ...data, autores: autoresRes.rows[0]?.autores || [], categorias: categoriasRes.rows };
   }
 }

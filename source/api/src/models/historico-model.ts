@@ -3,7 +3,7 @@ import { IModel } from "../interfaces/i-model";
 import { QueryableModelBase } from "./abstract/queryable-model-base";
 import { HistoricoEntity } from "./entities/historico-entity";
 import { HistoricoFilter } from "./filters/historico-filter";
-import { StatusEnum } from "./primitives/enumerations";
+import { PerfilEnum, StatusEnum } from "./primitives/enumerations";
 import { HistoricoSchema } from "./schemas/historico-schema";
 
 export class HistoricoModel
@@ -18,19 +18,40 @@ export class HistoricoModel
 
     const id = crypto.randomUUID();
 
-    const values = [id, isbn_livro, id_usuario, id_bibliotecario];
+    const usuarioEmprestimos = await db.query("SELECT COUNT(*) FROM historico WHERE id_usuario = $1 AND status = $2", [
+      id_usuario,
+      StatusEnum.ativo,
+    ]);
 
-    const date = new Date(Date.now() - 3 * 60 * 60 * 1000); // Ajuste de fuso horário para UTC-3
+    const usuario = await db.query<{ id: string; perfil: PerfilEnum }>(
+      "SELECT id, perfil FROM usuario WHERE id = $1 AND status = $2",
+      [id_usuario, StatusEnum.ativo]
+    );
 
-    const livro = await db.query("SELECT isbn FROM livro WHERE isbn = $1 AND status = $2", [isbn_livro, StatusEnum.ativo]);
+    if (usuario.rowCount === 0) {
+      throw new Error(`Usuário com id ${id_usuario} não encontrado.`);
+    }
+
+    const max = usuario.rows[0].perfil == PerfilEnum.aluno ? 3 : 5;
+    if (usuarioEmprestimos.rows[0]?.count && usuarioEmprestimos.rows[0].count >= max) {
+      throw new Error(`Usuário já possui ${usuarioEmprestimos.rows[0].count} livros emprestados.`);
+    }
+
+    const livro = await db.query<{ isbn: string; qtd_disponivel: number }>(
+      "SELECT isbn, qtd_disponivel FROM livro WHERE isbn = $1 AND status = $2",
+      [isbn_livro, StatusEnum.ativo]
+    );
     if (livro.rowCount === 0) {
       throw new Error(`Livro com isbn ${isbn_livro} não encontrado.`);
     }
 
-    const usuario = await db.query("SELECT id FROM usuario WHERE id = $1 AND status = $2", [id_usuario, StatusEnum.ativo]);
-    if (usuario.rowCount === 0) {
-      throw new Error(`Usuário com id ${id_usuario} não encontrado.`);
+    if (livro.rows[0].qtd_disponivel <= 0) {
+      throw new Error(`Livro com isbn ${isbn_livro} não está disponível .`);
     }
+
+    const values = [id, isbn_livro, id_usuario, id_bibliotecario];
+
+    const date = new Date(Date.now() - 3 * 60 * 60 * 1000); // Ajuste de fuso horário para UTC-3
 
     const bibliotecario = await db.query("SELECT id FROM usuario WHERE id = $1 AND status = $2", [
       id_bibliotecario,
@@ -46,6 +67,11 @@ export class HistoricoModel
     `;
 
     const res = await db.query<HistoricoEntity>(query, [...values, date, date]);
+
+    await db.query("UPDATE livro SET qtd_disponivel = qtd_disponivel - 1 WHERE isbn = $1 AND status = $2", [
+      isbn_livro,
+      StatusEnum.ativo,
+    ]);
 
     return res.rows[0];
   }
