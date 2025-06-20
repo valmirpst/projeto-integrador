@@ -23,6 +23,10 @@ app.use("/api", router);
 
 app.use(handleErrorMiddleware);
 
+app.get("/", (_: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, "..", "public", "index.html"));
+});
+
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(swaggerOptions)));
 
 app.get("/docs.json", (_: Request, res: Response) => {
@@ -33,5 +37,8 @@ app.get("/docs.json", (_: Request, res: Response) => {
 const PORT = env.PORT;
 
 app.listen({ port: PORT }, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+  console.log("-----------------------------------------------------------------\n");
+  console.log(`- Servidor rodando em: http://localhost:${PORT}`);
+  console.log(`- Documentação Swagger: http://localhost:${PORT}/docs\n`);
+  console.log("-----------------------------------------------------------------\n");
 });

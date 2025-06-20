@@ -19,7 +19,7 @@ export function handleErrorMiddleware(error: unknown, req: Request, res: Respons
     status = 400;
     errors = [error.message];
   } else if (error instanceof Error) {
-    errors = [error.message];
+    errors = [error.message || "Ocorreu um erro inesperado. Por favor, tente novamente mais tarde."];
   } else {
     console.error(error);
   }
