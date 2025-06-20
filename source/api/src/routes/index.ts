@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { cursoRoutes } from "./curso-routes";
-import { historicoRoutes } from "./historico-routes";
-import { livroRoutes } from "./livro-routes";
-import { usuarioRoutes } from "./usuario-routes";
+import { cursoRoutes } from "./curso.routes";
+import { historicoRoutes } from "./historico.routes";
+import { livroRoutes } from "./livro.routes";
+import { usuarioRoutes } from "./usuario.routes";
 
 const router = Router();
 

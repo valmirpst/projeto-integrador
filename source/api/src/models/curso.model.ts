@@ -2,7 +2,7 @@ import { db } from "../core/database";
 import { BadRequestError } from "../exceptions/errors";
 import { IModel } from "../interfaces/i-model";
 import { QueryableModelBase } from "./abstract/queryable-model-base";
-import { CursoEntity } from "./entities/curso-entity";
+import { CursoEntity } from "./entities/curso.entity";
 
 export class CursoModel extends QueryableModelBase<CursoEntity> implements IModel<CursoEntity> {
   protected primaryKey: string = "id";

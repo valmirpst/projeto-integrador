@@ -2,9 +2,9 @@ import { db } from "../core/database";
 import { BadRequestError } from "../exceptions/errors";
 import { IModel } from "../interfaces/i-model";
 import { QueryableModelBase } from "./abstract/queryable-model-base";
-import { LivroEntity } from "./entities/livro-entity";
+import { LivroEntity } from "./entities/livro.entity";
 import { CategoriaEnum } from "./primitives/enumerations";
-import { Categoria } from "./schemas/livro-schema";
+import { Categoria } from "./schemas/livro.schema";
 
 export class LivroModel extends QueryableModelBase<LivroEntity> implements IModel<LivroEntity> {
   protected primaryKey: string = "isbn";

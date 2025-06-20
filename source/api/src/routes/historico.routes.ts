@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { HistoricoController } from "../controllers/historico-controller";
-import { validateMiddleware } from "../middlewares/validate-middleware";
-import { historicoSchema } from "../models/schemas/historico-schema";
+import { HistoricoController } from "../controllers/historico.controller";
+import { validateMiddleware } from "../middlewares/validate.middleware";
+import { historicoSchema } from "../models/schemas/historico.schema";
 import { wrapController } from "./wrappers/wrap-controller";
 
 const historicoRoutes = Router();

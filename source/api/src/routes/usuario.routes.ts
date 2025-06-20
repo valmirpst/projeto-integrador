@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { UsuarioController } from "../controllers/usuario-controller";
-import { validateMiddleware } from "../middlewares/validate-middleware";
-import { usuarioSchema } from "../models/schemas/usuario-schema";
+import { UsuarioController } from "../controllers/usuario.controller";
+import { validateMiddleware } from "../middlewares/validate.middleware";
+import { usuarioSchema } from "../models/schemas/usuario.schema";
 import { wrapController } from "./wrappers/wrap-controller";
 
 const usuarioRoutes = Router();

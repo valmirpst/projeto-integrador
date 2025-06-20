@@ -1,8 +1,8 @@
 import { db } from "../core/database";
 import { IModel } from "../interfaces/i-model";
 import { QueryableModelBase } from "./abstract/queryable-model-base";
-import { CursoEntity } from "./entities/curso-entity";
-import { UsuarioEntity } from "./entities/usuario-entity";
+import { CursoEntity } from "./entities/curso.entity";
+import { UsuarioEntity } from "./entities/usuario.entity";
 import { PerfilEnum } from "./primitives/enumerations";
 
 const perfilProperties: Record<

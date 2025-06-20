@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { CursoController } from "../controllers/curso-controller";
-import { validateMiddleware } from "../middlewares/validate-middleware";
-import { cursoSchema } from "../models/schemas/curso-schema";
+import { CursoController } from "../controllers/curso.controller";
+import { validateMiddleware } from "../middlewares/validate.middleware";
+import { cursoSchema } from "../models/schemas/curso.schema";
 import { wrapController } from "./wrappers/wrap-controller";
 
 const cursoRoutes = Router();

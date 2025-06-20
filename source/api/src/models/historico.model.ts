@@ -1,10 +1,10 @@
 import { db } from "../core/database";
 import { IModel } from "../interfaces/i-model";
 import { QueryableModelBase } from "./abstract/queryable-model-base";
-import { HistoricoEntity } from "./entities/historico-entity";
-import { HistoricoFilter } from "./filters/historico-filter";
+import { HistoricoEntity } from "./entities/historico.entity";
+import { HistoricoFilter } from "./filters/historico.filter";
 import { PerfilEnum, StatusEnum } from "./primitives/enumerations";
-import { HistoricoSchema } from "./schemas/historico-schema";
+import { HistoricoSchema } from "./schemas/historico.schema";
 
 export class HistoricoModel
   extends QueryableModelBase<HistoricoEntity, HistoricoFilter>

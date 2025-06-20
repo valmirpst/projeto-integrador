@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { NotFoundError } from "../exceptions/errors";
-import { LivroEntity } from "../models/entities/livro-entity";
-import { livroSchema } from "../models/schemas/livro-schema";
-import { LivroService } from "../services/livro-service";
-import { ControllerBase } from "./abstract/controller-base";
+import { LivroEntity } from "../models/entities/livro.entity";
+import { livroSchema } from "../models/schemas/livro.schema";
+import { LivroService } from "../services/livro.service";
+import { ControllerBase } from "./abstract/base.controller";
 
 export class LivroController extends ControllerBase<LivroEntity> {
   protected service = new LivroService();

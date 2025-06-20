@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { LivroController } from "../controllers/livro-controller";
+import { LivroController } from "../controllers/livro.controller";
 import upload from "../core/upload";
-import { validateMiddleware } from "../middlewares/validate-middleware";
-import { livroSchema } from "../models/schemas/livro-schema";
+import { validateMiddleware } from "../middlewares/validate.middleware";
+import { livroSchema } from "../models/schemas/livro.schema";
 import { wrapController } from "./wrappers/wrap-controller";
 
 const livroRoutes = Router();

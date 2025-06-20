@@ -5,7 +5,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { fileURLToPath } from "url";
 import { env } from "./env";
-import { handleErrorMiddleware } from "./middlewares/handle-error-middleware";
+import { handleErrorMiddleware } from "./middlewares/handle-error.middleware";
 import { router } from "./routes";
 import { swaggerOptions } from "./swagger/options";
 
