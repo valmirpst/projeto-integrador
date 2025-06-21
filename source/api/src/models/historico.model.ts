@@ -4,6 +4,7 @@ import { QueryableModelBase } from "./abstract/queryable-model-base";
 import { HistoricoEntity } from "./entities/historico.entity";
 import { HistoricoFilter } from "./filters/historico.filter";
 import { PerfilEnum, StatusEnum } from "./primitives/enumerations";
+import { perfilProperties } from "./primitives/helpers";
 import { HistoricoSchema } from "./schemas/historico.schema";
 
 export class HistoricoModel
@@ -41,6 +42,7 @@ export class HistoricoModel
       "SELECT isbn, qtd_disponivel FROM livro WHERE isbn = $1 AND status = $2",
       [isbn_livro, StatusEnum.ativo]
     );
+
     if (livro.rowCount === 0) {
       throw new Error(`Livro com isbn ${isbn_livro} não encontrado.`);
     }
@@ -49,9 +51,36 @@ export class HistoricoModel
       throw new Error(`Livro com isbn ${isbn_livro} não está disponível .`);
     }
 
-    const values = [id, isbn_livro, id_usuario, id_bibliotecario];
+    const now = new Date(Date.now() - 3 * 60 * 60 * 1000); // Ajuste de fuso horário para UTC-3
 
-    const date = new Date(Date.now() - 3 * 60 * 60 * 1000); // Ajuste de fuso horário para UTC-3
+    const pendencias = await db.query<{
+      criado_em: Date;
+      perfil: keyof typeof perfilProperties;
+    }>(
+      `
+        SELECT historico.criado_em, usuario.perfil from historico 
+        JOIN usuario ON historico.id_usuario = usuario.id
+        WHERE historico.id_usuario = $1
+        AND historico.status = $2
+      `,
+      [id_usuario, StatusEnum.ativo]
+    );
+    console.log("Pendências encontradas:", pendencias.rows);
+
+    if (pendencias.rowCount && pendencias.rowCount > 0) {
+      const perfil = perfilProperties[pendencias.rows[0].perfil];
+      const prazoDevolucao = new Date(pendencias.rows[0].criado_em);
+      prazoDevolucao.setDate(prazoDevolucao.getDate() + perfil.tempo_emprestimo_dias);
+
+      console.log("Prazo de devolução:", prazoDevolucao);
+      console.log("Data atual:", now);
+
+      if (now > prazoDevolucao) {
+        throw new Error(`O usuário com id ${id_usuario} possui pendências e não pode emprestar livros.`);
+      }
+    }
+
+    const values = [id, isbn_livro, id_usuario, id_bibliotecario];
 
     const bibliotecario = await db.query("SELECT id FROM usuario WHERE id = $1 AND status = $2", [
       id_bibliotecario,
@@ -66,7 +95,7 @@ export class HistoricoModel
       VALUES($1, $2, $3, $4, $5, $6) RETURNING *
     `;
 
-    const res = await db.query<HistoricoEntity>(query, [...values, date, date]);
+    const res = await db.query<HistoricoEntity>(query, [...values, now, now]);
 
     await db.query("UPDATE livro SET qtd_disponivel = qtd_disponivel - 1 WHERE isbn = $1 AND status = $2", [
       isbn_livro,

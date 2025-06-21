@@ -4,27 +4,7 @@ import { QueryableModelBase } from "./abstract/queryable-model-base";
 import { CursoEntity } from "./entities/curso.entity";
 import { UsuarioEntity } from "./entities/usuario.entity";
 import { PerfilEnum } from "./primitives/enumerations";
-
-const perfilProperties: Record<
-  string,
-  {
-    tempo_emprestimo_dias: number;
-    valor_multa_dia: number;
-  }
-> = {
-  aluno: {
-    tempo_emprestimo_dias: 14,
-    valor_multa_dia: 1,
-  },
-  bibliotecario: {
-    tempo_emprestimo_dias: 30,
-    valor_multa_dia: 1,
-  },
-  professor: {
-    tempo_emprestimo_dias: 30,
-    valor_multa_dia: 1,
-  },
-};
+import { perfilProperties } from "./primitives/helpers";
 
 export class UsuarioModel extends QueryableModelBase<UsuarioEntity> implements IModel<UsuarioEntity> {
   protected tableName: string = "usuario";
