@@ -37,9 +37,15 @@ const cursoRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Curso'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Curso'
  *   post:
  *     summary: Adiciona um curso
  *     tags: [Cursos]
@@ -58,7 +64,13 @@ const cursoRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Curso'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Curso'
  *       400:
  *         description: Dados inválidos
  *         content:
@@ -66,10 +78,13 @@ const cursoRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
- *                 error:
- *                   type: object
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *
  * /cursos/{id}:
  *   get:
@@ -88,7 +103,13 @@ const cursoRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Curso'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Curso'
  *       404:
  *         description: Curso não encontrado
  *         content:
@@ -96,8 +117,13 @@ const cursoRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *   put:
  *     summary: Atualiza um curso
  *     tags: [Cursos]
@@ -120,7 +146,13 @@ const cursoRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Curso'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Curso'
  *       400:
  *         description: Dados inválidos
  *         content:
@@ -128,10 +160,13 @@ const cursoRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
- *                 error:
- *                   type: object
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *       404:
  *         description: Curso não encontrado
  *         content:
@@ -139,8 +174,13 @@ const cursoRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *   delete:
  *     summary: Exclui um curso
  *     tags: [Cursos]
@@ -159,8 +199,12 @@ const cursoRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: "null"
+ *                   example: null
  *       404:
  *         description: Curso não encontrado
  *         content:
@@ -168,8 +212,11 @@ const cursoRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
  */
 
 const cursoController = new CursoController();

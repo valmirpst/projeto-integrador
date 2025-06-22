@@ -65,15 +65,11 @@ export class HistoricoModel
       `,
       [id_usuario, StatusEnum.ativo]
     );
-    console.log("Pendências encontradas:", pendencias.rows);
 
     if (pendencias.rowCount && pendencias.rowCount > 0) {
       const perfil = perfilProperties[pendencias.rows[0].perfil];
       const prazoDevolucao = new Date(pendencias.rows[0].criado_em);
       prazoDevolucao.setDate(prazoDevolucao.getDate() + perfil.tempo_emprestimo_dias);
-
-      console.log("Prazo de devolução:", prazoDevolucao);
-      console.log("Data atual:", now);
 
       if (now > prazoDevolucao) {
         throw new Error(`O usuário com id ${id_usuario} possui pendências e não pode emprestar livros.`);

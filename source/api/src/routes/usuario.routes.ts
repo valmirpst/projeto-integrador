@@ -71,9 +71,15 @@ const usuarioRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Usuario'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Usuario'
  *   post:
  *     summary: Adiciona um usuário
  *     tags: [Usuarios]
@@ -100,7 +106,13 @@ const usuarioRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Usuario'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Usuario'
  *       400:
  *         description: Dados inválidos
  *         content:
@@ -108,10 +120,13 @@ const usuarioRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
- *                 error:
- *                   type: object
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *
  * /usuarios/{id}:
  *   get:
@@ -130,7 +145,13 @@ const usuarioRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Usuario'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Usuario'
  *       404:
  *         description: Usuário não encontrado
  *         content:
@@ -138,8 +159,13 @@ const usuarioRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *   put:
  *     summary: Atualiza um usuário pelo ID
  *     tags: [Usuarios]
@@ -162,7 +188,13 @@ const usuarioRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Usuario'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Usuario'
  *       400:
  *         description: Dados inválidos
  *         content:
@@ -170,10 +202,13 @@ const usuarioRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
- *                 error:
- *                   type: object
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *       404:
  *         description: Usuário não encontrado
  *         content:
@@ -181,8 +216,13 @@ const usuarioRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *   delete:
  *     summary: Exclui um usuário pelo ID
  *     tags: [Usuarios]
@@ -201,8 +241,13 @@ const usuarioRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *       404:
  *         description: Usuário não encontrado
  *         content:
@@ -210,8 +255,13 @@ const usuarioRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  */
 
 const usuarioController = new UsuarioController();

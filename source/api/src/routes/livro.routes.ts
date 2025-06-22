@@ -87,9 +87,15 @@ const livroRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Livro'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Livro'
  *   post:
  *     summary: Adiciona um livro
  *     tags: [Livros]
@@ -118,7 +124,13 @@ const livroRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Livro'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Livro'
  *       400:
  *         description: Dados inválidos
  *         content:
@@ -126,10 +138,13 @@ const livroRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
- *                 error:
- *                   type: object
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *
  * /livros/{isbn}:
  *   get:
@@ -148,7 +163,13 @@ const livroRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Livro'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Livro'
  *       404:
  *         description: Livro não encontrado
  *         content:
@@ -156,8 +177,13 @@ const livroRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *   put:
  *     summary: Atualiza um livro pelo ISBN
  *     tags: [Livros]
@@ -180,7 +206,13 @@ const livroRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Livro'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Livro'
  *       400:
  *         description: Dados inválidos
  *         content:
@@ -188,10 +220,13 @@ const livroRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
- *                 error:
- *                   type: object
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *       404:
  *         description: Livro não encontrado
  *         content:
@@ -199,8 +234,13 @@ const livroRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *   delete:
  *     summary: Exclui um livro pelo ISBN
  *     tags: [Livros]
@@ -212,8 +252,19 @@ const livroRoutes = Router();
  *           type: string
  *         description: ISBN do livro
  *     responses:
- *       204:
+ *       200:
  *         description: Livro excluído com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: "null"
+ *                   example: null
  *       404:
  *         description: Livro não encontrado
  *         content:
@@ -221,8 +272,13 @@ const livroRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  * /livros/{isbn}/upload:
  *   post:
  *     summary: Faz upload da imagem de capa do livro
@@ -255,8 +311,12 @@ const livroRoutes = Router();
  *               properties:
  *                 success:
  *                   type: boolean
- *                 filename:
- *                   type: string
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     filename:
+ *                       type: string
  *       400:
  *         description: Nenhum arquivo enviado
  *         content:
@@ -264,8 +324,13 @@ const livroRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *       404:
  *         description: Livro não encontrado
  *         content:
@@ -273,8 +338,13 @@ const livroRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  */
 
 const livroController = new LivroController();
