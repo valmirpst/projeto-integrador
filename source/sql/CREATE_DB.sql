@@ -23,10 +23,11 @@ CREATE TABLE IF NOT EXISTS usuario (
 	nome VARCHAR(80),
 	sobrenome VARCHAR(80),
 	data_nasc DATE,
-	email VARCHAR(80),
 	telefone VARCHAR(20),
 	perfil perfil_enum,
-	status status_enum DEFAULT 'ativo'
+	status status_enum DEFAULT 'ativo',
+	email VARCHAR(80) NOT NULL UNIQUE,
+	senha VARCHAR(255) NOT NULL
 );
 
 -- --------------------------------------------

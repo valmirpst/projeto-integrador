@@ -31,13 +31,13 @@ export class UsuarioModel extends QueryableModelBase<UsuarioEntity> implements I
   }
 
   async createAsync(data: UsuarioEntity): Promise<UsuarioEntity> {
-    const { id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil, id_cursos } = data;
+    const { id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil, id_cursos, senha } = data;
 
-    const values = [id, ra, siape, nome, sobrenome, data_nasc, email, telefone, PerfilEnum[perfil]];
+    const values = [id, ra, siape, nome, sobrenome, data_nasc, email, telefone, PerfilEnum[perfil], senha];
 
     const query = `
-      INSERT INTO ${this.tableName}(id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil)
-      VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *
+      INSERT INTO ${this.tableName}(id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil, senha)
+      VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *
     `;
 
     const cursos = await db.query<CursoEntity>("SELECT id FROM curso");

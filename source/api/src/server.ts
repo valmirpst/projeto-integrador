@@ -5,8 +5,10 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { fileURLToPath } from "url";
 import { env } from "./env";
+import { authenticationMiddleware } from "./middlewares/auth.middleware";
 import { handleErrorMiddleware } from "./middlewares/handle-error.middleware";
 import { router } from "./routes";
+import { authRoutes } from "./routes/auth.routes";
 import { swaggerOptions } from "./swagger/options";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -19,7 +21,8 @@ app.use(express.json());
 
 app.use("/images", express.static(path.join(__dirname, "..", "public", "images")));
 
-app.use("/api", router);
+app.use("/api/auth", authRoutes);
+app.use("/api", authenticationMiddleware, router);
 
 app.use(handleErrorMiddleware);
 
