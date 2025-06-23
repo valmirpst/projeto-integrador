@@ -18,7 +18,7 @@ export type PropsRegisterModalType = {
   update?: boolean;
 };
 
-export default function RegisterUserModal({
+export default function RegisterModal({
   open,
   onOpenChange,
   formdata,

@@ -8,10 +8,9 @@ import { Text } from "../ui/text";
 import MenuItem from "./menu-item";
 import styles from "./menu.module.css";
 import { useEffect, useState } from "react";
-import RegisterLivroModal from "../register-modal";
 import { UserType } from "@/@types/user";
 import { api } from "@/lib/api";
-import RegisterReserveModal from "../register-reserve-modal";
+import LoginModal from "../login-modal";
 
 const userMenu = [
   {
@@ -166,7 +165,7 @@ export default function Menu() {
           </Box>
         </button>
       </Box>
-      <RegisterReserveModal
+      <LoginModal
         open={isRegisterModalActive}
         onOpenChange={() => setIsRegisterModalActive(false)}
       />
