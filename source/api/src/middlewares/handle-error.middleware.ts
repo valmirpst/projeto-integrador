@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
-import { BadRequestError, ConflictError, NotFoundError } from "../exceptions/errors";
+import { BadRequestError, ConflictError, NotFoundError, UnauthorizedError } from "../exceptions/errors";
 
 export function handleErrorMiddleware(error: unknown, req: Request, res: Response, next: NextFunction) {
   let errors: string[] = [];
@@ -12,6 +12,9 @@ export function handleErrorMiddleware(error: unknown, req: Request, res: Respons
   } else if (error instanceof NotFoundError) {
     status = 404;
     errors = [error.message];
+  } else if (error instanceof UnauthorizedError) {
+    status = 401;
+    errors = [error.message || "Acesso não autorizado."];
   } else if (error instanceof ConflictError) {
     status = 409;
     errors = [error.message];
@@ -19,7 +22,7 @@ export function handleErrorMiddleware(error: unknown, req: Request, res: Respons
     status = 400;
     errors = [error.message];
   } else if (error instanceof Error) {
-    errors = [error.message];
+    errors = [error.message || "Ocorreu um erro inesperado. Por favor, tente novamente mais tarde."];
   } else {
     console.error(error);
   }

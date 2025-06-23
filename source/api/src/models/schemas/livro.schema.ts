@@ -14,10 +14,11 @@ export const livroSchema = z.object({
   editora: z.string({ message: "O campo 'editora' é requerido mas não foi informado." }),
   qtd_disponivel: z.number({ message: "O campo 'qtd_disponivel' é requerido mas não foi informado." }),
   genero: z.string({ message: "O campo 'genero' é requerido mas não foi informado." }),
-  caminho_img: z.string().optional(),
+  caminho_img: z.string().nullable().optional(),
   descricao: z.string({ message: "O campo 'descricao' é requerido mas não foi informado." }),
   total_avaliacoes: z.number().default(0).optional(),
   total_estrelas: z.number().default(0).optional(),
   autores: z.array(z.string(), { message: "O campo 'autores' é requerido mas não foi informado." }),
   categorias: z.array(categoriaSchema, { message: "O campo 'categorias' é requerido mas não foi informado." }),
+  status: z.enum(["ativo", "inativo"]).optional(),
 });

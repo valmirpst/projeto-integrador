@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { HistoricoController } from "../controllers/historico-controller";
-import { validateMiddleware } from "../middlewares/validate-middleware";
-import { historicoSchema } from "../models/schemas/historico-schema";
+import { HistoricoController } from "../controllers/historico.controller";
+import { validateMiddleware } from "../middlewares/validate.middleware";
+import { historicoSchema } from "../models/schemas/historico.schema";
 import { wrapController } from "./wrappers/wrap-controller";
 
 const historicoRoutes = Router();
@@ -89,9 +89,15 @@ const historicoRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Historico'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Historico'
  *   post:
  *     summary: Adiciona um histórico
  *     tags: [Histórico]
@@ -112,7 +118,13 @@ const historicoRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Historico'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Historico'
  *       400:
  *         description: Dados inválidos ou usuário/livro/bibliotecário não encontrado
  *         content:
@@ -120,10 +132,13 @@ const historicoRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
- *                 error:
- *                   type: object
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *
  * /historico/{id}:
  *   get:
@@ -142,7 +157,13 @@ const historicoRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Historico'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Historico'
  *       404:
  *         description: Histórico não encontrado
  *         content:
@@ -150,8 +171,13 @@ const historicoRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *   put:
  *     summary: Atualiza um histórico
  *     tags: [Histórico]
@@ -174,7 +200,13 @@ const historicoRoutes = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Historico'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Historico'
  *       400:
  *         description: Dados inválidos ou entidades relacionadas não encontradas
  *         content:
@@ -182,10 +214,13 @@ const historicoRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
- *                 error:
- *                   type: object
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *       404:
  *         description: Histórico não encontrado
  *         content:
@@ -193,8 +228,13 @@ const historicoRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *   delete:
  *     summary: Exclui um histórico
  *     tags: [Histórico]
@@ -213,8 +253,12 @@ const historicoRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: "null"
+ *                   example: null
  *       404:
  *         description: Histórico não encontrado
  *         content:
@@ -222,8 +266,13 @@ const historicoRoutes = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  */
 
 const historicoController = new HistoricoController();

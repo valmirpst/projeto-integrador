@@ -1,6 +1,6 @@
 .selectWrapper {
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   z-index: 1;
   user-select: none;
   position: relative;

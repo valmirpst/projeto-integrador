@@ -1,64 +1,43 @@
 import { db } from "../core/database";
-import { NotFoundError } from "../exceptions/errors";
 import { IModel } from "../interfaces/i-model";
-import { DeletableModelBase } from "./abstract/deletable-model-base";
-import { CursoEntity } from "./entities/curso-entity";
-import { UsuarioEntity } from "./entities/usuario-entity";
+import { QueryableModelBase } from "./abstract/queryable-model-base";
+import { CursoEntity } from "./entities/curso.entity";
+import { UsuarioEntity } from "./entities/usuario.entity";
 import { PerfilEnum } from "./primitives/enumerations";
+import { perfilProperties } from "./primitives/helpers";
 
-const perfilProperties: Record<
-  string,
-  {
-    tempo_emprestimo_dias: number;
-    valor_multa_dia: number;
-  }
-> = {
-  "0": {
-    tempo_emprestimo_dias: 30,
-    valor_multa_dia: 5,
-  },
-  "1": {
-    tempo_emprestimo_dias: 7,
-    valor_multa_dia: 2,
-  },
-  "2": {
-    tempo_emprestimo_dias: 14,
-    valor_multa_dia: 7,
-  },
-};
-
-export class UsuarioModel extends DeletableModelBase implements IModel<UsuarioEntity> {
+export class UsuarioModel extends QueryableModelBase<UsuarioEntity> implements IModel<UsuarioEntity> {
   protected tableName: string = "usuario";
   protected primaryKey: string = "id";
 
-  async queryAsync(): Promise<UsuarioEntity[]> {
-    const query = `
-      SELECT ${this.tableName}.*, array_agg(usuario_curso.id_curso) as id_cursos
-      FROM ${this.tableName}
-      LEFT JOIN usuario_curso ON ${this.tableName}.id = usuario_curso.id_usuario
-      GROUP BY ${this.tableName}.id
-      ORDER BY ${this.tableName}.id ASC
-    `;
+  override async queryAsync(queryParams?: Record<string, any> | undefined): Promise<UsuarioEntity[]> {
+    const data = await super.queryAsync(queryParams);
 
-    const res = await db.query<UsuarioEntity>(query);
+    const id_cursos = await db.query(`
+      SELECT id_usuario, array_agg(id_curso) as id_cursos
+      FROM usuario_curso
+      JOIN usuario ON usuario.id = usuario_curso.id_usuario
+      GROUP BY id_usuario
+      ORDER BY id_usuario ASC
+    `);
 
-    const usuarios = res.rows.map(usuario => ({
+    const usuarios = data.map(usuario => ({
       ...usuario,
       ...perfilProperties[PerfilEnum[usuario.perfil]],
-      id_cursos: usuario.id_cursos.filter(id => id != null) || [],
+      id_cursos: id_cursos.rows.find(row => row.id_usuario === usuario.id)?.id_cursos || [],
     }));
 
     return usuarios;
   }
 
   async createAsync(data: UsuarioEntity): Promise<UsuarioEntity> {
-    const { id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil, id_cursos } = data;
+    const { id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil, id_cursos, senha } = data;
 
-    const values = [id, ra, siape, nome, sobrenome, data_nasc, email, telefone, PerfilEnum[perfil]];
+    const values = [id, ra, siape, nome, sobrenome, data_nasc, email, telefone, PerfilEnum[perfil], senha];
 
     const query = `
-      INSERT INTO ${this.tableName}(id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil)
-      VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *
+      INSERT INTO ${this.tableName}(id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil, senha)
+      VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *
     `;
 
     const cursos = await db.query<CursoEntity>("SELECT id FROM curso");
@@ -85,7 +64,7 @@ export class UsuarioModel extends DeletableModelBase implements IModel<UsuarioEn
   }
 
   async updateAsync(id: string, data: UsuarioEntity): Promise<UsuarioEntity> {
-    const { id: usuarioId, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil, id_cursos } = data;
+    const { id: usuarioId, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil, id_cursos, status } = data;
 
     if (usuarioId !== id) {
       throw new Error("O id enviado no parâmetro é diferente do enviado no corpo da requisição.");
@@ -104,6 +83,7 @@ export class UsuarioModel extends DeletableModelBase implements IModel<UsuarioEn
         email = $6,
         telefone = $7,
         perfil = $8
+        ${status != undefined ? `, status = '${status}'` : ""}
       WHERE id = $9
       RETURNING *
   `;
@@ -115,9 +95,9 @@ export class UsuarioModel extends DeletableModelBase implements IModel<UsuarioEn
     }
 
     const cursoDeleteQuery = `
-        DELETE FROM usuario_curso
-        WHERE id_usuario = $1
-      `;
+      DELETE FROM usuario_curso
+      WHERE id_usuario = $1
+    `;
     await db.query(cursoDeleteQuery, [id]);
 
     const cursos = await db.query<CursoEntity>("SELECT id FROM curso");
@@ -143,23 +123,21 @@ export class UsuarioModel extends DeletableModelBase implements IModel<UsuarioEn
     return { ...res.rows[0], ...perfilProperties[PerfilEnum[res.rows[0].perfil]], id_cursos: id_cursos || [] };
   }
 
-  async queryByIdAsync(id: string): Promise<UsuarioEntity> {
-    const query = `
-      SELECT ${this.tableName}.*, array_agg(usuario_curso.id_curso) as id_cursos
-      FROM ${this.tableName}
-      LEFT JOIN usuario_curso ON ${this.tableName}.id = usuario_curso.id_usuario
-      WHERE ${this.tableName}.id = $1
-      GROUP BY ${this.tableName}.id
-    `;
-    const res = await db.query<UsuarioEntity>(query, [id]);
+  override async queryByIdAsync(id: string): Promise<UsuarioEntity> {
+    const data = await super.queryByIdAsync(id);
 
-    if (res.rowCount === 0) throw new NotFoundError("Usuário não encontrado");
+    const id_cursos = await db.query(
+      `
+      SELECT id_usuario, array_agg(id_curso) as id_cursos
+      FROM usuario_curso
+      WHERE id_usuario = $1
+      GROUP BY id_usuario
+      ORDER BY id_usuario ASC
+    `,
+      [id]
+    );
 
-    const usuario = {
-      ...res.rows[0],
-      ...perfilProperties[PerfilEnum[res.rows[0].perfil]],
-      id_cursos: res.rows[0].id_cursos.filter(id => id != null) || [],
-    };
+    const usuario = { ...data, ...perfilProperties[PerfilEnum[data.perfil]], id_cursos: id_cursos.rows[0]?.id_cursos || [] };
 
     return usuario;
   }

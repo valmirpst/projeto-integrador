@@ -1,10 +1,8 @@
 import { Request, Response } from "express";
-import { Schema } from "zod";
 import { IEntityService } from "../../interfaces/i-service";
 
-export abstract class ControllerBase<TEntity, TSchema = Schema<TEntity>> {
+export abstract class ControllerBase<TEntity> {
   protected abstract service: IEntityService<TEntity>;
-  protected abstract schema: TSchema;
   protected abstract idParam: string;
 
   async getAsync(req: Request, res: Response) {
