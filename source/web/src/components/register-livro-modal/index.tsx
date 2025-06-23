@@ -33,7 +33,7 @@ export default function RegisterLivroModal({
     descricao: "",
     qtd_disponivel: 1,
     autores: [] as string[],
-    caminho_img: "",
+    img: new FormData(),
     total_avaliacoes: 0,
     total_estrelas: 0,
     categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
@@ -45,7 +45,7 @@ export default function RegisterLivroModal({
   useEffect(() => {
     if (formdata) {
       setForm(formdata);
-      setPreviewUrl(formdata.caminho_img || null);
+      setPreviewUrl(formdata.img || null);
     }
   }, [formdata]);
 
@@ -58,11 +58,18 @@ export default function RegisterLivroModal({
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const file = e.target.files?.[0];
-    const file = "testeeeeFileee";
+    const file = e.target.files?.[0];
+
     if (file) {
-      setForm((prev) => ({ ...prev, caminho_img: file }));
-      setPreviewUrl(URL.createObjectURL(e.target.files![0]));
+      const formDataImg = new FormData();
+      formDataImg.append("img", file);
+      console.log(formDataImg);
+
+      // const file = "testeeeeFileee";
+      if (file) {
+        setForm((prev) => ({ ...prev, img: formDataImg }));
+        setPreviewUrl(URL.createObjectURL(e.target.files![0]));
+      }
     }
   };
 
@@ -86,7 +93,7 @@ export default function RegisterLivroModal({
         descricao: "",
         qtd_disponivel: 1,
         autores: [] as string[],
-        caminho_img: "",
+        img: new FormData(),
         total_avaliacoes: 0,
         total_estrelas: 0,
         categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
