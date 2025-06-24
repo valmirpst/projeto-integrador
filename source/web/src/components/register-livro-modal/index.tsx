@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import Img from "../ui/img";
 import { api } from "@/lib/api";
 import { BookType } from "@/@types/book";
+import { getTokenHeader } from "@/lib/getTokenHeader";
 
 export type PropsRegisterLivroModalType = {
   open: boolean;
@@ -80,9 +81,12 @@ export default function RegisterLivroModal({
 
     if (isValid) {
       if (update) {
-        await api.livros.putAsync(form.isbn, { payload: form });
+        await api.livros.putAsync(form.isbn, {
+          payload: form,
+          ...getTokenHeader(),
+        });
       } else {
-        await api.livros.postAsync({ payload: form });
+        await api.livros.postAsync({ payload: form, ...getTokenHeader() });
       }
       setForm({
         isbn: "",

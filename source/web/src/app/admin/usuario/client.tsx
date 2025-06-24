@@ -13,8 +13,9 @@ import { UserType } from "@/@types/user";
 import RegisterUserModal, {
   PropsRegisterModalType,
 } from "@/components/register-modal";
+import { getTokenHeader } from "@/lib/getTokenHeader";
 
-type EditarAtributo<T, K extends keyof T, V> = Omit<T, K> & { [P in K]: V };
+// type EditarAtributo<T, K extends keyof T, V> = Omit<T, K> & { [P in K]: V };
 
 // type UserItem = EditarAtributo<UserType, "criado_em", string>;
 
@@ -58,7 +59,7 @@ export default function UsuarioClient() {
   };
 
   const loadUsers = async () => {
-    const res = await api.usuarios.getAsync();
+    const res = await api.usuarios.getAsync(getTokenHeader());
     if (res.data) setUsers(res.data);
   };
 
@@ -69,7 +70,7 @@ export default function UsuarioClient() {
   });
 
   async function handleTrash(user: UserType) {
-    await api.usuarios.deleteAsync(user.id);
+    await api.usuarios.deleteAsync(user.id, getTokenHeader());
     await loadUsers();
   }
 

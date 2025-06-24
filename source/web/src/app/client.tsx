@@ -13,6 +13,22 @@ type HomeClientProps = {
 
 export default function HomeClient({ books }: HomeClientProps) {
   const [searchValue, setSearchValue] = useState("");
+  // const [userResponse, setUserResponse] = useState<UserType>(null);
+
+  // useEffect(() => {
+  //   async function fetchUser() {
+  //     const userResponse = await api.usuarios.getByIdAsync("u10", {
+  //       options: {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //       },
+  //     });
+
+  //     setUserResponse(awuserResponse);
+  //   }
+  // }, []);
 
   return (
     <Box className={styles.homeWrapper}>

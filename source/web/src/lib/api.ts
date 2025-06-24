@@ -1,9 +1,8 @@
 import { BookType } from "@/@types/book";
-import { ApiResponse } from "@/@types/requests/api-response";
 import { ReturnType } from "@/@types/requests/return-type";
-import { ENV } from "./env";
 import { UserType } from "@/@types/user";
 import { ReserveType } from "@/@types/reserve";
+import { LoginResponseType } from "@/@types/loginResponse";
 
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -77,22 +76,22 @@ const apiFnBase = async <T, P>({
         : undefined,
     });
 
-    const bodyText = [204, 205, 304].includes(res.status)
+    const data = [204, 205, 304].includes(res.status)
       ? null
-      : await res.text();
+      : { ...(await res.json()), ok: true };
 
-    let data: ApiResponse<T> | null = null;
-    if (bodyText) {
-      try {
-        data = JSON.parse(bodyText);
-      } catch {
-        return {
-          ok: false,
-          status: res.status,
-          message: "Erro ao interpretar resposta da API",
-        };
-      }
-    }
+    // let data: ApiResponse<T> | null = null;
+    // if (bodyText) {
+    //   try {
+    //     data = JSON.parse(bodyText);
+    //   } catch {
+    //     return {
+    //       ok: false,
+    //       status: res.status,
+    //       message: "Erro ao interpretar resposta da API",
+    //     };
+    //   }
+    // }
 
     if (!res.ok) {
       return {
@@ -120,7 +119,7 @@ const apiFnBase = async <T, P>({
       ok: true,
       status: res.status,
       message: res.statusText,
-      data: data.data,
+      data: data,
     };
   } catch (err) {
     return {
@@ -148,11 +147,10 @@ function createApi<TModel, TParams>(endpoint: string) {
         params: data?.params,
       }),
     postAsync: async <T = TModel>(data: PostAsyncPayload<T, TParams>) => {
-      console.log("postAsync", data);
       return apiFnBase<T, TParams>({
         endpoint: endpoint,
         method: "POST",
-        options: data.options,
+        options: data?.options,
         params: data.params,
         payload: data.payload,
       });
@@ -164,7 +162,7 @@ function createApi<TModel, TParams>(endpoint: string) {
       apiFnBase<T, TParams>({
         endpoint: `${endpoint}/${id}`,
         method: "PUT",
-        options: data.options,
+        options: data?.options,
         payload: data.payload,
         params: data.params,
       }),
@@ -185,4 +183,5 @@ export const api = {
   livros: createApi<BookType, unknown>("/livros"),
   usuarios: createApi<UserType, unknown>("/usuarios"),
   reservas: createApi<ReserveType, unknown>("/historico"),
+  login: createApi<LoginResponseType, unknown>("/auth/login"),
 };

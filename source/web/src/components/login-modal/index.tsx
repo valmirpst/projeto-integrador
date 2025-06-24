@@ -7,9 +7,10 @@ import styles from "./register-user-modal.module.css";
 import { Button } from "../ui/button";
 import Img from "../ui/img";
 import { useState } from "react";
-import { api } from "@/lib/api";
 import { UserType } from "@/@types/user";
 import { LoginType } from "@/@types/login";
+import { api } from "@/lib/api";
+import { getTokenHeader } from "@/lib/getTokenHeader";
 
 export type PropsRegisterModalType = {
   open: boolean;
@@ -36,7 +37,14 @@ export default function LoginModal({
     const isValid = Object.values(form).every((v) => v !== "");
     if (!isValid) return;
 
-    await api.usuarios.postAsync({ payload: form });
+    const response = await api.login.postAsync({
+      payload: form,
+      ...getTokenHeader(),
+    });
+
+    // @ts-expect-error ignore
+    localStorage.setItem("token", response.data?.token || "");
+
     onOpenChange(false);
   };
 

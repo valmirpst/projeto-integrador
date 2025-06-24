@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import Select from "../ui/select";
 import { UserType } from "@/@types/user";
+import { getTokenHeader } from "@/lib/getTokenHeader";
 
 export type PropsRegisterModalType = {
   open: boolean;
@@ -51,7 +52,7 @@ export default function RegisterModal({
     const isValid = Object.values(form).every((v) => v !== "");
     if (!isValid) return;
 
-    await api.usuarios.postAsync({ payload: form });
+    await api.usuarios.postAsync({ payload: form, ...getTokenHeader() });
     onOpenChange(false);
   };
 

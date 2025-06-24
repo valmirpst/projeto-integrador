@@ -20,27 +20,30 @@ INSERT INTO curso (id, nome) VALUES
 ('c19', 'Arquitetura'),
 ('c20', 'Design');
 
-INSERT INTO usuario (id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil) VALUES
-('u1', 'RA001', NULL, 'João', 'Silva', '2000-01-01', 'joao@gmail.com', '11999990001', 'aluno'),
-('u2', 'RA002', NULL, 'Maria', 'Souza', '2001-02-03', 'maria@gmail.com', '11999990002', 'aluno'),
-('u3', NULL, 'SI001', 'Carlos', 'Oliveira', '1980-03-04', 'carlos@utfpr.edu', '11999990003', 'professor'),
-('u4', NULL, 'SI002', 'Ana', 'Lima', '1975-04-05', 'ana@utfpr.edu', '11999990004', 'professor'),
-('u5', NULL, 'SI003', 'Roberto', 'Mendes', '1970-05-06', 'roberto@utfpr.edu', '11999990005', 'bibliotecario'),
-('u6', 'RA003', NULL, 'Paula', 'Dias', '2002-06-07', 'paula@gmail.com', '11999990006', 'aluno'),
-('u7', 'RA004', NULL, 'Lucas', 'Ferreira', '2003-07-08', 'lucas@gmail.com', '11999990007', 'aluno'),
-('u8', 'RA005', NULL, 'Fernanda', 'Castro', '2001-08-09', 'fernanda@gmail.com', '11999990008', 'aluno'),
-('u9', NULL, 'SI004', 'Sérgio', 'Almeida', '1985-09-10', 'sergio@utfpr.edu', '11999990009', 'professor'),
-('u10', NULL, 'SI005', 'Mariana', 'Pereira', '1988-10-11', 'mariana@utfpr.edu', '11999990010', 'bibliotecario'),
-('u11', 'RA006', NULL, 'Eduardo', 'Lopes', '2000-01-12', 'eduardo@gmail.com', '11999990011', 'aluno'),
-('u12', 'RA007', NULL, 'Jéssica', 'Moreira', '2002-02-13', 'jessica@gmail.com', '11999990012', 'aluno'),
-('u13', 'RA008', NULL, 'Thiago', 'Rocha', '2001-03-14', 'thiago@gmail.com', '11999990013', 'aluno'),
-('u14', NULL, 'SI006', 'Patrícia', 'Santos', '1987-04-15', 'patricia@utfpr.edu', '11999990014', 'professor'),
-('u15', NULL, 'SI007', 'Renato', 'Teixeira', '1982-05-16', 'renato@utfpr.edu', '11999990015', 'bibliotecario'),
-('u16', 'RA009', NULL, 'Camila', 'Ribeiro', '2000-06-17', 'camila@gmail.com', '11999990016', 'aluno'),
-('u17', 'RA010', NULL, 'Rafael', 'Martins', '2001-07-18', 'rafael@gmail.com', '11999990017', 'aluno'),
-('u18', 'RA011', NULL, 'Juliana', 'Barros', '2002-08-19', 'juliana@gmail.com', '11999990018', 'aluno'),
-('u19', 'RA012', NULL, 'Felipe', 'Nunes', '2003-09-20', 'felipe@gmail.com', '11999990019', 'aluno'),
-('u20', 'RA013', NULL, 'Larissa', 'Vieira', '2001-10-21', 'larissa@gmail.com', '11999990020', 'aluno');
+INSERT INTO usuario (
+  id, ra, siape, nome, sobrenome, data_nasc, email, telefone, perfil, senha
+) VALUES
+('u1',  'RA001', NULL,     'João',     'Silva',     '2000-01-01', 'joao@gmail.com',     '11999990001', 'aluno',        '123456'),
+('u2',  'RA002', NULL,     'Maria',    'Souza',     '2001-02-03', 'maria@gmail.com',    '11999990002', 'aluno',        '123456'),
+('u3',  NULL,    'SI001',  'Carlos',   'Oliveira',  '1980-03-04', 'carlos@utfpr.edu',   '11999990003', 'professor',    '123456'),
+('u4',  NULL,    'SI002',  'Ana',      'Lima',      '1975-04-05', 'ana@utfpr.edu',      '11999990004', 'professor',    '123456'),
+('u5',  NULL,    'SI003',  'Roberto',  'Mendes',    '1970-05-06', 'roberto@utfpr.edu',  '11999990005', 'bibliotecario','123456'),
+('u6',  'RA003', NULL,     'Paula',    'Dias',      '2002-06-07', 'paula@gmail.com',    '11999990006', 'aluno',        '123456'),
+('u7',  'RA004', NULL,     'Lucas',    'Ferreira',  '2003-07-08', 'lucas@gmail.com',    '11999990007', 'aluno',        '123456'),
+('u8',  'RA005', NULL,     'Fernanda', 'Castro',    '2001-08-09', 'fernanda@gmail.com', '11999990008', 'aluno',        '123456'),
+('u9',  NULL,    'SI004',  'Sérgio',   'Almeida',   '1985-09-10', 'sergio@utfpr.edu',   '11999990009', 'professor',    '123456'),
+('u10', NULL,    'SI005',  'Mariana',  'Pereira',   '1988-10-11', 'mariana@utfpr.edu',  '11999990010', 'bibliotecario','123456'),
+('u11','RA006', NULL,     'Eduardo',  'Lopes',     '2000-01-12', 'eduardo@gmail.com',  '11999990011', 'aluno',        '123456'),
+('u12','RA007', NULL,     'Jéssica',  'Moreira',   '2002-02-13', 'jessica@gmail.com',  '11999990012', 'aluno',        '123456'),
+('u13','RA008', NULL,     'Thiago',   'Rocha',     '2001-03-14', 'thiago@gmail.com',   '11999990013', 'aluno',        '123456'),
+('u14', NULL,    'SI006',  'Patrícia', 'Santos',    '1987-04-15', 'patricia@utfpr.edu', '11999990014', 'professor',    '123456'),
+('u15', NULL,    'SI007',  'Renato',   'Teixeira',  '1982-05-16', 'renato@utfpr.edu',   '11999990015', 'bibliotecario','123456'),
+('u16','RA009', NULL,     'Camila',   'Ribeiro',   '2000-06-17', 'camila@gmail.com',   '11999990016', 'aluno',        '123456'),
+('u17','RA010', NULL,     'Rafael',   'Martins',   '2001-07-18', 'rafael@gmail.com',   '11999990017', 'aluno',        '123456'),
+('u18','RA011', NULL,     'Juliana',  'Barros',    '2002-08-19', 'juliana@gmail.com',  '11999990018', 'aluno',        '123456'),
+('u19','RA012', NULL,     'Felipe',   'Nunes',     '2003-09-20', 'felipe@gmail.com',   '11999990019', 'aluno',        '123456'),
+('u20','RA013', NULL,     'Larissa',  'Vieira',    '2001-10-21', 'larissa@gmail.com',  '11999990020', 'aluno',        '123456');
+
 
 INSERT INTO usuario_curso (id_usuario, id_curso) VALUES
 ('u1', 'c1'), ('u2', 'c1'), ('u6', 'c2'), ('u7', 'c2'), ('u8', 'c3'),

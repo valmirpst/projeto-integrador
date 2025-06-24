@@ -10,6 +10,7 @@ import Select from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { ReserveType } from "@/@types/reserve";
 import { api } from "@/lib/api";
+import { getTokenHeader } from "@/lib/getTokenHeader";
 
 type EditarAtributo<T, K extends keyof T, V> = Omit<T, K> & { [P in K]: V };
 
@@ -45,23 +46,27 @@ export default function ReserveClient() {
   };
 
   const loadReserves = async () => {
-    const res = await api.reservas.getAsync();
-    if (res.data) setReserves(res.data);
+    const res = await api.reservas.getAsync(getTokenHeader());
+
+    // @ts-expect-error teste
+    if (res.data) setReserves(res.data.data);
   };
 
-  const reserverFormat = reserves.map((reserve) => {
-    return {
-      ...reserve,
-      criado_em: new Date(reserve.criado_em).toLocaleDateString("pt-BR", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      }),
-    };
-  });
+  const reserverFormat = reserves
+    .filter((reserve) => reserve.status === "ativo")
+    .map((reserve) => {
+      return {
+        ...reserve,
+        criado_em: new Date(reserve.criado_em).toLocaleDateString("pt-BR", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }),
+      };
+    });
 
   async function handleTrash(reserve: ReserveItem) {
-    await api.reservas.deleteAsync(reserve.id);
+    await api.reservas.deleteAsync(reserve.id, getTokenHeader());
     await loadReserves();
   }
 

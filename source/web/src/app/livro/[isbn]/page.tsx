@@ -1,5 +1,6 @@
 import { Text } from "@/components/ui/text";
 import { api } from "@/lib/api";
+import { getTokenHeader } from "@/lib/getTokenHeader";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 
@@ -16,7 +17,7 @@ type LivroProps = {
 export default async function Livro({ params }: LivroProps) {
   const { isbn } = await params;
 
-  const booksResponse = await api.livros.getByIdAsync(isbn);
+  const booksResponse = await api.livros.getByIdAsync(isbn, getTokenHeader());
 
   if (!booksResponse.data) {
     return <Text>Erro ao buscar livro</Text>;

@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { UserType } from "@/@types/user";
 import { api } from "@/lib/api";
 import LoginModal from "../login-modal";
+import { getTokenHeader } from "@/lib/getTokenHeader";
 
 const userMenu = [
   {
@@ -98,7 +99,10 @@ export default function Menu() {
 
   useEffect(() => {
     async function fetchUser() {
-      const userResponse = await api.usuarios.getByIdAsync("u10");
+      const userResponse = await api.usuarios.getByIdAsync(
+        "u10",
+        getTokenHeader()
+      );
       setUser(userResponse.data);
     }
     fetchUser();

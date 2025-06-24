@@ -8,6 +8,7 @@ import styles from "./register-reserve-modal.module.css";
 import { Button } from "../ui/button";
 import { api } from "@/lib/api";
 import { ReserveType } from "@/@types/reserve";
+import { getTokenHeader } from "@/lib/getTokenHeader";
 
 export type PropsRegisterReservaModalType = {
   open: boolean;
@@ -36,7 +37,6 @@ export default function RegisterReserveModal({
         isbn_livro: formdata.isbn_livro,
         id_bibliotecario: formdata.id_bibliotecario,
         status: formdata.status,
-        
       });
     }
   }, [formdata]);
@@ -54,9 +54,12 @@ export default function RegisterReserveModal({
 
     if (isValid) {
       if (update && formdata?.id) {
-        await api.reservas.putAsync(formdata.id, { payload: form });
+        await api.reservas.putAsync(formdata.id, {
+          payload: form,
+          ...getTokenHeader(),
+        });
       } else {
-        await api.reservas.postAsync({ payload: form });
+        await api.reservas.postAsync({ payload: form, ...getTokenHeader() });
       }
 
       setForm({

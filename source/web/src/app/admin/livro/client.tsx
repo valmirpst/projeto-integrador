@@ -13,6 +13,7 @@ import RegisterLivroModal, {
   PropsRegisterLivroModalType,
 } from "@/components/register-livro-modal";
 import { api } from "@/lib/api";
+import { getTokenHeader } from "@/lib/getTokenHeader";
 
 export default function LivroClient() {
   const [books, setBooks] = useState<BookType[]>([]);
@@ -23,8 +24,10 @@ export default function LivroClient() {
   >({});
 
   const loadBooks = async () => {
-    const res = await api.livros.getAsync();
-    if (res.data) setBooks(res.data);
+    const res = await api.livros.getAsync(getTokenHeader());
+
+    // @ts-expect-error teste
+    if (res.data) setBooks(res.data.data);
   };
 
   useEffect(() => {
@@ -35,7 +38,7 @@ export default function LivroClient() {
     titulo: {
       title: "Livro",
       proporcion: 2.5,
-      image: "caminho_img",
+      image: "img",
     },
     autores: {
       title: "Autor(es)",
@@ -67,7 +70,7 @@ export default function LivroClient() {
   }
 
   async function handleTrash(book: BookType) {
-    await api.livros.deleteAsync(book.isbn);
+    await api.livros.deleteAsync(book.isbn, getTokenHeader());
     await loadBooks();
   }
 
