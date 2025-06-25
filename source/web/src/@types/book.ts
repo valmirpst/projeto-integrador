@@ -7,7 +7,6 @@ export type BookType = {
   editora: string;
   qtd_disponivel: number;
   genero: string;
-  img: FormData;
   descricao: string;
   total_avaliacoes: number;
   total_estrelas: number;

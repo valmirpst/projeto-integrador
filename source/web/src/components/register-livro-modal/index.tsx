@@ -34,19 +34,18 @@ export default function RegisterLivroModal({
     descricao: "",
     qtd_disponivel: 1,
     autores: [] as string[],
-    img: new FormData(),
     total_avaliacoes: 0,
     total_estrelas: 0,
     categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
   });
   const [autor, setAutor] = useState<string>("");
+  const [formdataImg, setFormdataImg] = useState<FormData | null>(null);
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (formdata) {
       setForm(formdata);
-      setPreviewUrl(formdata.img || null);
     }
   }, [formdata]);
 
@@ -63,14 +62,10 @@ export default function RegisterLivroModal({
 
     if (file) {
       const formDataImg = new FormData();
-      formDataImg.append("img", file);
-      console.log(formDataImg);
+      formDataImg.append("book_cover", file);
+      setFormdataImg(formDataImg);
 
-      // const file = "testeeeeFileee";
-      if (file) {
-        setForm((prev) => ({ ...prev, img: formDataImg }));
-        setPreviewUrl(URL.createObjectURL(e.target.files![0]));
-      }
+      setPreviewUrl(URL.createObjectURL(e.target.files![0]));
     }
   };
 
@@ -97,11 +92,11 @@ export default function RegisterLivroModal({
         descricao: "",
         qtd_disponivel: 1,
         autores: [] as string[],
-        img: new FormData(),
         total_avaliacoes: 0,
         total_estrelas: 0,
         categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
       });
+      setFormdataImg(null);
       setPreviewUrl(null);
       onOpenChange(false);
     }
