@@ -12,4 +12,5 @@ export type BookType = {
   total_estrelas: number;
   autores: string[];
   categorias: CategoryType[];
+  caminho_img?: string;
 };

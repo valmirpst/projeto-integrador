@@ -37,11 +37,10 @@ export default function RegisterLivroModal({
     total_avaliacoes: 0,
     total_estrelas: 0,
     categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
+    caminho_img: "",
   });
   const [autor, setAutor] = useState<string>("");
   const [formdataImg, setFormdataImg] = useState<FormData | null>(null);
-
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (formdata) {
@@ -65,7 +64,10 @@ export default function RegisterLivroModal({
       formDataImg.append("book_cover", file);
       setFormdataImg(formDataImg);
 
-      setPreviewUrl(URL.createObjectURL(e.target.files![0]));
+      setForm((prev) => ({
+        ...prev,
+        caminho_img: URL.createObjectURL(e.target.files![0]),
+      }));
     }
   };
 
@@ -81,7 +83,13 @@ export default function RegisterLivroModal({
           ...getTokenHeader(),
         });
       } else {
-        await api.livros.postAsync({ payload: form, ...getTokenHeader() });
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { caminho_img, ...formWithoutImg } = form;
+
+        await api.livros.postAsync({
+          payload: formWithoutImg,
+          ...getTokenHeader(),
+        });
       }
       setForm({
         isbn: "",
@@ -95,9 +103,9 @@ export default function RegisterLivroModal({
         total_avaliacoes: 0,
         total_estrelas: 0,
         categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
+        caminho_img: "",
       });
       setFormdataImg(null);
-      setPreviewUrl(null);
       onOpenChange(false);
     }
   };
@@ -195,7 +203,7 @@ export default function RegisterLivroModal({
           <Box className={styles.modalImageContainer}>
             <Img
               className={styles.modalImage}
-              src={previewUrl || "/image-example.svg"}
+              src={form.caminho_img || "/image-example.svg"}
               alt="Pré-visualização da imagem"
               width={220}
               height={300}
