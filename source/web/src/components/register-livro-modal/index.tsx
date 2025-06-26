@@ -50,6 +50,24 @@ export default function RegisterLivroModal({
       };
       setForm(fomatedFormdata);
     }
+    return () => {
+      setForm({
+        isbn: "",
+        titulo: "",
+        edicao: "",
+        genero: "",
+        editora: "",
+        descricao: "",
+        qtd_disponivel: 1,
+        autores: [] as string[],
+        total_avaliacoes: 0,
+        total_estrelas: 0,
+        categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
+        caminho_img: "",
+      });
+      setAutor("");
+      setFormdataImg(null);
+    };
   }, [formdata]);
 
   const handleChange = (
@@ -81,34 +99,34 @@ export default function RegisterLivroModal({
     );
 
     if (isValid) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { caminho_img, ...formWithoutImg } = form;
       if (update) {
         await api.livros.putAsync(form.isbn, {
-          payload: form,
+          payload: formWithoutImg,
           ...getTokenHeader(),
         });
       } else {
-        const { caminho_img, ...formWithoutImg } = form;
-
         await api.livros.postAsync({
           payload: formWithoutImg,
           ...getTokenHeader(),
         });
-
-        const myHeaders = new Headers();
-        myHeaders.append(
-          "Authorization",
-          `Bearer ${localStorage.getItem("token")}`
-        );
-
-        await fetch(
-          `http://localhost:3333/api/livros/${formWithoutImg.isbn}/upload`,
-          {
-            method: "POST",
-            headers: myHeaders,
-            body: formdataImg,
-          }
-        );
       }
+
+      const myHeaders = new Headers();
+      myHeaders.append(
+        "Authorization",
+        `Bearer ${localStorage.getItem("token")}`
+      );
+
+      await fetch(
+        `http://localhost:3333/api/livros/${formWithoutImg.isbn}/upload`,
+        {
+          method: "POST",
+          headers: myHeaders,
+          body: formdataImg,
+        }
+      );
       setForm({
         isbn: "",
         titulo: "",
