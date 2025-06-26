@@ -44,7 +44,11 @@ export default function RegisterLivroModal({
 
   useEffect(() => {
     if (formdata) {
-      setForm(formdata);
+      const fomatedFormdata = {
+        ...formdata,
+        caminho_img: "http://localhost:3333/images/" + formdata.caminho_img,
+      };
+      setForm(fomatedFormdata);
     }
   }, [formdata]);
 
@@ -83,13 +87,27 @@ export default function RegisterLivroModal({
           ...getTokenHeader(),
         });
       } else {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { caminho_img, ...formWithoutImg } = form;
 
         await api.livros.postAsync({
           payload: formWithoutImg,
           ...getTokenHeader(),
         });
+
+        const myHeaders = new Headers();
+        myHeaders.append(
+          "Authorization",
+          `Bearer ${localStorage.getItem("token")}`
+        );
+
+        await fetch(
+          `http://localhost:3333/api/livros/${formWithoutImg.isbn}/upload`,
+          {
+            method: "POST",
+            headers: myHeaders,
+            body: formdataImg,
+          }
+        );
       }
       setForm({
         isbn: "",

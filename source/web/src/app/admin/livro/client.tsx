@@ -87,6 +87,8 @@ export default function LivroClient() {
     return <Text>Erro ao carregar os livros.</Text>;
   }
 
+  console.log("books", books);
+
   return (
     <>
       <Box className={styles.adminBookWrapper}>
