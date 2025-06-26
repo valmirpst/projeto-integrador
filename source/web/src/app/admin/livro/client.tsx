@@ -22,6 +22,8 @@ export default function LivroClient() {
   const [livroEditProps, setLivroEditProps] = useState<
     Partial<PropsRegisterLivroModalType>
   >({});
+  const [categoriasFilter, setCategoriasFilter] = useState<string[]>([]);
+  const [autoresFilter, setAutoresFilter] = useState<string[]>([]);
 
   const loadBooks = async () => {
     const res = await api.livros.getAsync(getTokenHeader());
@@ -83,6 +85,36 @@ export default function LivroClient() {
     });
   }
 
+  const autores = [
+    ...new Set(
+      books.reduce((acc, value) => {
+        return [...acc, ...value.autores];
+      }, [] as string[])
+    ),
+  ];
+
+  const filteredBooks = books.filter((value) => {
+    if (
+      (autoresFilter.length === 0 ||
+        value.autores.some((autor) => autoresFilter.includes(autor))) &&
+      (categoriasFilter.length === 0 ||
+        value.categorias
+          .map((value) => value.nome)
+          .some((categoria) => categoriasFilter.includes(categoria))) &&
+      value.titulo.toLowerCase().startsWith(searchValue.toLowerCase())
+    ) {
+      return true;
+    }
+  });
+
+  const categorias = [
+    ...new Set(
+      books.reduce((acc, value) => {
+        return [...acc, ...value.categorias.map((value) => value.nome)];
+      }, [] as string[])
+    ),
+  ];
+
   if (!books) {
     return <Text>Erro ao carregar os livros.</Text>;
   }
@@ -103,14 +135,18 @@ export default function LivroClient() {
             />
             <Box className={stylesAdmin.adminSelectContainer}>
               <Select
-                options={books.map((value) => value.genero)}
-                label="Gênero"
+                options={categorias}
+                label="Categoria"
                 width={200}
+                activeValues={categoriasFilter}
+                handleChange={(values) => setCategoriasFilter(values)}
               />
               <Select
-                options={books.map((value) => value.editora)}
-                label="Editora"
+                options={autores}
+                label="Autores"
                 width={200}
+                activeValues={autoresFilter}
+                handleChange={(values) => setAutoresFilter(values)}
               />
             </Box>
             <Button
@@ -133,7 +169,7 @@ export default function LivroClient() {
           </Box>
         </Box>
         <Table
-          items={books}
+          items={filteredBooks}
           columns={columns}
           handleTrash={handleTrash}
           handleEdit={handleEdit}
