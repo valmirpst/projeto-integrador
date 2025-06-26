@@ -38,7 +38,7 @@ export default function LivroClient() {
     titulo: {
       title: "Livro",
       proporcion: 2.5,
-      image: "img",
+      image: "caminho_img",
     },
     autores: {
       title: "Autor(es)",
@@ -86,8 +86,6 @@ export default function LivroClient() {
   if (!books) {
     return <Text>Erro ao carregar os livros.</Text>;
   }
-
-  console.log("books", books);
 
   return (
     <>

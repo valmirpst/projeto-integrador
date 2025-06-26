@@ -17,11 +17,5 @@ type LivroProps = {
 export default async function Livro({ params }: LivroProps) {
   const { isbn } = await params;
 
-  const booksResponse = await api.livros.getByIdAsync(isbn, getTokenHeader());
-
-  if (!booksResponse.data) {
-    return <Text>Erro ao buscar livro</Text>;
-  }
-
-  return <ClientSide book={booksResponse.data} />;
+  return <ClientSide isbn={isbn} />;
 }

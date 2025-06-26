@@ -101,7 +101,10 @@ export default function Table<T>(props: Props<T>) {
                           typeof item[columns[key].image] === "string" &&
                           typeof item[key] === "string" && (
                             <img
-                              src={item[columns[key].image] as string}
+                              src={
+                                ("http://localhost:3333/images/" +
+                                  item[columns[key].image]) as string
+                              }
                               onError={(e) => {
                                 (e.target as HTMLImageElement).src = "";
                               }}

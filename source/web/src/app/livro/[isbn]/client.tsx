@@ -8,13 +8,35 @@ import Img from "@/components/ui/img";
 import { Button } from "@/components/ui/button";
 import { Heart, ShareNetwork, Star } from "phosphor-react";
 import { theme } from "@/theme";
+import { getTokenHeader } from "@/lib/getTokenHeader";
+import { api } from "@/lib/api";
+import { useEffect, useState } from "react";
 import { BookType } from "@/@types/book";
 
 type PropsType = {
-  book: BookType;
+  isbn: string;
 };
 
-export default function LivroClient({ book }: PropsType) {
+export default function LivroClient({ isbn }: PropsType) {
+  const [book, setBook] = useState<BookType | null>(null);
+
+  useEffect(() => {
+    async function fetchBook() {
+      const bookResponse = await api.livros.getByIdAsync(
+        isbn,
+        getTokenHeader()
+      );
+      setBook(() => {
+        if (bookResponse.data) return bookResponse.data;
+        return null;
+      });
+    }
+    fetchBook();
+  }, [isbn]);
+
+  if (!book) {
+    return <Text>Erro ao buscar livro</Text>;
+  }
   return (
     <Box className={styles.container}>
       <div className={styles.livroDetalhes}>
