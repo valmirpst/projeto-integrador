@@ -24,11 +24,11 @@ export class HistoricoService extends ServiceBase<HistoricoEntity> implements IE
 
     const timestamp = new Date().toLocaleString("pt-BR");
 
-    emailService.sendMail({
-      to: usuario.email,
-      subject: "Empréstimo de Livro",
-      text: `O livro "${livro.titulo}" foi emprestado em ${timestamp}.\n\nObrigado por utilizar nosso serviço!`,
-    });
+    // emailService.sendMail({
+    //   to: usuario.email,
+    //   subject: "Empréstimo de Livro",
+    //   text: `O livro "${livro.titulo}" foi emprestado em ${timestamp}.\n\nObrigado por utilizar nosso serviço!`,
+    // });
 
     return historico;
   }
@@ -42,11 +42,11 @@ export class HistoricoService extends ServiceBase<HistoricoEntity> implements IE
 
     const timestamp = new Date().toLocaleString("pt-BR");
 
-    emailService.sendMail({
-      to: usuario.email,
-      subject: "Devolução de Empréstimo",
-      text: `O livro "${livro.titulo}" foi devolvido em ${timestamp}.\n\nObrigado por utilizar nosso serviço!`,
-    });
+    // emailService.sendMail({
+    //   to: usuario.email,
+    //   subject: "Devolução de Empréstimo",
+    //   text: `O livro "${livro.titulo}" foi devolvido em ${timestamp}.\n\nObrigado por utilizar nosso serviço!`,
+    // });
   }
 
   private async getInfoForEmail(historicoId: string): Promise<{ livro: LivroEntity; usuario: UsuarioEntity }> {
