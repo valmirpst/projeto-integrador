@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { ReserveType } from "@/@types/reserve";
 import { api } from "@/lib/api";
 import { getTokenHeader } from "@/lib/getTokenHeader";
+import RegisterReserveModal from "@/components/register-reserve-modal";
 
 type EditarAtributo<T, K extends keyof T, V> = Omit<T, K> & { [P in K]: V };
 
@@ -19,6 +20,8 @@ type ReserveItem = EditarAtributo<ReserveType, "criado_em", string>;
 export default function ReserveClient() {
   const [searchValue, setSearchValue] = useState("");
   const [reserves, setReserves] = useState<ReserveType[]>([]);
+  const [isCreateReserveModalActive, setIsCreateReverveModalActive] =
+    useState(false);
 
   useEffect(() => {
     loadReserves();
@@ -51,6 +54,12 @@ export default function ReserveClient() {
     // @ts-expect-error teste
     if (res.data) setReserves(res.data.data);
   };
+
+  function onOpenChange() {
+    loadReserves();
+    setIsCreateReverveModalActive(false);
+    // setLivroEditProps({});
+  }
 
   const reserverFormat = reserves
     .filter((reserve) => reserve.status === "ativo")
@@ -88,7 +97,7 @@ export default function ReserveClient() {
             width={500}
           />
           <Box className={stylesAdmin.adminSelectContainer}>
-            <Select
+            {/* <Select
               options={reserves.map((value) => value.status)}
               label="Gênero"
               width={200}
@@ -97,14 +106,21 @@ export default function ReserveClient() {
               options={["Mais recente", "Mais antigo"]}
               label="Ordenar Por"
               width={200}
-            />
+            /> */}
           </Box>
-          <Button className={stylesAdmin.adminButton} size="sm" width={120}>
+          <Button
+            onClick={() => setIsCreateReverveModalActive(true)}
+            className={stylesAdmin.adminButton}
+            size="sm"
+            width={120}
+          >
             Cadastrar
           </Button>
         </Box>
         <Box className={stylesAdmin.adminOtherInformations}>
-          <Text color="gray400">{reserves.length} produtos encontrados</Text>
+          <Text color="gray400">
+            {reserves ? reserves.length : 0} produtos encontrados
+          </Text>
           <Box className={stylesAdmin.adminCleanFilters}>
             <Text color="primary300" weight="bold">
               Limpar filtros
@@ -118,6 +134,11 @@ export default function ReserveClient() {
         columns={columns}
         handleTrash={handleTrash}
         handleEdit={handleEdit}
+      />
+      <RegisterReserveModal
+        open={isCreateReserveModalActive}
+        onOpenChange={onOpenChange}
+        // {...livroEditProps}
       />
     </Box>
   );

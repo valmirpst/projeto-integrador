@@ -28,7 +28,7 @@ export default function RegisterModal({
   const [form, setForm] = useState<UserType>({
     id: "",
     nome: "",
-    sobrenome: "",
+    sobrenome: "teste",
     perfil: "aluno",
     data_nasc: "",
     ra: "",
@@ -50,6 +50,7 @@ export default function RegisterModal({
 
   const handleSubmit = async () => {
     const isValid = Object.values(form).every((v) => v !== "");
+    console.log(isValid, form);
     if (!isValid) return;
 
     await api.usuarios.postAsync({ payload: form, ...getTokenHeader() });
@@ -81,11 +82,11 @@ export default function RegisterModal({
               value={form.nome}
               onChange={(e) => handleChange(e, "nome")}
             />
-            <Select
+            {/* <Select
               label="Perfil"
               options={["aluno", "professor"]}
               width={187}
-            />
+            /> */}
             {/* <Input
               id="perfil"
               label="Perfil"

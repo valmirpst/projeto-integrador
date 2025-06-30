@@ -28,6 +28,7 @@ export default function UsuarioClient() {
   >({});
 
   useEffect(() => {
+    console.log("teste");
     loadUsers();
   }, []);
 
@@ -59,8 +60,11 @@ export default function UsuarioClient() {
   };
 
   const loadUsers = async () => {
+    console.log("teste");
     const res = await api.usuarios.getAsync(getTokenHeader());
-    if (res.data) setUsers(res.data);
+    console.log(res.data);
+    // @ts-expect-error teste
+    if (res.data) setUsers(res.data.data);
   };
 
   const userFormat = users.map((user) => {
@@ -97,11 +101,11 @@ export default function UsuarioClient() {
             width={500}
           />
           <Box className={stylesAdmin.adminSelectContainer}>
-            <Select
+            {/* <Select
               options={["Mais recente", "Mais antigo"]}
               label="Ordenar Por"
               width={200}
-            />
+            /> */}
           </Box>
           <Button
             className={stylesAdmin.adminButton}
