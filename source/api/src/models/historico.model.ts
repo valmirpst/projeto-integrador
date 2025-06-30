@@ -6,6 +6,7 @@ import { HistoricoFilter } from "./filters/historico.filter";
 import { PerfilEnum, StatusEnum } from "./primitives/enumerations";
 import { perfilProperties } from "./primitives/helpers";
 import { HistoricoSchema } from "./schemas/historico.schema";
+import { randomUUID } from "crypto";
 
 export class HistoricoModel
   extends QueryableModelBase<HistoricoEntity, HistoricoFilter>
@@ -17,12 +18,12 @@ export class HistoricoModel
   async createAsync(data: HistoricoSchema): Promise<HistoricoEntity> {
     const { isbn_livro, id_usuario, id_bibliotecario } = data;
 
-    const id = crypto.randomUUID();
+    const id = randomUUID();
 
-    const usuarioEmprestimos = await db.query("SELECT COUNT(*) FROM historico WHERE id_usuario = $1 AND status = $2", [
-      id_usuario,
-      StatusEnum.ativo,
-    ]);
+    const usuarioEmprestimos = await db.query(
+      "SELECT COUNT(*) FROM historico WHERE id_usuario = $1 AND status = $2",
+      [id_usuario, StatusEnum.ativo]
+    );
 
     const usuario = await db.query<{ id: string; perfil: PerfilEnum }>(
       "SELECT id, perfil FROM usuario WHERE id = $1 AND status = $2",
@@ -34,8 +35,13 @@ export class HistoricoModel
     }
 
     const max = usuario.rows[0].perfil == PerfilEnum.aluno ? 3 : 5;
-    if (usuarioEmprestimos.rows[0]?.count && usuarioEmprestimos.rows[0].count >= max) {
-      throw new Error(`Usuário já possui ${usuarioEmprestimos.rows[0].count} livros emprestados.`);
+    if (
+      usuarioEmprestimos.rows[0]?.count &&
+      usuarioEmprestimos.rows[0].count >= max
+    ) {
+      throw new Error(
+        `Usuário já possui ${usuarioEmprestimos.rows[0].count} livros emprestados.`
+      );
     }
 
     const livro = await db.query<{ isbn: string; qtd_disponivel: number }>(
@@ -69,21 +75,27 @@ export class HistoricoModel
     if (pendencias.rowCount && pendencias.rowCount > 0) {
       const perfil = perfilProperties[pendencias.rows[0].perfil];
       const prazoDevolucao = new Date(pendencias.rows[0].criado_em);
-      prazoDevolucao.setDate(prazoDevolucao.getDate() + perfil.tempo_emprestimo_dias);
+      prazoDevolucao.setDate(
+        prazoDevolucao.getDate() + perfil.tempo_emprestimo_dias
+      );
 
       if (now > prazoDevolucao) {
-        throw new Error(`O usuário com id ${id_usuario} possui pendências e não pode emprestar livros.`);
+        throw new Error(
+          `O usuário com id ${id_usuario} possui pendências e não pode emprestar livros.`
+        );
       }
     }
 
     const values = [id, isbn_livro, id_usuario, id_bibliotecario];
 
-    const bibliotecario = await db.query("SELECT id FROM usuario WHERE id = $1 AND status = $2", [
-      id_bibliotecario,
-      StatusEnum.ativo,
-    ]);
+    const bibliotecario = await db.query(
+      "SELECT id FROM usuario WHERE id = $1 AND status = $2",
+      [id_bibliotecario, StatusEnum.ativo]
+    );
     if (bibliotecario.rowCount === 0) {
-      throw new Error(`Bibliotecário com id ${id_bibliotecario} não encontrado.`);
+      throw new Error(
+        `Bibliotecário com id ${id_bibliotecario} não encontrado.`
+      );
     }
 
     const query = `
@@ -93,42 +105,59 @@ export class HistoricoModel
 
     const res = await db.query<HistoricoEntity>(query, [...values, now, now]);
 
-    await db.query("UPDATE livro SET qtd_disponivel = qtd_disponivel - 1 WHERE isbn = $1 AND status = $2", [
-      isbn_livro,
-      StatusEnum.ativo,
-    ]);
+    await db.query(
+      "UPDATE livro SET qtd_disponivel = qtd_disponivel - 1 WHERE isbn = $1 AND status = $2",
+      [isbn_livro, StatusEnum.ativo]
+    );
 
     return res.rows[0];
   }
 
-  async updateAsync(id: string, data: HistoricoEntity): Promise<HistoricoEntity> {
+  async updateAsync(
+    id: string,
+    data: HistoricoEntity
+  ): Promise<HistoricoEntity> {
     const { id: historicoId, isbn_livro, id_usuario, id_bibliotecario } = data;
 
     if (historicoId !== id) {
-      throw new Error("O id enviado no parâmetro é diferente do enviado no corpo da requisição.");
+      throw new Error(
+        "O id enviado no parâmetro é diferente do enviado no corpo da requisição."
+      );
     }
 
-    const livro = await db.query("SELECT isbn FROM livro WHERE isbn = $1 AND status = $2", [isbn_livro, StatusEnum.ativo]);
+    const livro = await db.query(
+      "SELECT isbn FROM livro WHERE isbn = $1 AND status = $2",
+      [isbn_livro, StatusEnum.ativo]
+    );
     if (livro.rowCount === 0) {
       throw new Error("Livro não encontrado.");
     }
 
-    const usuario = await db.query("SELECT id FROM usuario WHERE id = $1 AND status = $2", [id_usuario, StatusEnum.ativo]);
+    const usuario = await db.query(
+      "SELECT id FROM usuario WHERE id = $1 AND status = $2",
+      [id_usuario, StatusEnum.ativo]
+    );
     if (usuario.rowCount === 0) {
       throw new Error("Usuário não encontrado.");
     }
 
-    const bibliotecario = await db.query("SELECT id FROM usuario WHERE id = $1 AND status = $2", [
-      id_bibliotecario,
-      StatusEnum.ativo,
-    ]);
+    const bibliotecario = await db.query(
+      "SELECT id FROM usuario WHERE id = $1 AND status = $2",
+      [id_bibliotecario, StatusEnum.ativo]
+    );
     if (bibliotecario.rowCount === 0) {
       throw new Error("Bibliotecário não encontrado.");
     }
 
     const atualizado_em = new Date(Date.now() - 3 * 60 * 60 * 1000); // Ajuste de fuso horário para UTC-3
 
-    const values = [isbn_livro, id_usuario, id_bibliotecario, atualizado_em, id];
+    const values = [
+      isbn_livro,
+      id_usuario,
+      id_bibliotecario,
+      atualizado_em,
+      id,
+    ];
 
     const query = `
       UPDATE historico

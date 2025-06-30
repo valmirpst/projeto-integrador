@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { Dialog } from "@/components/ui/dialog";
-import { Input } from "../ui/input";
 import { Box } from "../ui/box";
 import styles from "./register-reserve-modal.module.css";
 import { Button } from "../ui/button";
 import { api } from "@/lib/api";
 import { ReserveType } from "@/@types/reserve";
 import { getTokenHeader } from "@/lib/getTokenHeader";
+import { UserType } from "@/@types/user";
+import { BookType } from "@/@types/book";
 
 export type PropsRegisterReservaModalType = {
   open: boolean;
@@ -29,6 +30,24 @@ export default function RegisterReserveModal({
     id_bibliotecario: "",
     status: "ativo" as "ativo" | "inativo",
   });
+  const [users, setUsers] = useState<UserType[]>([]);
+  const [books, setBooks] = useState<BookType[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userRes = await api.usuarios.getAsync(getTokenHeader());
+      if (userRes.data) {
+        // @ts-expect-error teste
+        setUsers(userRes.data.data);
+      }
+      const livroRes = await api.livros.getAsync(getTokenHeader());
+      if (livroRes.data) {
+        // @ts-expect-error teste
+        setBooks(livroRes.data.data);
+      }
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (formdata) {
@@ -51,6 +70,7 @@ export default function RegisterReserveModal({
 
   const handleSubmit = async () => {
     const isValid = Object.values(form).every((value) => value !== "");
+    console.log(form);
 
     if (isValid) {
       if (update && formdata?.id) {
@@ -81,25 +101,68 @@ export default function RegisterReserveModal({
           </Dialog.Title>
           <Dialog.Close />
 
-          <Input
-            id="id_usuario"
-            label="Usuário"
-            value={form.id_usuario}
-            onChange={(e) => handleChange(e, "id_usuario")}
-          />
-          <Input
-            id="isbn_livro"
-            label="Livro (ISBN)"
-            value={form.isbn_livro}
-            onChange={(e) => handleChange(e, "isbn_livro")}
-          />
-          <Input
-            id="id_bibliotecario"
-            label="Bibliotecário"
-            value={form.id_bibliotecario}
-            onChange={(e) => handleChange(e, "id_bibliotecario")}
-          />
-
+          <Box>
+            <label htmlFor="usuario" className={styles.label}>
+              Status
+            </label>
+            <select
+              id="usuario"
+              className={styles.select}
+              value={form.id_usuario}
+              onChange={(e) => handleChange(e, "id_usuario")}
+            >
+              <option value="" disabled>
+                Selecione uma opção
+              </option>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.nome}
+                </option>
+              ))}
+            </select>
+          </Box>
+          <Box>
+            <label htmlFor="book" className={styles.label}>
+              Livro
+            </label>
+            <select
+              id="book"
+              className={styles.select}
+              value={form.isbn_livro}
+              onChange={(e) => handleChange(e, "isbn_livro")}
+            >
+              <option value="" disabled>
+                Selecione uma opção
+              </option>
+              {books.map((user) => (
+                <option key={user.isbn} value={user.isbn}>
+                  {user.titulo}
+                </option>
+              ))}
+            </select>
+          </Box>
+          <Box>
+            <label htmlFor="Bibliotecario" className={styles.label}>
+              Bibliotecário
+            </label>
+            <select
+              id="bibliotecario"
+              className={styles.select}
+              value={form.id_bibliotecario}
+              onChange={(e) => handleChange(e, "id_bibliotecario")}
+            >
+              <option value="" disabled>
+                Selecione uma opção
+              </option>
+              {users
+                .filter((value) => value.perfil === "bibliotecario")
+                .map((user) => (
+                  <option key={user.id} value={user.id}>
+                    {user.nome}
+                  </option>
+                ))}
+            </select>
+          </Box>
           <Box>
             <label htmlFor="status" className={styles.label}>
               Status
