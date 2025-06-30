@@ -36,10 +36,13 @@ export default function RegisterLivroModal({
     autores: [] as string[],
     total_avaliacoes: 0,
     total_estrelas: 0,
-    categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
+    categorias: [],
     caminho_img: "",
   });
+
   const [autor, setAutor] = useState<string>("");
+  const [categoria, setCategoria] = useState<string>("");
+  const [subCategoria, setSubCategoria] = useState<string>("");
   const [formdataImg, setFormdataImg] = useState<FormData | null>(null);
 
   useEffect(() => {
@@ -153,6 +156,28 @@ export default function RegisterLivroModal({
     setAutor("");
   }
 
+  function handleCategoria(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+
+    e.target.blur();
+    setForm((prev) => ({
+      ...form,
+      categorias: [...prev.categorias, { nome: value, tipo: "categoria" }],
+    }));
+    setCategoria("");
+  }
+
+  function handleSubCategoria(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+
+    e.target.blur();
+    setForm((prev) => ({
+      ...form,
+      categorias: [...prev.categorias, { nome: value, tipo: "subcategoria" }],
+    }));
+    setSubCategoria("");
+  }
+
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Content width={800} className={styles.modalContainer}>
@@ -197,14 +222,46 @@ export default function RegisterLivroModal({
               onChange={(e) => handleChange(e, "editora")}
             />
             <Box>
-              <Input
-                id="autores"
-                label="Autores"
-                onBlur={handleAutor}
-                value={autor}
-                onChange={(e) => setAutor(e.target.value)}
-              />
-              <Text>{form.autores.join(" - ")}</Text>
+              <Box style={{ marginBottom: "1rem" }}>
+                <Input
+                  id="autores"
+                  label="Autores"
+                  onBlur={handleAutor}
+                  value={autor}
+                  onChange={(e) => setAutor(e.target.value)}
+                />
+                <Text>{form.autores.join(" - ")}</Text>
+              </Box>
+              <Box style={{ marginBottom: "1rem" }}>
+                <Input
+                  id="categorias"
+                  label="Categorias"
+                  onBlur={handleCategoria}
+                  value={categoria}
+                  onChange={(e) => setCategoria(e.target.value)}
+                />
+                <Text>
+                  {form.categorias
+                    .filter((value) => value.tipo === "categoria")
+                    .map((value) => value.nome)
+                    .join(" - ")}
+                </Text>
+              </Box>
+              <Box style={{ marginBottom: "1rem" }}>
+                <Input
+                  id="sub-categorias"
+                  label="Sub-categorias"
+                  onBlur={handleSubCategoria}
+                  value={subCategoria}
+                  onChange={(e) => setSubCategoria(e.target.value)}
+                />
+                <Text>
+                  {form.categorias
+                    .filter((value) => value.tipo === "subcategoria")
+                    .map((value) => value.nome)
+                    .join(" - ")}
+                </Text>
+              </Box>
             </Box>
             <Box>
               <label htmlFor="descricao" className={styles.label}>
