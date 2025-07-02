@@ -1,4 +1,6 @@
 "use client";
+import { UserType } from "@/@types/user";
+import { api } from "@/lib/api";
 import { getTokenHeader, parseJwt } from "@/lib/getTokenHeader";
 import { theme } from "@/theme";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -73,19 +75,25 @@ const userSubMenu = [
 
 export default function Menu() {
   const [isRegisterModalActive, setIsRegisterModalActive] = useState(false);
-  const [user, setUser] = useState<{ id: string; nome: string; email: string } | null>();
+  const [user, setUser] = useState<{ data: UserType } | null>(null);
 
   const [menuWidth, setMenuWidth] = useState("0");
 
-  const isAdmin = true;
+  const isAdmin = user?.data.perfil === "bibliotecario" ? true : false;
   const menuItems = isAdmin ? librarianMenu : userMenu;
 
   useEffect(() => {
     const token = getTokenHeader()?.options.headers.Authorization.split(" ")[1];
     if (!token) return;
     const parsedToken = parseJwt(token);
-    const user = parsedToken?.payload as { id: string; nome: string; email: string };
-    setUser(user);
+    const usuario = parsedToken?.payload as { id: string; nome: string; email: string };
+    fetchUser(usuario);
+
+    async function fetchUser(userFromToken: { id: string; nome: string; email: string }) {
+      const { data } = await api.usuarios.getByIdAsync(userFromToken.id, getTokenHeader() || {});
+      // @ts-expect-error ignore
+      setUser(data);
+    }
   }, []);
 
   return (
@@ -127,7 +135,7 @@ export default function Menu() {
           <Avatar src="" />
           <Box>
             <Text className={styles.loginText} size="md" weight="bold" color="gray50">
-              {user?.nome || "Entrar/Registrar"}
+              {user?.data.nome || "Entrar/Registrar"}
             </Text>
             <Text
               size="xs"
@@ -145,7 +153,7 @@ export default function Menu() {
           </Box>
         </Box>
       </Box>
-      <LoginModal open={isRegisterModalActive} onOpenChange={() => setIsRegisterModalActive(false)} />
+      <LoginModal user={user?.data || null} open={isRegisterModalActive} onOpenChange={() => setIsRegisterModalActive(false)} />
     </>
   );
 }

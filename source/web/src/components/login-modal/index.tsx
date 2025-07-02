@@ -18,9 +18,10 @@ export type PropsRegisterModalType = {
   onOpenChange: (open: boolean) => void;
   formdata?: UserType;
   update?: boolean;
+  user: UserType | null;
 };
 
-export default function LoginModal({ open, onOpenChange }: PropsRegisterModalType) {
+export default function LoginModal({ user, open, onOpenChange }: PropsRegisterModalType) {
   const [form, setForm] = useState<LoginType>({
     email: "",
     senha: "",
@@ -57,7 +58,8 @@ export default function LoginModal({ open, onOpenChange }: PropsRegisterModalTyp
 
     // @ts-expect-error ignore
     localStorage.setItem("token", response.data?.token || "");
-    location.reload();
+    const href = user?.perfil === "bibliotecario" ? "/admin/dashboard" : "/";
+    window.location.href = href;
 
     onOpenChange(false);
   };
