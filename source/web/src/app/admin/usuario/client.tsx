@@ -1,6 +1,6 @@
 "use client";
 import { Box } from "@/components/ui/box";
-import styles from "./reserve.module.css";
+import styles from "./user.module.css";
 import stylesAdmin from "../admin.module.css";
 import Table, { ColumnType } from "@/components/table";
 import { Text } from "@/components/ui/text";
@@ -8,85 +8,89 @@ import Search from "@/components/search";
 import { useEffect, useState } from "react";
 import Select from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { ReserveType } from "@/@types/reserve";
 import { api } from "@/lib/api";
+import { UserType } from "@/@types/user";
+import RegisterUserModal, {
+  PropsRegisterModalType,
+} from "@/components/register-modal";
 import { getTokenHeader } from "@/lib/getTokenHeader";
-import RegisterReserveModal from "@/components/register-reserve-modal";
 
-type EditarAtributo<T, K extends keyof T, V> = Omit<T, K> & { [P in K]: V };
+// type EditarAtributo<T, K extends keyof T, V> = Omit<T, K> & { [P in K]: V };
 
-type ReserveItem = EditarAtributo<ReserveType, "criado_em", string>;
+// type UserItem = EditarAtributo<UserType, "criado_em", string>;
 
-export default function ReserveClient() {
+export default function UsuarioClient() {
   const [searchValue, setSearchValue] = useState("");
-  const [reserves, setReserves] = useState<ReserveType[]>([]);
-  const [isCreateReserveModalActive, setIsCreateReverveModalActive] =
-    useState(false);
+  const [users, setUsers] = useState<UserType[]>([]);
+  const [isCreateUserModalActive, setIsCreateUserModalActive] = useState(false);
+  const [userEditProps, setUserEditProps] = useState<
+    Partial<PropsRegisterModalType>
+  >({});
 
   useEffect(() => {
-    loadReserves();
+    console.log("teste");
+    loadUsers();
   }, []);
 
-  const columns: ColumnType<ReserveItem> = {
-    isbn_livro: {
+  function onOpenChange() {
+    loadUsers();
+    setIsCreateUserModalActive(false);
+    setUserEditProps({});
+  }
+
+  const columns: ColumnType<UserType> = {
+    nome: {
       title: "Livro",
       proporcion: 2.5,
       // image: "caminho_img",
     },
-    id_usuario: {
+    perfil: {
       title: "Usuário",
       proporcion: 2,
     },
-    id_bibliotecario: {
+    ciape: {
       title: "Bibliotecário(a)",
       proporcion: 1.5,
     },
-    criado_em: {
+    telefone: {
       title: "Data",
       proporcion: 2,
       justify: "center",
     },
   };
 
-  const loadReserves = async () => {
-    const res = await api.reservas.getAsync(getTokenHeader());
-
+  const loadUsers = async () => {
+    console.log("teste");
+    const res = await api.usuarios.getAsync(getTokenHeader());
+    console.log(res.data);
     // @ts-expect-error teste
-    if (res.data) setReserves(res.data.data);
+    if (res.data) setUsers(res.data.data);
   };
 
-  function onOpenChange() {
-    loadReserves();
-    setIsCreateReverveModalActive(false);
-    // setLivroEditProps({});
+  const userFormat = users.map((user) => {
+    return {
+      ...user,
+    };
+  });
+
+  async function handleTrash(user: UserType) {
+    await api.usuarios.deleteAsync(user.id, getTokenHeader());
+    await loadUsers();
   }
 
-  const reserverFormat = reserves
-    .filter((reserve) => reserve.status === "ativo")
-    .map((reserve) => {
-      return {
-        ...reserve,
-        criado_em: new Date(reserve.criado_em).toLocaleDateString("pt-BR", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        }),
-      };
+  function handleEdit(user: UserType) {
+    setUserEditProps({
+      open: true,
+      onOpenChange: onOpenChange,
+      formdata: user,
+      update: true,
     });
-
-  async function handleTrash(reserve: ReserveItem) {
-    await api.reservas.deleteAsync(reserve.id, getTokenHeader());
-    await loadReserves();
-  }
-
-  function handleEdit() {
-    console.log("edit");
   }
 
   return (
     <Box className={styles.adminBookWrapper}>
       <Text as="h1" className={stylesAdmin.adminTitle}>
-        Reservas
+        Usuários
       </Text>
       <Box className={stylesAdmin.adminFilterContainer}>
         <Box className={stylesAdmin.adminFilters}>
@@ -98,29 +102,22 @@ export default function ReserveClient() {
           />
           <Box className={stylesAdmin.adminSelectContainer}>
             {/* <Select
-              options={reserves.map((value) => value.status)}
-              label="Gênero"
-              width={200}
-            />
-            <Select
               options={["Mais recente", "Mais antigo"]}
               label="Ordenar Por"
               width={200}
             /> */}
           </Box>
           <Button
-            onClick={() => setIsCreateReverveModalActive(true)}
             className={stylesAdmin.adminButton}
             size="sm"
             width={120}
+            onClick={() => setIsCreateUserModalActive(true)}
           >
             Cadastrar
           </Button>
         </Box>
         <Box className={stylesAdmin.adminOtherInformations}>
-          <Text color="gray400">
-            {reserves ? reserves.length : 0} produtos encontrados
-          </Text>
+          <Text color="gray400">{users.length} produtos encontrados</Text>
           <Box className={stylesAdmin.adminCleanFilters}>
             <Text color="primary300" weight="bold">
               Limpar filtros
@@ -130,15 +127,15 @@ export default function ReserveClient() {
         </Box>
       </Box>
       <Table
-        items={reserverFormat}
+        items={userFormat}
         columns={columns}
         handleTrash={handleTrash}
         handleEdit={handleEdit}
       />
-      <RegisterReserveModal
-        open={isCreateReserveModalActive}
+      <RegisterUserModal
+        open={isCreateUserModalActive}
         onOpenChange={onOpenChange}
-        // {...livroEditProps}
+        {...userEditProps}
       />
     </Box>
   );

@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import Img from "../ui/img";
 import { api } from "@/lib/api";
 import { BookType } from "@/@types/book";
+import { getTokenHeader } from "@/lib/getTokenHeader";
 
 export type PropsRegisterLivroModalType = {
   open: boolean;
@@ -33,20 +34,43 @@ export default function RegisterLivroModal({
     descricao: "",
     qtd_disponivel: 1,
     autores: [] as string[],
-    caminho_img: "",
     total_avaliacoes: 0,
     total_estrelas: 0,
-    categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
+    categorias: [],
+    caminho_img: "",
   });
-  const [autor, setAutor] = useState<string>("");
 
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [autor, setAutor] = useState<string>("");
+  const [categoria, setCategoria] = useState<string>("");
+  const [subCategoria, setSubCategoria] = useState<string>("");
+  const [formdataImg, setFormdataImg] = useState<FormData | null>(null);
 
   useEffect(() => {
     if (formdata) {
-      setForm(formdata);
-      setPreviewUrl(formdata.caminho_img || null);
+      const fomatedFormdata = {
+        ...formdata,
+        caminho_img: "http://localhost:3333/images/" + formdata.caminho_img,
+      };
+      setForm(fomatedFormdata);
     }
+    return () => {
+      setForm({
+        isbn: "",
+        titulo: "",
+        edicao: "",
+        genero: "",
+        editora: "",
+        descricao: "",
+        qtd_disponivel: 1,
+        autores: [] as string[],
+        total_avaliacoes: 0,
+        total_estrelas: 0,
+        categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
+        caminho_img: "",
+      });
+      setAutor("");
+      setFormdataImg(null);
+    };
   }, [formdata]);
 
   const handleChange = (
@@ -58,11 +82,17 @@ export default function RegisterLivroModal({
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const file = e.target.files?.[0];
-    const file = "testeeeeFileee";
+    const file = e.target.files?.[0];
+
     if (file) {
-      setForm((prev) => ({ ...prev, caminho_img: file }));
-      setPreviewUrl(URL.createObjectURL(e.target.files![0]));
+      const formDataImg = new FormData();
+      formDataImg.append("book_cover", file);
+      setFormdataImg(formDataImg);
+
+      setForm((prev) => ({
+        ...prev,
+        caminho_img: URL.createObjectURL(e.target.files![0]),
+      }));
     }
   };
 
@@ -72,11 +102,34 @@ export default function RegisterLivroModal({
     );
 
     if (isValid) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { caminho_img, ...formWithoutImg } = form;
       if (update) {
-        await api.livros.putAsync(form.isbn, { payload: form });
+        await api.livros.putAsync(form.isbn, {
+          payload: formWithoutImg,
+          ...getTokenHeader(),
+        });
       } else {
-        await api.livros.postAsync({ payload: form });
+        await api.livros.postAsync({
+          payload: formWithoutImg,
+          ...getTokenHeader(),
+        });
       }
+
+      const myHeaders = new Headers();
+      myHeaders.append(
+        "Authorization",
+        `Bearer ${localStorage.getItem("token")}`
+      );
+
+      await fetch(
+        `http://localhost:3333/api/livros/${formWithoutImg.isbn}/upload`,
+        {
+          method: "POST",
+          headers: myHeaders,
+          body: formdataImg,
+        }
+      );
       setForm({
         isbn: "",
         titulo: "",
@@ -86,12 +139,12 @@ export default function RegisterLivroModal({
         descricao: "",
         qtd_disponivel: 1,
         autores: [] as string[],
-        caminho_img: "",
         total_avaliacoes: 0,
         total_estrelas: 0,
         categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
+        caminho_img: "",
       });
-      setPreviewUrl(null);
+      setFormdataImg(null);
       onOpenChange(false);
     }
   };
@@ -101,6 +154,28 @@ export default function RegisterLivroModal({
     e.target.blur();
     setForm((prev) => ({ ...form, autores: [...prev.autores, value] }));
     setAutor("");
+  }
+
+  function handleCategoria(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+
+    e.target.blur();
+    setForm((prev) => ({
+      ...form,
+      categorias: [...prev.categorias, { nome: value, tipo: "categoria" }],
+    }));
+    setCategoria("");
+  }
+
+  function handleSubCategoria(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+
+    e.target.blur();
+    setForm((prev) => ({
+      ...form,
+      categorias: [...prev.categorias, { nome: value, tipo: "subcategoria" }],
+    }));
+    setSubCategoria("");
   }
 
   return (
@@ -147,14 +222,46 @@ export default function RegisterLivroModal({
               onChange={(e) => handleChange(e, "editora")}
             />
             <Box>
-              <Input
-                id="autores"
-                label="Autores"
-                onBlur={handleAutor}
-                value={autor}
-                onChange={(e) => setAutor(e.target.value)}
-              />
-              <Text>{form.autores.join(" - ")}</Text>
+              <Box style={{ marginBottom: "1rem" }}>
+                <Input
+                  id="autores"
+                  label="Autores"
+                  onBlur={handleAutor}
+                  value={autor}
+                  onChange={(e) => setAutor(e.target.value)}
+                />
+                <Text>{form.autores.join(" - ")}</Text>
+              </Box>
+              <Box style={{ marginBottom: "1rem" }}>
+                <Input
+                  id="categorias"
+                  label="Categorias"
+                  onBlur={handleCategoria}
+                  value={categoria}
+                  onChange={(e) => setCategoria(e.target.value)}
+                />
+                <Text>
+                  {form.categorias
+                    .filter((value) => value.tipo === "categoria")
+                    .map((value) => value.nome)
+                    .join(" - ")}
+                </Text>
+              </Box>
+              <Box style={{ marginBottom: "1rem" }}>
+                <Input
+                  id="sub-categorias"
+                  label="Sub-categorias"
+                  onBlur={handleSubCategoria}
+                  value={subCategoria}
+                  onChange={(e) => setSubCategoria(e.target.value)}
+                />
+                <Text>
+                  {form.categorias
+                    .filter((value) => value.tipo === "subcategoria")
+                    .map((value) => value.nome)
+                    .join(" - ")}
+                </Text>
+              </Box>
             </Box>
             <Box>
               <label htmlFor="descricao" className={styles.label}>
@@ -189,7 +296,7 @@ export default function RegisterLivroModal({
           <Box className={styles.modalImageContainer}>
             <Img
               className={styles.modalImage}
-              src={previewUrl || "/image-example.svg"}
+              src={form.caminho_img || "/image-example.svg"}
               alt="Pré-visualização da imagem"
               width={220}
               height={300}

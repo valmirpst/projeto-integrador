@@ -6,22 +6,27 @@ import { theme } from "@/theme";
 type Props = {
   options: string[];
   label: string;
+  activeValues: string[];
+  handleChange: (values: string[]) => void;
   width?: number;
 };
 
 export default function Select(props: Props) {
-  const { options, label, width } = props;
+  const { options, label, width, activeValues, handleChange } = props;
 
   const [selectActive, setSelectActive] = useState(false);
-  const [activeValues, setActiveValues] = useState<string[]>([]);
+  const [activeValuesLocal, setActiveValuesLocal] =
+    useState<string[]>(activeValues);
 
   const selectRef = useRef<HTMLDivElement>(null);
 
   function handleActiveValues(option: string) {
     if (activeValues.includes(option)) {
-      setActiveValues(activeValues.filter((item) => item !== option));
+      setActiveValuesLocal(activeValues.filter((item) => item !== option));
+      handleChange(activeValues.filter((item) => item !== option));
     } else {
-      setActiveValues([...activeValues, option]);
+      setActiveValuesLocal([...activeValues, option]);
+      handleChange([...activeValues, option]);
     }
   }
 
@@ -51,7 +56,7 @@ export default function Select(props: Props) {
               : theme.colors.gray700,
           }}
           className={
-            !selectActive && !activeValues.length
+            !selectActive && !activeValuesLocal.length
               ? styles.selectLabel
               : styles.selectLabelActive
           }
@@ -67,15 +72,15 @@ export default function Select(props: Props) {
           }}
           onClick={() => setSelectActive(!selectActive)}
         >
-          {activeValues.length ? (
+          {activeValuesLocal.length ? (
             <span className={styles.selectTextContainer}>
               <p
                 className={styles.selectText}
                 style={{ width: `${width ? (width - 16 * 5) / 16 : 10}rem` }}
               >
-                {activeValues.join(", ")}
+                {activeValuesLocal.join(", ")}
               </p>
-              <span>({activeValues.length})</span>
+              <span>({activeValuesLocal.length})</span>
             </span>
           ) : null}
           <CaretLeft
@@ -96,7 +101,7 @@ export default function Select(props: Props) {
                 onClick={() => handleActiveValues(option)}
               >
                 <span>{option}</span>
-                {activeValues.includes(option) && <Check />}
+                {activeValuesLocal.includes(option) && <Check />}
               </div>
             ))}
           </div>

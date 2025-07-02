@@ -8,9 +8,10 @@ import { Text } from "../ui/text";
 import MenuItem from "./menu-item";
 import styles from "./menu.module.css";
 import { useEffect, useState } from "react";
-import RegisterLivroModal from "../register-modal";
 import { UserType } from "@/@types/user";
 import { api } from "@/lib/api";
+import LoginModal from "../login-modal";
+import { getTokenHeader } from "@/lib/getTokenHeader";
 
 const userMenu = [
   {
@@ -49,6 +50,13 @@ const librarianMenu = [
     ),
     text: "Reserva",
     url: "/admin/reserva",
+  },
+  {
+    icon: (
+      <Icon.AddressBook width={20} height={20} color={theme.colors.gray100} />
+    ),
+    text: "Usuário",
+    url: "/admin/usuario",
   },
 ];
 
@@ -91,7 +99,10 @@ export default function Menu() {
 
   useEffect(() => {
     async function fetchUser() {
-      const userResponse = await api.usuarios.getByIdAsync("u10");
+      const userResponse = await api.usuarios.getByIdAsync(
+        "u10",
+        getTokenHeader()!
+      );
       setUser(userResponse.data);
     }
     fetchUser();
@@ -158,7 +169,7 @@ export default function Menu() {
           </Box>
         </button>
       </Box>
-      <RegisterLivroModal
+      <LoginModal
         open={isRegisterModalActive}
         onOpenChange={() => setIsRegisterModalActive(false)}
       />

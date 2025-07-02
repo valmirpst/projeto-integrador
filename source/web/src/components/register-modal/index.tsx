@@ -6,25 +6,42 @@ import { Box } from "../ui/box";
 import styles from "./register-user-modal.module.css";
 import { Button } from "../ui/button";
 import Img from "../ui/img";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import Select from "../ui/select";
+import { UserType } from "@/@types/user";
+import { getTokenHeader } from "@/lib/getTokenHeader";
 
-type PropsType = {
+export type PropsRegisterModalType = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  formdata?: UserType;
+  update?: boolean;
 };
 
-export default function RegisterUserModal({ open, onOpenChange }: PropsType) {
-  const [form, setForm] = useState({
+export default function RegisterModal({
+  open,
+  onOpenChange,
+  formdata,
+  update,
+}: PropsRegisterModalType) {
+  const [form, setForm] = useState<UserType>({
+    id: "",
     nome: "",
-    perfil: "",
-    registroAcademico: "",
+    sobrenome: "teste",
+    perfil: "aluno",
+    data_nasc: "",
+    ra: "",
     ciape: "",
     telefone: "",
-    nascimento: "",
     email: "",
   });
+
+  useEffect(() => {
+    if (formdata) {
+      setForm(formdata);
+    }
+  }, [formdata]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
     const { value } = e.target;
@@ -33,9 +50,10 @@ export default function RegisterUserModal({ open, onOpenChange }: PropsType) {
 
   const handleSubmit = async () => {
     const isValid = Object.values(form).every((v) => v !== "");
+    console.log(isValid, form);
     if (!isValid) return;
 
-    await api.usuarios.postAsync({ payload: form });
+    await api.usuarios.postAsync({ payload: form, ...getTokenHeader() });
     onOpenChange(false);
   };
 
@@ -64,11 +82,11 @@ export default function RegisterUserModal({ open, onOpenChange }: PropsType) {
               value={form.nome}
               onChange={(e) => handleChange(e, "nome")}
             />
-            <Select
+            {/* <Select
               label="Perfil"
               options={["aluno", "professor"]}
               width={187}
-            />
+            /> */}
             {/* <Input
               id="perfil"
               label="Perfil"
@@ -81,11 +99,11 @@ export default function RegisterUserModal({ open, onOpenChange }: PropsType) {
 
           <Box className={styles.row}>
             <Input
-              id="registroAcademico"
+              id="ra"
               label="Registro Acadêmico"
               className={styles.labelCinza}
-              value={form.registroAcademico}
-              onChange={(e) => handleChange(e, "registroAcademico")}
+              value={form.ra}
+              onChange={(e) => handleChange(e, "ra")}
             />
             <Input
               id="ciape"
@@ -109,7 +127,7 @@ export default function RegisterUserModal({ open, onOpenChange }: PropsType) {
               label="Nascimento"
               className={styles.labelCinza}
               type="date"
-              value={form.nascimento}
+              value={form.data_nasc}
               onChange={(e) => handleChange(e, "nascimento")}
             />
           </Box>
