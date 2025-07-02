@@ -36,7 +36,7 @@ export default function RegisterModal({
     telefone: "",
     email: "",
     senha: "123456",
-    id_cursos: ["c1", "c2"],
+    id_cursos: [],
     siape: "",
   });
 
@@ -46,7 +46,10 @@ export default function RegisterModal({
     }
   }, [formdata]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    id: string
+  ) => {
     const { value } = e.target;
     setForm((prev) => ({ ...prev, [id]: value }));
   };
@@ -85,6 +88,19 @@ export default function RegisterModal({
               value={form.nome}
               onChange={(e) => handleChange(e, "nome")}
             />
+            <select
+              id="usuario"
+              className={styles.select}
+              value={form.perfil}
+              onChange={(e) => handleChange(e, "perfil")}
+            >
+              <option value="" disabled>
+                Selecione uma opção
+              </option>
+              <option value="aluno">Aluno</option>
+              <option value="professor">Professor</option>
+              <option value="bibliotecario">Bibliotecário</option>
+            </select>
           </Box>
 
           <Box className={styles.row}>
@@ -128,6 +144,15 @@ export default function RegisterModal({
             className={styles.labelCinza}
             value={form.email}
             onChange={(e) => handleChange(e, "email")}
+          />
+          <Select
+            options={["c1", "c2", "c3"]}
+            label="Cursos"
+            width={200}
+            activeValues={form.id_cursos}
+            handleChange={(values) =>
+              setForm((prev) => ({ ...prev, id_cursos: values }))
+            }
           />
 
           <Dialog.Actions className={styles.actions}>

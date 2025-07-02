@@ -98,13 +98,7 @@ export default function UsuarioClient() {
             setState={setSearchValue}
             width={500}
           />
-          <Box className={stylesAdmin.adminSelectContainer}>
-            {/* <Select
-              options={["Mais recente", "Mais antigo"]}
-              label="Ordenar Por"
-              width={200}
-            /> */}
-          </Box>
+
           <Button
             className={stylesAdmin.adminButton}
             size="sm"
