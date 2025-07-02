@@ -10,4 +10,7 @@ export type UserType = {
   email: string;
   telefone: string;
   perfil: Perfil;
+  senha: string;
+  id_cursos: string[];
+  siape: string;
 };

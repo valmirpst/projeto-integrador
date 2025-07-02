@@ -60,9 +60,7 @@ export default function UsuarioClient() {
   };
 
   const loadUsers = async () => {
-    console.log("teste");
-    const res = await api.usuarios.getAsync(getTokenHeader());
-    console.log(res.data);
+    const res = await api.usuarios.getAsync(getTokenHeader()!);
     // @ts-expect-error teste
     if (res.data) setUsers(res.data.data);
   };
@@ -74,7 +72,7 @@ export default function UsuarioClient() {
   });
 
   async function handleTrash(user: UserType) {
-    await api.usuarios.deleteAsync(user.id, getTokenHeader());
+    await api.usuarios.deleteAsync(user.id, getTokenHeader()!);
     await loadUsers();
   }
 

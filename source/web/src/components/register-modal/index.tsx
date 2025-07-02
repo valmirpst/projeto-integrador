@@ -26,7 +26,7 @@ export default function RegisterModal({
   update,
 }: PropsRegisterModalType) {
   const [form, setForm] = useState<UserType>({
-    id: "",
+    id: String(new Date().getTime()),
     nome: "",
     sobrenome: "teste",
     perfil: "aluno",
@@ -35,6 +35,9 @@ export default function RegisterModal({
     ciape: "",
     telefone: "",
     email: "",
+    senha: "123456",
+    id_cursos: ["c1", "c2"],
+    siape: "",
   });
 
   useEffect(() => {
@@ -49,8 +52,8 @@ export default function RegisterModal({
   };
 
   const handleSubmit = async () => {
-    const isValid = Object.values(form).every((v) => v !== "");
-    console.log(isValid, form);
+    const isValid =
+      form.nome && form.email && form.perfil && form.data_nasc && form.telefone;
     if (!isValid) return;
 
     await api.usuarios.postAsync({ payload: form, ...getTokenHeader() });
@@ -82,19 +85,6 @@ export default function RegisterModal({
               value={form.nome}
               onChange={(e) => handleChange(e, "nome")}
             />
-            {/* <Select
-              label="Perfil"
-              options={["aluno", "professor"]}
-              width={187}
-            /> */}
-            {/* <Input
-              id="perfil"
-              label="Perfil"
-              className={styles.labelCinza}
-              value={form.perfil}
-              onChange={(e) => handleChange(e, "perfil")}
-              placeholder="Aluno, professor..."
-            /> */}
           </Box>
 
           <Box className={styles.row}>
@@ -128,7 +118,7 @@ export default function RegisterModal({
               className={styles.labelCinza}
               type="date"
               value={form.data_nasc}
-              onChange={(e) => handleChange(e, "nascimento")}
+              onChange={(e) => handleChange(e, "data_nasc")}
             />
           </Box>
 
