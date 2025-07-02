@@ -101,7 +101,7 @@ export default function Menu() {
     async function fetchUser() {
       const userResponse = await api.usuarios.getByIdAsync(
         "u10",
-        getTokenHeader()
+        getTokenHeader()!
       );
       setUser(userResponse.data);
     }

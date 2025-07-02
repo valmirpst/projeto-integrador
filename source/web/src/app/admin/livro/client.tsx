@@ -26,7 +26,7 @@ export default function LivroClient() {
   const [autoresFilter, setAutoresFilter] = useState<string[]>([]);
 
   const loadBooks = async () => {
-    const res = await api.livros.getAsync(getTokenHeader());
+    const res = await api.livros.getAsync(getTokenHeader()!);
 
     // @ts-expect-error teste
     if (res.data) setBooks(res.data.data);
@@ -72,7 +72,7 @@ export default function LivroClient() {
   }
 
   async function handleTrash(book: BookType) {
-    await api.livros.deleteAsync(book.isbn, getTokenHeader());
+    await api.livros.deleteAsync(book.isbn, getTokenHeader()!);
     await loadBooks();
   }
 

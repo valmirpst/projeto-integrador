@@ -1,7 +1,8 @@
 export function getTokenHeader() {
   const token = localStorage.getItem("token");
   if (!token) {
-    throw new Error("Token not found in localStorage");
+    // throw new Error("Token not found in localStorage");
+    return null;
   }
   return {
     options: {
