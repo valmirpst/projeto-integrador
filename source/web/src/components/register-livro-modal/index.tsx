@@ -1,16 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { BookType } from "@/@types/book";
 import { Dialog } from "@/components/ui/dialog";
-import { Input } from "../ui/input";
-import { Text } from "../ui/text";
+import { api } from "@/lib/api";
+import { getTokenHeader } from "@/lib/getTokenHeader";
+import { useEffect, useState } from "react";
 import { Box } from "../ui/box";
-import styles from "./register-livro-modal.module.css";
 import { Button } from "../ui/button";
 import Img from "../ui/img";
-import { api } from "@/lib/api";
-import { BookType } from "@/@types/book";
-import { getTokenHeader } from "@/lib/getTokenHeader";
+import { Input } from "../ui/input";
+import { Text } from "../ui/text";
+import styles from "./register-livro-modal.module.css";
 
 export type PropsRegisterLivroModalType = {
   open: boolean;
@@ -65,7 +65,7 @@ export default function RegisterLivroModal({
         autores: [] as string[],
         total_avaliacoes: 0,
         total_estrelas: 0,
-        categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
+        categorias: [],
         caminho_img: "",
       });
       setAutor("");
@@ -141,7 +141,7 @@ export default function RegisterLivroModal({
         autores: [] as string[],
         total_avaliacoes: 0,
         total_estrelas: 0,
-        categorias: [{ nome: "eu estou testendo", tipo: "categoria" }],
+        categorias: [],
         caminho_img: "",
       });
       setFormdataImg(null);

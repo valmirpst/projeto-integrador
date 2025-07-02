@@ -1,17 +1,16 @@
 "use client";
-import { Box } from "@/components/ui/box";
-import styles from "./reserve.module.css";
-import stylesAdmin from "../admin.module.css";
-import Table, { ColumnType } from "@/components/table";
-import { Text } from "@/components/ui/text";
-import Search from "@/components/search";
-import { useEffect, useState } from "react";
-import Select from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { ReserveType } from "@/@types/reserve";
+import RegisterReserveModal from "@/components/register-reserve-modal";
+import Search from "@/components/search";
+import Table, { ColumnType } from "@/components/table";
+import { Box } from "@/components/ui/box";
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 import { api } from "@/lib/api";
 import { getTokenHeader } from "@/lib/getTokenHeader";
-import RegisterReserveModal from "@/components/register-reserve-modal";
+import { useEffect, useState } from "react";
+import stylesAdmin from "../admin.module.css";
+import styles from "./reserve.module.css";
 
 type EditarAtributo<T, K extends keyof T, V> = Omit<T, K> & { [P in K]: V };
 
@@ -49,7 +48,7 @@ export default function ReserveClient() {
   };
 
   const loadReserves = async () => {
-    const res = await api.reservas.getAsync(getTokenHeader());
+    const res = await api.reservas.getAsync(getTokenHeader() || {});
 
     // @ts-expect-error teste
     if (res.data) setReserves(res.data.data);
@@ -75,7 +74,7 @@ export default function ReserveClient() {
     });
 
   async function handleTrash(reserve: ReserveItem) {
-    await api.reservas.deleteAsync(reserve.id, getTokenHeader());
+    await api.reservas.deleteAsync(reserve.id, getTokenHeader() || {});
     await loadReserves();
   }
 

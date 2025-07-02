@@ -91,3 +91,22 @@
   text-decoration: none;
   height: 3.75rem;
 }
+
+.editButton,
+.trashButton {
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--gray-700);
+  transition: 0.1s;
+
+  &:hover {
+    background-color: var(--gray-200);
+    border: 1px solid var(--gray-500);
+  }
+}

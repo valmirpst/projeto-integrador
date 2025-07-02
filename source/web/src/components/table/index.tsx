@@ -1,13 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import styles from "./table.module.css";
+import { BookType } from "@/@types/book";
+import { Pencil, Trash2 } from "lucide-react";
+import Link from "next/link";
 import { CaretLeft, CaretRight } from "phosphor-react";
-import { Text } from "../ui/text";
-import { Box } from "../ui/box";
 import { useState } from "react";
 import ConfirmationTrashModal from "../confirmation-trash-modal";
-import Link from "next/link";
-import { BookType } from "@/@types/book";
+import { Box } from "../ui/box";
+import { Text } from "../ui/text";
+import styles from "./table.module.css";
 
 type ColumnItemType<T> = {
   title: string;
@@ -33,8 +34,7 @@ export default function Table<T>(props: Props<T>) {
   const { items, columns, handleTrash, handleEdit, type } = props;
 
   const [page, setPage] = useState(1);
-  const [isConfirmationTrashModalActive, setIsConfirmationTrashModalActive] =
-    useState(false);
+  const [isConfirmationTrashModalActive, setIsConfirmationTrashModalActive] = useState(false);
 
   const keys = Object.keys(columns || {}) as (keyof T)[];
   const values = Object.values(columns || {}) as ColumnItemType<T>[];
@@ -67,72 +67,64 @@ export default function Table<T>(props: Props<T>) {
                 {column.title}
               </th>
             ))}
-            <th>edit</th>
-            <th>trash</th>
+            <th>
+              <span style={{ opacity: 0 }}>edit</span>
+            </th>
+            <th>
+              <span style={{ opacity: 0 }}>trash</span>
+            </th>
           </tr>
         </thead>
         <tbody>
-          {items
-            .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-            .map((item, index) => {
-              return (
-                <tr key={index} style={{ gridTemplateColumns: gridColumns }}>
-                  {keys.map((key, index) => (
-                    <td
-                      key={index}
+          {items.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((item, index) => {
+            return (
+              <tr key={index} style={{ gridTemplateColumns: gridColumns }}>
+                {keys.map((key, index) => (
+                  <td
+                    key={index}
+                    style={{
+                      justifyContent: columns[key]?.justify,
+                    }}
+                  >
+                    <Link
+                      href={type === "book" ? `/livro/${(item as BookType).isbn}` : ""}
+                      className={styles.link}
                       style={{
-                        justifyContent: columns[key]?.justify,
+                        gridTemplateColumns: columns[key]?.image ? "auto 1fr" : "1fr",
                       }}
                     >
-                      <Link
-                        href={
-                          type === "book"
-                            ? `/livro/${(item as BookType).isbn}`
-                            : ""
-                        }
-                        className={styles.link}
-                        style={{
-                          gridTemplateColumns: columns[key]?.image
-                            ? "auto 1fr"
-                            : "1fr",
-                        }}
-                      >
-                        {columns[key]?.image &&
-                          typeof item[columns[key].image] === "string" &&
-                          typeof item[key] === "string" && (
-                            <img
-                              src={
-                                ("http://localhost:3333/images/" +
-                                  item[columns[key].image]) as string
-                              }
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).src = "";
-                              }}
-                              alt={item[key] as string}
-                              width={40}
-                              height={60}
-                            />
-                          )}
-                        {typeof item[key] === "string" ||
-                        typeof item[key] === "number"
-                          ? item[key]
-                          : Array.isArray(item[key])
-                          ? item[key].join(" - ")
-                          : null}
-                      </Link>
-                    </td>
-                  ))}
-                  <td>
-                    <button onClick={() => handleEdit(item)}>edit</button>
+                      {columns[key]?.image && typeof item[columns[key].image] === "string" && typeof item[key] === "string" && (
+                        <img
+                          src={("http://localhost:3333/images/" + item[columns[key].image]) as string}
+                          onError={e => {
+                            (e.target as HTMLImageElement).src = "";
+                          }}
+                          alt={item[key] as string}
+                          width={40}
+                          height={60}
+                        />
+                      )}
+                      {typeof item[key] === "string" || typeof item[key] === "number"
+                        ? item[key]
+                        : Array.isArray(item[key])
+                        ? item[key].join(" - ")
+                        : null}
+                    </Link>
                   </td>
-                  <td>
-                    <button onClick={() => handleConfirmationTrash(item)}>
-                      trash
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+                ))}
+                <td>
+                  <button className={styles.editButton} onClick={() => handleEdit(item)}>
+                    <Pencil size={16} />
+                  </button>
+                </td>
+                <td>
+                  <button className={styles.trashButton} onClick={() => handleConfirmationTrash(item)}>
+                    <Trash2 size={16} />
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
         <tfoot className={styles.tableFooter}>
           <tr>
@@ -142,26 +134,16 @@ export default function Table<T>(props: Props<T>) {
               </Text>
               <Box className={styles.tableFooterContent}>
                 {page > 1 && (
-                  <Box
-                    className={styles.paginationNumber}
-                    onClick={() => setPage(page - 1)}
-                  >
+                  <Box className={styles.paginationNumber} onClick={() => setPage(page - 1)}>
                     <CaretLeft width={20} height={20} />
                   </Box>
                 )}
                 {page > 1 && (
-                  <Text
-                    className={`${styles.paginationNumber}`}
-                    onClick={() => setPage(page - 1)}
-                  >
+                  <Text className={`${styles.paginationNumber}`} onClick={() => setPage(page - 1)}>
                     {page - 1}
                   </Text>
                 )}
-                <Text
-                  className={`${styles.paginationNumber} ${styles.pageAtive}`}
-                >
-                  {page}
-                </Text>
+                <Text className={`${styles.paginationNumber} ${styles.pageAtive}`}>{page}</Text>
                 <Text
                   className={`
                   ${styles.paginationNumber} 
@@ -187,10 +169,7 @@ export default function Table<T>(props: Props<T>) {
                   </Text>
                 )}
                 {page < totalPages && (
-                  <Box
-                    className={styles.paginationNumber}
-                    onClick={() => setPage(page + 1)}
-                  >
+                  <Box className={styles.paginationNumber} onClick={() => setPage(page + 1)}>
                     <CaretRight width={20} height={20} />
                   </Box>
                 )}

@@ -1,9 +1,32 @@
+.menuToggleButton {
+  position: fixed;
+  top: 1.25rem;
+  left: 1.25rem;
+  background-color: var(--primary-300);
+  color: white;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 1000;
+
+  &:hover {
+    background-color: var(--primary-500);
+  }
+}
+
 .menuWrapper {
-  padding: 3.125rem 2.5rem;
+  padding: 3rem 2rem;
   background-color: var(--primary-900);
   height: 100vh;
   width: 18.75rem;
+  overflow: hidden;
   position: fixed;
+  transition: 0.15s ease-in-out;
+  z-index: 999;
 }
 
 .menuHeader {
@@ -34,4 +57,5 @@
 
 .loginText:hover {
   color: var(--gray-200) !important;
+  cursor: pointer;
 }

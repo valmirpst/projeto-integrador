@@ -1,8 +1,8 @@
 import { BookType } from "@/@types/book";
-import { ReturnType } from "@/@types/requests/return-type";
-import { UserType } from "@/@types/user";
-import { ReserveType } from "@/@types/reserve";
 import { LoginResponseType } from "@/@types/loginResponse";
+import { ReturnType } from "@/@types/requests/return-type";
+import { ReserveType } from "@/@types/reserve";
+import { UserType } from "@/@types/user";
 
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -60,10 +60,7 @@ const apiFnBase = async <T, P>({
 
   const fetchUrl =
     stringifiedParams.length > 0
-      ? `${baseURL?.replace(/\/$/, "")}/${endpoint.replace(
-          /^\//,
-          ""
-        )}?${stringifiedParams}`
+      ? `${baseURL?.replace(/\/$/, "")}/${endpoint.replace(/^\//, "")}?${stringifiedParams}`
       : `${baseURL?.replace(/\/$/, "")}/${endpoint.replace(/^\//, "")}`;
 
   try {
@@ -71,14 +68,10 @@ const apiFnBase = async <T, P>({
       ...options,
       method,
       headers: { ...COMMON_HEADERS, ...options?.headers },
-      body: ["POST", "PUT"].includes(method)
-        ? JSON.stringify(payload)
-        : undefined,
+      body: ["POST", "PUT"].includes(method) ? JSON.stringify(payload) : undefined,
     });
 
-    const data = [204, 205, 304].includes(res.status)
-      ? null
-      : { ...(await res.json()), ok: true };
+    const data = [204, 205, 304].includes(res.status) ? null : { ...(await res.json()), ok: true };
 
     // let data: ApiResponse<T> | null = null;
     // if (bodyText) {
@@ -98,11 +91,8 @@ const apiFnBase = async <T, P>({
         ok: false,
         status: res.status,
         message:
-          data &&
-          typeof data === "object" &&
-          "message" in data &&
-          typeof data.message == "string"
-            ? data.message
+          data && typeof data === "object" && "errors" in data && Array.isArray(data.errors)
+            ? data.errors[0]
             : res.statusText || "Erro inesperado da API.",
       };
     }
@@ -111,7 +101,7 @@ const apiFnBase = async <T, P>({
       return {
         ok: false,
         status: res.status,
-        message: data?.message || "Ocorreu um erro inesperado.",
+        message: data.errors?.[0] || "Ocorreu um erro inesperado.",
       };
     }
 
@@ -155,10 +145,7 @@ function createApi<TModel, TParams>(endpoint: string) {
         payload: data.payload,
       });
     },
-    putAsync: async <T = TModel>(
-      id: string,
-      data: PutAsyncPayload<T, TParams>
-    ) =>
+    putAsync: async <T = TModel>(id: string, data: PutAsyncPayload<T, TParams>) =>
       apiFnBase<T, TParams>({
         endpoint: `${endpoint}/${id}`,
         method: "PUT",
@@ -166,10 +153,7 @@ function createApi<TModel, TParams>(endpoint: string) {
         payload: data.payload,
         params: data.params,
       }),
-    deleteAsync: async <T = null>(
-      id: string,
-      data?: DeleteAsyncPayload<TParams>
-    ) =>
+    deleteAsync: async <T = null>(id: string, data?: DeleteAsyncPayload<TParams>) =>
       apiFnBase<T, TParams>({
         endpoint: `${endpoint}/${id}`,
         method: "DELETE",

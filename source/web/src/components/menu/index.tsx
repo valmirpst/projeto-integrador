@@ -1,17 +1,16 @@
 "use client";
+import { getTokenHeader, parseJwt } from "@/lib/getTokenHeader";
 import { theme } from "@/theme";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import * as Icon from "phosphor-react";
+import { useEffect, useState } from "react";
+import LoginModal from "../login-modal";
 import { Avatar } from "../ui/avatar";
 import { Box } from "../ui/box";
 import Img from "../ui/img";
 import { Text } from "../ui/text";
 import MenuItem from "./menu-item";
 import styles from "./menu.module.css";
-import { useEffect, useState } from "react";
-import { UserType } from "@/@types/user";
-import { api } from "@/lib/api";
-import LoginModal from "../login-modal";
-import { getTokenHeader } from "@/lib/getTokenHeader";
 
 const userMenu = [
   {
@@ -20,9 +19,7 @@ const userMenu = [
     url: "/",
   },
   {
-    icon: (
-      <Icon.Bookmarks width={20} height={20} color={theme.colors.gray100} />
-    ),
+    icon: <Icon.Bookmarks width={20} height={20} color={theme.colors.gray100} />,
     text: "Categorias",
     url: "categorias",
   },
@@ -45,16 +42,12 @@ const librarianMenu = [
     url: "/admin/livro",
   },
   {
-    icon: (
-      <Icon.AddressBook width={20} height={20} color={theme.colors.gray100} />
-    ),
+    icon: <Icon.AddressBook width={20} height={20} color={theme.colors.gray100} />,
     text: "Reserva",
     url: "/admin/reserva",
   },
   {
-    icon: (
-      <Icon.AddressBook width={20} height={20} color={theme.colors.gray100} />
-    ),
+    icon: <Icon.AddressBook width={20} height={20} color={theme.colors.gray100} />,
     text: "Usuário",
     url: "/admin/usuario",
   },
@@ -67,50 +60,40 @@ const userSubMenu = [
     url: "favoritos",
   },
   {
-    icon: (
-      <Icon.LightbulbFilament
-        width={20}
-        height={20}
-        color={theme.colors.gray100}
-      />
-    ),
+    icon: <Icon.LightbulbFilament width={20} height={20} color={theme.colors.gray100} />,
     text: "Sugestões de Leitura",
     url: "sugestoes",
   },
   {
-    icon: (
-      <Icon.ChartLineUp width={20} height={20} color={theme.colors.gray100} />
-    ),
+    icon: <Icon.ChartLineUp width={20} height={20} color={theme.colors.gray100} />,
     text: "Livros Lidos",
     url: "livros-lidos",
   },
 ];
 
-type PropsType = {
-  user: UserType;
-};
-
 export default function Menu() {
   const [isRegisterModalActive, setIsRegisterModalActive] = useState(false);
-  const [user, setUser] = useState<UserType | null>();
+  const [user, setUser] = useState<{ id: string; nome: string; email: string } | null>();
+
+  const [menuWidth, setMenuWidth] = useState("0");
 
   const isAdmin = true;
   const menuItems = isAdmin ? librarianMenu : userMenu;
 
   useEffect(() => {
-    async function fetchUser() {
-      const userResponse = await api.usuarios.getByIdAsync(
-        "u10",
-        getTokenHeader()!
-      );
-      setUser(userResponse.data);
-    }
-    fetchUser();
+    const token = getTokenHeader()?.options.headers.Authorization.split(" ")[1];
+    if (!token) return;
+    const parsedToken = parseJwt(token);
+    const user = parsedToken?.payload as { id: string; nome: string; email: string };
+    setUser(user);
   }, []);
 
   return (
     <>
-      <Box className={styles.menuWrapper}>
+      <button className={styles.menuToggleButton} onClick={() => setMenuWidth(menuWidth === "0" ? "18rem" : "0")}>
+        {menuWidth === "0" ? <ChevronRight /> : <ChevronLeft />}
+      </button>
+      <Box className={styles.menuWrapper} style={{ width: menuWidth, padding: menuWidth === "0" ? "0" : "3rem 2rem" }}>
         <Box className={styles.menuHeader}>
           <Img src="/logo.png" width={65} height={65} alt="logo" />
           <Box>
@@ -127,52 +110,42 @@ export default function Menu() {
           {isAdmin ? "Gerencie a biblioteca" : "Descubra seu livro"}
         </Text>
 
-        {menuItems.map((item) => (
-          <MenuItem
-            key={item.text}
-            url={item.url}
-            text={item.text}
-            icon={item.icon}
-          />
+        {menuItems.map(item => (
+          <MenuItem onClick={() => setMenuWidth("0")} key={item.text} url={item.url} text={item.text} icon={item.icon} />
         ))}
 
         {!isAdmin && (
           <>
             <Box className={styles.menuDivider} />
-            {userSubMenu.map((item) => (
-              <MenuItem
-                key={item.text}
-                url={item.url}
-                text={item.text}
-                icon={item.icon}
-              />
+            {userSubMenu.map(item => (
+              <MenuItem onClick={() => setMenuWidth("0")} key={item.text} url={item.url} text={item.text} icon={item.icon} />
             ))}
           </>
         )}
 
-        <button onClick={() => setIsRegisterModalActive(true)}>
-          <Box className={styles.menuFooter}>
-            <Avatar src="" />
-            <Box>
-              <Text
-                className={styles.loginText}
-                size="md"
-                weight="bold"
-                color="gray50"
-              >
-                Entrar/Registrar
-              </Text>
-              <Text size="xs" weight="light" color="gray50">
-                Encerrar sessão
-              </Text>
-            </Box>
+        <Box className={styles.menuFooter} onClick={() => setIsRegisterModalActive(true)}>
+          <Avatar src="" />
+          <Box>
+            <Text className={styles.loginText} size="md" weight="bold" color="gray50">
+              {user?.nome || "Entrar/Registrar"}
+            </Text>
+            <Text
+              size="xs"
+              weight="light"
+              color="gray50"
+              onClick={e => {
+                e.stopPropagation();
+                localStorage.removeItem("token");
+                location.reload();
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              Encerrar sessão
+            </Text>
           </Box>
-        </button>
+        </Box>
       </Box>
-      <LoginModal
-        open={isRegisterModalActive}
-        onOpenChange={() => setIsRegisterModalActive(false)}
-      />
+      <LoginModal open={isRegisterModalActive} onOpenChange={() => setIsRegisterModalActive(false)} />
     </>
   );
 }
