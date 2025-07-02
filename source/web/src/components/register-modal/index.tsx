@@ -35,7 +35,7 @@ export default function RegisterModal({
     ciape: "",
     telefone: "",
     email: "",
-    senha: "123456",
+    senha: "",
     id_cursos: [],
     siape: "",
   });
@@ -59,6 +59,14 @@ export default function RegisterModal({
       form.nome && form.email && form.perfil && form.data_nasc && form.telefone;
     if (!isValid) return;
 
+    if (update) {
+      await api.usuarios.putAsync(form.id, {
+        payload: form,
+        ...getTokenHeader(),
+      });
+      onOpenChange(false);
+      return;
+    }
     await api.usuarios.postAsync({ payload: form, ...getTokenHeader() });
     onOpenChange(false);
   };
@@ -144,6 +152,13 @@ export default function RegisterModal({
             className={styles.labelCinza}
             value={form.email}
             onChange={(e) => handleChange(e, "email")}
+          />
+          <Input
+            id="senha"
+            label="Senha"
+            className={styles.labelCinza}
+            value={form.senha}
+            onChange={(e) => handleChange(e, "senha")}
           />
           <Select
             options={["c1", "c2", "c3"]}
