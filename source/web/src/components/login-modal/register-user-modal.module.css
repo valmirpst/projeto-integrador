@@ -1,6 +1,5 @@
 .modalContent {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   background: var(--gray-100);
   border-radius: 8px;
   overflow: hidden;
@@ -10,6 +9,8 @@
 .modalImageContainer {
   width: 100%;
   height: 100%;
+  max-width: 500px;
+  max-height: 100%;
 }
 
 .modalImage {
@@ -23,12 +24,10 @@
   flex-direction: column;
   padding: 2rem;
   gap: 16px;
-   
 }
 
 .modalInputs input {
-  color: var(--gray-400);           
- 
+  color: var(--gray-400);
 }
 
 .modalInputs input::placeholder {
@@ -50,19 +49,18 @@
   color: var(--gray-400);
 }
 
-
 .actions {
   display: flex;
   justify-content: flex-end;
   gap: 16px;
   margin-top: 24px;
-} 
+}
 
 .modalButton {
   width: 100%;
   padding: 8px;
   border-radius: 4px;
-  background-color:var(--primary-700);
+  background-color: var(--primary-700);
   color: var(--gray-50);
   border: none;
 }

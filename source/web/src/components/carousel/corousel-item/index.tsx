@@ -1,6 +1,7 @@
 import { Box } from "@/components/ui/box";
 import Img from "@/components/ui/img";
 import { theme } from "@/theme";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import styles from "./carousel-item.module.css";
 
@@ -9,10 +10,13 @@ type Props = {
   title: string;
   width: number;
   height: number;
+  isbn: string;
 };
 
 export default function CarouselItem(props: Props) {
-  const { src, title, width, height } = props;
+  const { src, title, width, height, isbn } = props;
+
+  const router = useRouter();
 
   const [showMenu, setShowMenu] = useState(false);
   const [mouseDownPosition, setMouseDownPosition] = useState<number | null>(null);
@@ -67,7 +71,11 @@ export default function CarouselItem(props: Props) {
           opacity: showMenu ? 1 : 0,
         }}
       >
-        <Box className={styles.carouselItemMenuItem} style={{ backgroundColor: theme.colors.primary300 + "08" }}>
+        <Box
+          onClick={() => router.push(`/livro/${isbn}`)}
+          className={styles.carouselItemMenuItem}
+          style={{ backgroundColor: theme.colors.primary300 + "08" }}
+        >
           Mais detalhes
         </Box>
         <Box className={styles.carouselItemMenuItem} style={{ backgroundColor: theme.colors.primary300 + "08" }}>

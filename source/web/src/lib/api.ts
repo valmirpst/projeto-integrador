@@ -1,5 +1,7 @@
 import { BookType } from "@/@types/book";
+import { LoginType } from "@/@types/login";
 import { LoginResponseType } from "@/@types/loginResponse";
+import { ApiResponse } from "@/@types/requests/api-response";
 import { ReturnType } from "@/@types/requests/return-type";
 import { ReserveType } from "@/@types/reserve";
 import { UserType } from "@/@types/user";
@@ -71,45 +73,29 @@ const apiFnBase = async <T, P>({
       body: ["POST", "PUT"].includes(method) ? JSON.stringify(payload) : undefined,
     });
 
-    const data = [204, 205, 304].includes(res.status) ? null : { ...(await res.json()), ok: true };
-
-    // let data: ApiResponse<T> | null = null;
-    // if (bodyText) {
-    //   try {
-    //     data = JSON.parse(bodyText);
-    //   } catch {
-    //     return {
-    //       ok: false,
-    //       status: res.status,
-    //       message: "Erro ao interpretar resposta da API",
-    //     };
-    //   }
-    // }
+    const data: ApiResponse<T> = [204, 205, 304].includes(res.status) ? null : { ...(await res.json()), ok: true };
 
     if (!res.ok) {
       return {
         ok: false,
         status: res.status,
-        message:
-          data && typeof data === "object" && "errors" in data && Array.isArray(data.errors)
-            ? data.errors[0]
-            : res.statusText || "Erro inesperado da API.",
+        message: data.errors?.[0] || res.statusText || "Ocorreu um erro inesperado no servidor.",
       };
     }
 
-    if (!data?.success) {
+    if (!data.success) {
       return {
-        ok: false,
+        ok: data.success,
         status: res.status,
         message: data.errors?.[0] || "Ocorreu um erro inesperado.",
       };
     }
 
     return {
-      ok: true,
+      ok: data.success,
       status: res.status,
-      message: res.statusText,
-      data: data,
+      message: res.statusText || "Requisição bem-sucedida",
+      data: "token" in data ? (data.token as T) : data.data,
     };
   } catch (err) {
     return {
@@ -167,5 +153,5 @@ export const api = {
   livros: createApi<BookType, unknown>("/livros"),
   usuarios: createApi<UserType, unknown>("/usuarios"),
   reservas: createApi<ReserveType, unknown>("/historico"),
-  login: createApi<LoginResponseType, unknown>("/auth/login"),
+  login: createApi<LoginResponseType, LoginType>("/auth/login"),
 };

@@ -8,7 +8,6 @@ import { getTokenHeader } from "@/lib/getTokenHeader";
 import { useState } from "react";
 import { Box } from "../ui/box";
 import { Button } from "../ui/button";
-import Img from "../ui/img";
 import { Input } from "../ui/input";
 import { Text } from "../ui/text";
 import styles from "./register-user-modal.module.css";
@@ -42,22 +41,27 @@ export default function LoginModal({ user, open, onOpenChange }: PropsRegisterMo
       return;
     }
 
-    const response = await api.login.postAsync({
+    const {
+      ok,
+      data: token,
+      message,
+      status,
+    } = await api.login.postAsync({
       payload: form,
       ...getTokenHeader(),
     });
 
-    if (response.ok === false) {
-      if (response.status === 401) {
+    if (ok === false || !token) {
+      if (status === 401) {
         setError("E-mail ou senha inválidos.");
       } else {
-        setError(response.message);
+        setError(message || "Erro ao fazer login.");
       }
       return;
     }
 
     // @ts-expect-error ignore
-    localStorage.setItem("token", response.data?.token || "");
+    localStorage.setItem("token", token || "");
     const href = user?.perfil === "bibliotecario" ? "/admin/dashboard" : "/";
     window.location.href = href;
 
@@ -66,10 +70,10 @@ export default function LoginModal({ user, open, onOpenChange }: PropsRegisterMo
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Content width={900} className={styles.modalContent}>
-        <Box className={styles.modalImageContainer}>
+      <Dialog.Content width={600} className={styles.modalContent}>
+        {/* <div className={styles.modalImageContainer}>
           <Img src="/library.jpg" alt="" width={337} height={497} className={styles.modalImage} />
-        </Box>
+        </div> */}
 
         <Box className={styles.modalInputs}>
           <Dialog.Title className={styles.modalTitle}>Login</Dialog.Title>

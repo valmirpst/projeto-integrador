@@ -75,11 +75,11 @@ const userSubMenu = [
 
 export default function Menu() {
   const [isRegisterModalActive, setIsRegisterModalActive] = useState(false);
-  const [user, setUser] = useState<{ data: UserType } | null>(null);
+  const [user, setUser] = useState<UserType | null>(null);
 
   const [menuWidth, setMenuWidth] = useState("0");
 
-  const isAdmin = user?.data.perfil === "bibliotecario" ? true : false;
+  const isAdmin = user?.perfil === "bibliotecario" ? true : false;
   const menuItems = isAdmin ? librarianMenu : userMenu;
 
   useEffect(() => {
@@ -135,7 +135,7 @@ export default function Menu() {
           <Avatar src="" />
           <Box>
             <Text className={styles.loginText} size="md" weight="bold" color="gray50">
-              {user?.data.nome || "Entrar/Registrar"}
+              {user?.nome || "Entrar/Registrar"}
             </Text>
             <Text
               size="xs"
@@ -153,7 +153,7 @@ export default function Menu() {
           </Box>
         </Box>
       </Box>
-      <LoginModal user={user?.data || null} open={isRegisterModalActive} onOpenChange={() => setIsRegisterModalActive(false)} />
+      <LoginModal user={user} open={isRegisterModalActive} onOpenChange={() => setIsRegisterModalActive(false)} />
     </>
   );
 }

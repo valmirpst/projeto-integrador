@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Dialog } from "@/components/ui/dialog";
-import { Box } from "../ui/box";
-import styles from "./register-reserve-modal.module.css";
-import { Button } from "../ui/button";
-import { api } from "@/lib/api";
-import { ReserveType } from "@/@types/reserve";
-import { getTokenHeader } from "@/lib/getTokenHeader";
-import { UserType } from "@/@types/user";
 import { BookType } from "@/@types/book";
+import { ReserveType } from "@/@types/reserve";
+import { UserType } from "@/@types/user";
+import { Dialog } from "@/components/ui/dialog";
+import { api } from "@/lib/api";
+import { getTokenHeader } from "@/lib/getTokenHeader";
+import { useEffect, useState } from "react";
+import { Box } from "../ui/box";
+import { Button } from "../ui/button";
+import styles from "./register-reserve-modal.module.css";
 
 export type PropsRegisterReservaModalType = {
   open: boolean;
@@ -18,12 +18,7 @@ export type PropsRegisterReservaModalType = {
   update?: boolean;
 };
 
-export default function RegisterReserveModal({
-  open,
-  onOpenChange,
-  formdata,
-  update,
-}: PropsRegisterReservaModalType) {
+export default function RegisterReserveModal({ open, onOpenChange, formdata, update }: PropsRegisterReservaModalType) {
   const [form, setForm] = useState({
     id_usuario: "",
     isbn_livro: "",
@@ -35,15 +30,13 @@ export default function RegisterReserveModal({
 
   useEffect(() => {
     const fetchData = async () => {
-      const userRes = await api.usuarios.getAsync(getTokenHeader());
+      const userRes = await api.usuarios.getAsync(getTokenHeader()!);
       if (userRes.data) {
-        // @ts-expect-error teste
-        setUsers(userRes.data.data);
+        setUsers(userRes.data);
       }
-      const livroRes = await api.livros.getAsync(getTokenHeader());
+      const livroRes = await api.livros.getAsync(getTokenHeader()!);
       if (livroRes.data) {
-        // @ts-expect-error teste
-        setBooks(livroRes.data.data);
+        setBooks(livroRes.data);
       }
     };
     fetchData();
@@ -60,16 +53,13 @@ export default function RegisterReserveModal({
     }
   }, [formdata]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    field: keyof typeof form
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, field: keyof typeof form) => {
     const { value } = e.target;
-    setForm((prev) => ({ ...prev, [field]: value }));
+    setForm(prev => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async () => {
-    const isValid = Object.values(form).every((value) => value !== "");
+    const isValid = Object.values(form).every(value => value !== "");
     console.log(form);
 
     if (isValid) {
@@ -96,25 +86,18 @@ export default function RegisterReserveModal({
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Content width={500} className={styles.modalContainer}>
         <Box className={styles.modalInputs}>
-          <Dialog.Title className={styles.modalTitle}>
-            {update ? "Atualizar Reserva" : "Registrar Reserva"}
-          </Dialog.Title>
+          <Dialog.Title className={styles.modalTitle}>{update ? "Atualizar Reserva" : "Registrar Reserva"}</Dialog.Title>
           <Dialog.Close />
 
           <Box>
             <label htmlFor="usuario" className={styles.label}>
               Status
             </label>
-            <select
-              id="usuario"
-              className={styles.select}
-              value={form.id_usuario}
-              onChange={(e) => handleChange(e, "id_usuario")}
-            >
+            <select id="usuario" className={styles.select} value={form.id_usuario} onChange={e => handleChange(e, "id_usuario")}>
               <option value="" disabled>
                 Selecione uma opção
               </option>
-              {users.map((user) => (
+              {users.map(user => (
                 <option key={user.id} value={user.id}>
                   {user.nome}
                 </option>
@@ -125,16 +108,11 @@ export default function RegisterReserveModal({
             <label htmlFor="book" className={styles.label}>
               Livro
             </label>
-            <select
-              id="book"
-              className={styles.select}
-              value={form.isbn_livro}
-              onChange={(e) => handleChange(e, "isbn_livro")}
-            >
+            <select id="book" className={styles.select} value={form.isbn_livro} onChange={e => handleChange(e, "isbn_livro")}>
               <option value="" disabled>
                 Selecione uma opção
               </option>
-              {books.map((user) => (
+              {books.map(user => (
                 <option key={user.isbn} value={user.isbn}>
                   {user.titulo}
                 </option>
@@ -149,14 +127,14 @@ export default function RegisterReserveModal({
               id="bibliotecario"
               className={styles.select}
               value={form.id_bibliotecario}
-              onChange={(e) => handleChange(e, "id_bibliotecario")}
+              onChange={e => handleChange(e, "id_bibliotecario")}
             >
               <option value="" disabled>
                 Selecione uma opção
               </option>
               {users
-                .filter((value) => value.perfil === "bibliotecario")
-                .map((user) => (
+                .filter(value => value.perfil === "bibliotecario")
+                .map(user => (
                   <option key={user.id} value={user.id}>
                     {user.nome}
                   </option>
@@ -167,12 +145,7 @@ export default function RegisterReserveModal({
             <label htmlFor="status" className={styles.label}>
               Status
             </label>
-            <select
-              id="status"
-              className={styles.select}
-              value={form.status}
-              onChange={(e) => handleChange(e, "status")}
-            >
+            <select id="status" className={styles.select} value={form.status} onChange={e => handleChange(e, "status")}>
               <option value="ativo">Ativo</option>
               <option value="inativo">Inativo</option>
             </select>
@@ -182,9 +155,7 @@ export default function RegisterReserveModal({
             <Dialog.Close asChild>
               <Button variant="tertiary">Cancelar</Button>
             </Dialog.Close>
-            <Button onClick={handleSubmit}>
-              {update ? "Atualizar Reserva" : "Adicionar Reserva"}
-            </Button>
+            <Button onClick={handleSubmit}>{update ? "Atualizar Reserva" : "Adicionar Reserva"}</Button>
           </Box>
         </Box>
       </Dialog.Content>

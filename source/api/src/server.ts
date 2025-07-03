@@ -9,6 +9,7 @@ import { authenticationMiddleware } from "./middlewares/auth.middleware";
 import { handleErrorMiddleware } from "./middlewares/handle-error.middleware";
 import { router } from "./routes";
 import { authRoutes } from "./routes/auth.routes";
+import { livroRoutes } from "./routes/livro.routes";
 import { swaggerOptions } from "./swagger/options";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "..", "public", "images")));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/livros", livroRoutes);
 app.use("/api", authenticationMiddleware, router);
 
 app.use(handleErrorMiddleware);

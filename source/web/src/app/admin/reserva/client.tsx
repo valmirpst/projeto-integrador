@@ -19,8 +19,7 @@ type ReserveItem = EditarAtributo<ReserveType, "criado_em", string>;
 export default function ReserveClient() {
   const [searchValue, setSearchValue] = useState("");
   const [reserves, setReserves] = useState<ReserveType[]>([]);
-  const [isCreateReserveModalActive, setIsCreateReverveModalActive] =
-    useState(false);
+  const [isCreateReserveModalActive, setIsCreateReverveModalActive] = useState(false);
 
   useEffect(() => {
     loadReserves();
@@ -50,8 +49,7 @@ export default function ReserveClient() {
   const loadReserves = async () => {
     const res = await api.reservas.getAsync(getTokenHeader() || {});
 
-    // @ts-expect-error teste
-    if (res.data) setReserves(res.data.data);
+    if (res.data) setReserves(res.data);
   };
 
   function onOpenChange() {
@@ -61,8 +59,8 @@ export default function ReserveClient() {
   }
 
   const reserverFormat = reserves
-    .filter((reserve) => reserve.status === "ativo")
-    .map((reserve) => {
+    .filter(reserve => reserve.status === "ativo")
+    .map(reserve => {
       return {
         ...reserve,
         criado_em: new Date(reserve.criado_em).toLocaleDateString("pt-BR", {
@@ -89,12 +87,7 @@ export default function ReserveClient() {
       </Text>
       <Box className={stylesAdmin.adminFilterContainer}>
         <Box className={stylesAdmin.adminFilters}>
-          <Search
-            className={stylesAdmin.adminSearch}
-            value={searchValue}
-            setState={setSearchValue}
-            width={500}
-          />
+          <Search className={stylesAdmin.adminSearch} value={searchValue} setState={setSearchValue} width={500} />
           <Box className={stylesAdmin.adminSelectContainer}>
             {/* <Select
               options={reserves.map((value) => value.status)}
@@ -107,19 +100,12 @@ export default function ReserveClient() {
               width={200}
             /> */}
           </Box>
-          <Button
-            onClick={() => setIsCreateReverveModalActive(true)}
-            className={stylesAdmin.adminButton}
-            size="sm"
-            width={120}
-          >
+          <Button onClick={() => setIsCreateReverveModalActive(true)} className={stylesAdmin.adminButton} size="sm" width={120}>
             Cadastrar
           </Button>
         </Box>
         <Box className={stylesAdmin.adminOtherInformations}>
-          <Text color="gray400">
-            {reserves ? reserves.length : 0} produtos encontrados
-          </Text>
+          <Text color="gray400">{reserves ? reserves.length : 0} produtos encontrados</Text>
           <Box className={stylesAdmin.adminCleanFilters}>
             <Text color="primary300" weight="bold">
               Limpar filtros
@@ -128,12 +114,7 @@ export default function ReserveClient() {
           </Box>
         </Box>
       </Box>
-      <Table
-        items={reserverFormat}
-        columns={columns}
-        handleTrash={handleTrash}
-        handleEdit={handleEdit}
-      />
+      <Table items={reserverFormat} columns={columns} handleTrash={handleTrash} handleEdit={handleEdit} />
       <RegisterReserveModal
         open={isCreateReserveModalActive}
         onOpenChange={onOpenChange}

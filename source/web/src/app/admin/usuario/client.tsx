@@ -1,19 +1,16 @@
 "use client";
-import { Box } from "@/components/ui/box";
-import styles from "./user.module.css";
-import stylesAdmin from "../admin.module.css";
-import Table, { ColumnType } from "@/components/table";
-import { Text } from "@/components/ui/text";
-import Search from "@/components/search";
-import { useEffect, useState } from "react";
-import Select from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { api } from "@/lib/api";
 import { UserType } from "@/@types/user";
-import RegisterUserModal, {
-  PropsRegisterModalType,
-} from "@/components/register-modal";
+import RegisterUserModal, { PropsRegisterModalType } from "@/components/register-modal";
+import Search from "@/components/search";
+import Table, { ColumnType } from "@/components/table";
+import { Box } from "@/components/ui/box";
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+import { api } from "@/lib/api";
 import { getTokenHeader } from "@/lib/getTokenHeader";
+import { useEffect, useState } from "react";
+import stylesAdmin from "../admin.module.css";
+import styles from "./user.module.css";
 
 // type EditarAtributo<T, K extends keyof T, V> = Omit<T, K> & { [P in K]: V };
 
@@ -23,9 +20,7 @@ export default function UsuarioClient() {
   const [searchValue, setSearchValue] = useState("");
   const [users, setUsers] = useState<UserType[]>([]);
   const [isCreateUserModalActive, setIsCreateUserModalActive] = useState(false);
-  const [userEditProps, setUserEditProps] = useState<
-    Partial<PropsRegisterModalType>
-  >({});
+  const [userEditProps, setUserEditProps] = useState<Partial<PropsRegisterModalType>>({});
 
   useEffect(() => {
     console.log("teste");
@@ -61,11 +56,10 @@ export default function UsuarioClient() {
 
   const loadUsers = async () => {
     const res = await api.usuarios.getAsync(getTokenHeader()!);
-    // @ts-expect-error teste
-    if (res.data) setUsers(res.data.data);
+    if (res.data) setUsers(res.data);
   };
 
-  const userFormat = users.map((user) => {
+  const userFormat = users.map(user => {
     return {
       ...user,
     };
@@ -92,19 +86,9 @@ export default function UsuarioClient() {
       </Text>
       <Box className={stylesAdmin.adminFilterContainer}>
         <Box className={stylesAdmin.adminFilters}>
-          <Search
-            className={stylesAdmin.adminSearch}
-            value={searchValue}
-            setState={setSearchValue}
-            width={500}
-          />
+          <Search className={stylesAdmin.adminSearch} value={searchValue} setState={setSearchValue} width={500} />
 
-          <Button
-            className={stylesAdmin.adminButton}
-            size="sm"
-            width={120}
-            onClick={() => setIsCreateUserModalActive(true)}
-          >
+          <Button className={stylesAdmin.adminButton} size="sm" width={120} onClick={() => setIsCreateUserModalActive(true)}>
             Cadastrar
           </Button>
         </Box>
@@ -118,17 +102,8 @@ export default function UsuarioClient() {
           </Box>
         </Box>
       </Box>
-      <Table
-        items={userFormat}
-        columns={columns}
-        handleTrash={handleTrash}
-        handleEdit={handleEdit}
-      />
-      <RegisterUserModal
-        open={isCreateUserModalActive}
-        onOpenChange={onOpenChange}
-        {...userEditProps}
-      />
+      <Table items={userFormat} columns={columns} handleTrash={handleTrash} handleEdit={handleEdit} />
+      <RegisterUserModal open={isCreateUserModalActive} onOpenChange={onOpenChange} {...userEditProps} />
     </Box>
   );
 }

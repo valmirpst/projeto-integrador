@@ -1,7 +1,6 @@
 export function getTokenHeader() {
   const token = localStorage.getItem("token");
   if (!token) {
-    // throw new Error("Token not found in localStorage");
     return null;
   }
   return {
@@ -20,7 +19,7 @@ export function parseJwt(token: string) {
 
     // Decodifica o header e o payload de Base64 para JSON
     const decodedHeader = JSON.parse(atob(header));
-    const decodedPayload = JSON.parse(atob(payload));
+    const decodedPayload: { id: string; nome: string; email: string } = JSON.parse(atob(payload));
 
     return { header: decodedHeader, payload: decodedPayload };
   } catch (error) {

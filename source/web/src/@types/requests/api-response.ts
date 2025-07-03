@@ -1,12 +1,12 @@
 type SuccessResponse<T> = {
   success: true;
-  message: string;
+  errors?: undefined;
   data: T;
 };
 
 type ErrorResponse = {
   success: false;
-  message: string;
+  errors: string[];
   data?: null;
 };
 

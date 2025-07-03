@@ -35,7 +35,7 @@
   width: 271px;
   height: 58px;
 
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 700;
   font-size: 48px;
   line-height: 58px;
@@ -45,7 +45,7 @@
   width: 592px;
   height: 266px;
 
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 400;
   font-size: 16px;
   line-height: 19px;
@@ -64,4 +64,28 @@
 .iconeCompartilhar {
   width: 20px;
   height: 20px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.loading svg {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

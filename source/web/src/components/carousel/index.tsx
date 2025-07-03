@@ -1,21 +1,15 @@
 "use client";
 /** React */
-import {
-  HTMLAttributes,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { HTMLAttributes, useCallback, useEffect, useRef, useState } from "react";
 
 /** Types */
 import { BookType } from "@/@types/book";
 
 /** Components */
-import { Text } from "../ui/text";
-import { Box } from "../ui/box";
-import CarouselItem from "./corousel-item";
 import * as Icon from "phosphor-react";
+import { Box } from "../ui/box";
+import { Text } from "../ui/text";
+import CarouselItem from "./corousel-item";
 
 /** Styles */
 import { theme } from "@/theme";
@@ -55,13 +49,7 @@ type Props = HTMLAttributes<HTMLDivElement> & {
  * <Carousel title="Livros Populares" books={livros} />
  */
 export default function Carousel(props: Props) {
-  const {
-    title,
-    books,
-    scrollbarColor = theme.colors.gray200,
-    className,
-    ...rest
-  } = props;
+  const { title, books, scrollbarColor = theme.colors.gray200, className, ...rest } = props;
 
   const [moveActive, setMoveActive] = useState(false);
   const [moveStart, setMoveStart] = useState(0);
@@ -109,11 +97,11 @@ export default function Carousel(props: Props) {
     (moved: number) => {
       if (Math.abs(moved) > 40) {
         if (moved > 0 && currentStep < steps.length - 1) {
-          setCurrentStep((prev) => prev + 1);
+          setCurrentStep(prev => prev + 1);
           setMoveDistance(steps[currentStep + 1]);
           setPosition(steps[currentStep + 1]);
         } else if (moved < 0 && currentStep > 0) {
-          setCurrentStep((prev) => prev - 1);
+          setCurrentStep(prev => prev - 1);
           setMoveDistance(steps[currentStep - 1]);
           setPosition(steps[currentStep - 1]);
         } else {
@@ -146,9 +134,7 @@ export default function Carousel(props: Props) {
     if (!moveActive) return;
 
     const moved = moveStart - event.clientX;
-    const distance = position
-      ? position + moved * -amountMovement
-      : moved * -amountMovement;
+    const distance = position ? position + moved * -amountMovement : moved * -amountMovement;
 
     setMoveDistance(distance);
   }
@@ -173,18 +159,19 @@ export default function Carousel(props: Props) {
         onMouseDown={handleMouseDown}
         onMouseMove={moveActive ? handleMouseMove : undefined}
         onMouseUp={handleMouseUp}
-        onMouseEnter={(event) => {
+        onMouseEnter={event => {
           if (moveActive) {
             handleMouseUp(event);
             setMoveActive(false);
           }
         }}
-        onDragStart={(e) => e.preventDefault()}
+        onDragStart={e => e.preventDefault()}
       >
-        {books.map((book) => (
+        {books.map(book => (
           <CarouselItem
+            isbn={book.isbn}
             key={book.isbn}
-            src={book.caminho_img}
+            src={book.caminho_img || ""}
             title={book.titulo}
             width={itemWidth}
             height={340}

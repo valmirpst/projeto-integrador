@@ -19,12 +19,7 @@ export type PropsRegisterLivroModalType = {
   update?: boolean;
 };
 
-export default function RegisterLivroModal({
-  open,
-  onOpenChange,
-  formdata,
-  update,
-}: PropsRegisterLivroModalType) {
+export default function RegisterLivroModal({ open, onOpenChange, formdata, update }: PropsRegisterLivroModalType) {
   const [form, setForm] = useState<BookType>({
     isbn: "",
     titulo: "",
@@ -73,12 +68,9 @@ export default function RegisterLivroModal({
     };
   }, [formdata]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    id: string
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, id: string) => {
     const { value } = e.target;
-    setForm((prev) => ({ ...prev, [id]: value }));
+    setForm(prev => ({ ...prev, [id]: value }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +81,7 @@ export default function RegisterLivroModal({
       formDataImg.append("book_cover", file);
       setFormdataImg(formDataImg);
 
-      setForm((prev) => ({
+      setForm(prev => ({
         ...prev,
         caminho_img: URL.createObjectURL(e.target.files![0]),
       }));
@@ -97,9 +89,7 @@ export default function RegisterLivroModal({
   };
 
   const handleSubmitChange = async () => {
-    const isValid = Object.values(form).every(
-      (value) => value !== "" && value !== null
-    );
+    const isValid = Object.values(form).every(value => value !== "" && value !== null);
 
     if (isValid) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -117,19 +107,13 @@ export default function RegisterLivroModal({
       }
 
       const myHeaders = new Headers();
-      myHeaders.append(
-        "Authorization",
-        `Bearer ${localStorage.getItem("token")}`
-      );
+      myHeaders.append("Authorization", `Bearer ${localStorage.getItem("token")}`);
 
-      await fetch(
-        `http://localhost:3333/api/livros/${formWithoutImg.isbn}/upload`,
-        {
-          method: "POST",
-          headers: myHeaders,
-          body: formdataImg,
-        }
-      );
+      await fetch(`http://localhost:3333/api/livros/${formWithoutImg.isbn}/upload`, {
+        method: "POST",
+        headers: myHeaders,
+        body: formdataImg,
+      });
       setForm({
         isbn: "",
         titulo: "",
@@ -152,7 +136,7 @@ export default function RegisterLivroModal({
   function handleAutor(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     e.target.blur();
-    setForm((prev) => ({ ...form, autores: [...prev.autores, value] }));
+    setForm(prev => ({ ...form, autores: [...prev.autores, value] }));
     setAutor("");
   }
 
@@ -160,7 +144,7 @@ export default function RegisterLivroModal({
     const value = e.target.value;
 
     e.target.blur();
-    setForm((prev) => ({
+    setForm(prev => ({
       ...form,
       categorias: [...prev.categorias, { nome: value, tipo: "categoria" }],
     }));
@@ -171,7 +155,7 @@ export default function RegisterLivroModal({
     const value = e.target.value;
 
     e.target.blur();
-    setForm((prev) => ({
+    setForm(prev => ({
       ...form,
       categorias: [...prev.categorias, { nome: value, tipo: "subcategoria" }],
     }));
@@ -183,53 +167,20 @@ export default function RegisterLivroModal({
       <Dialog.Content width={800} className={styles.modalContainer}>
         <Box className={styles.modalContent}>
           <Box className={styles.modalInputs}>
-            <Dialog.Title className={styles.modalTitle}>
-              Registrar Livro
-            </Dialog.Title>
+            <Dialog.Title className={styles.modalTitle}>Registrar Livro</Dialog.Title>
             <Dialog.Close />
             <Box className={styles.row}>
-              <Input
-                id="isbn"
-                label="ISBN"
-                value={form.isbn}
-                onChange={(e) => handleChange(e, "isbn")}
-              />
-              <Input
-                id="titulo"
-                label="Título"
-                value={form.titulo}
-                onChange={(e) => handleChange(e, "titulo")}
-              />
+              <Input id="isbn" label="ISBN" value={form.isbn} onChange={e => handleChange(e, "isbn")} />
+              <Input id="titulo" label="Título" value={form.titulo} onChange={e => handleChange(e, "titulo")} />
             </Box>
             <Box className={styles.row}>
-              <Input
-                id="edicao"
-                label="Edição"
-                value={form.edicao}
-                onChange={(e) => handleChange(e, "edicao")}
-              />
-              <Input
-                id="genero"
-                label="Gênero"
-                value={form.genero}
-                onChange={(e) => handleChange(e, "genero")}
-              />
+              <Input id="edicao" label="Edição" value={form.edicao} onChange={e => handleChange(e, "edicao")} />
+              <Input id="genero" label="Gênero" value={form.genero} onChange={e => handleChange(e, "genero")} />
             </Box>
-            <Input
-              id="editora"
-              label="Editora"
-              value={form.editora}
-              onChange={(e) => handleChange(e, "editora")}
-            />
+            <Input id="editora" label="Editora" value={form.editora} onChange={e => handleChange(e, "editora")} />
             <Box>
               <Box style={{ marginBottom: "1rem" }}>
-                <Input
-                  id="autores"
-                  label="Autores"
-                  onBlur={handleAutor}
-                  value={autor}
-                  onChange={(e) => setAutor(e.target.value)}
-                />
+                <Input id="autores" label="Autores" onBlur={handleAutor} value={autor} onChange={e => setAutor(e.target.value)} />
                 <Text>{form.autores.join(" - ")}</Text>
               </Box>
               <Box style={{ marginBottom: "1rem" }}>
@@ -238,12 +189,12 @@ export default function RegisterLivroModal({
                   label="Categorias"
                   onBlur={handleCategoria}
                   value={categoria}
-                  onChange={(e) => setCategoria(e.target.value)}
+                  onChange={e => setCategoria(e.target.value)}
                 />
                 <Text>
                   {form.categorias
-                    .filter((value) => value.tipo === "categoria")
-                    .map((value) => value.nome)
+                    .filter(value => value.tipo === "categoria")
+                    .map(value => value.nome)
                     .join(" - ")}
                 </Text>
               </Box>
@@ -253,12 +204,12 @@ export default function RegisterLivroModal({
                   label="Sub-categorias"
                   onBlur={handleSubCategoria}
                   value={subCategoria}
-                  onChange={(e) => setSubCategoria(e.target.value)}
+                  onChange={e => setSubCategoria(e.target.value)}
                 />
                 <Text>
                   {form.categorias
-                    .filter((value) => value.tipo === "subcategoria")
-                    .map((value) => value.nome)
+                    .filter(value => value.tipo === "subcategoria")
+                    .map(value => value.nome)
                     .join(" - ")}
                 </Text>
               </Box>
@@ -271,7 +222,7 @@ export default function RegisterLivroModal({
                 id="descricao"
                 className={styles.textarea}
                 value={form.descricao}
-                onChange={(e) => handleChange(e, "descricao")}
+                onChange={e => handleChange(e, "descricao")}
               />
             </Box>
             <Box className={styles.footer}>
@@ -284,8 +235,8 @@ export default function RegisterLivroModal({
                 min={1}
                 className={styles.inputSmall}
                 value={form.qtd_disponivel}
-                onChange={(e) =>
-                  setForm((prev) => ({
+                onChange={e =>
+                  setForm(prev => ({
                     ...prev,
                     qtd_disponivel: parseInt(e.target.value),
                   }))
@@ -301,12 +252,7 @@ export default function RegisterLivroModal({
               width={220}
               height={300}
             />
-            <input
-              id="img"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
+            <input id="img" type="file" accept="image/*" onChange={handleImageChange} />
           </Box>
         </Box>
 
@@ -314,9 +260,7 @@ export default function RegisterLivroModal({
           <Dialog.Close asChild>
             <Button variant="tertiary">Cancelar</Button>
           </Dialog.Close>
-          <Button onClick={handleSubmitChange}>
-            {update ? "Atualizar livro" : "Adicionar livro"}
-          </Button>
+          <Button onClick={handleSubmitChange}>{update ? "Atualizar livro" : "Adicionar livro"}</Button>
         </Dialog.Actions>
       </Dialog.Content>
     </Dialog.Root>

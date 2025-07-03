@@ -1,35 +1,30 @@
 "use client";
-import { Box } from "@/components/ui/box";
-import styles from "./livro.module.css";
-import stylesAdmin from "../admin.module.css";
-import Table, { ColumnType } from "@/components/table";
 import { BookType } from "@/@types/book";
-import { Text } from "@/components/ui/text";
+import RegisterLivroModal, { PropsRegisterLivroModalType } from "@/components/register-livro-modal";
 import Search from "@/components/search";
-import { useEffect, useState } from "react";
-import Select from "@/components/ui/select";
+import Table, { ColumnType } from "@/components/table";
+import { Box } from "@/components/ui/box";
 import { Button } from "@/components/ui/button";
-import RegisterLivroModal, {
-  PropsRegisterLivroModalType,
-} from "@/components/register-livro-modal";
+import Select from "@/components/ui/select";
+import { Text } from "@/components/ui/text";
 import { api } from "@/lib/api";
 import { getTokenHeader } from "@/lib/getTokenHeader";
+import { useEffect, useState } from "react";
+import stylesAdmin from "../admin.module.css";
+import styles from "./livro.module.css";
 
 export default function LivroClient() {
   const [books, setBooks] = useState<BookType[]>([]);
   const [searchValue, setSearchValue] = useState("");
   const [isCreateBookModalActive, setIsCreateBookModalActive] = useState(false);
-  const [livroEditProps, setLivroEditProps] = useState<
-    Partial<PropsRegisterLivroModalType>
-  >({});
+  const [livroEditProps, setLivroEditProps] = useState<Partial<PropsRegisterLivroModalType>>({});
   const [categoriasFilter, setCategoriasFilter] = useState<string[]>([]);
   const [autoresFilter, setAutoresFilter] = useState<string[]>([]);
 
   const loadBooks = async () => {
     const res = await api.livros.getAsync(getTokenHeader()!);
 
-    // @ts-expect-error teste
-    if (res.data) setBooks(res.data.data);
+    if (res.data) setBooks(res.data);
   };
 
   useEffect(() => {
@@ -93,14 +88,11 @@ export default function LivroClient() {
     ),
   ];
 
-  const filteredBooks = books.filter((value) => {
+  const filteredBooks = books.filter(value => {
     if (
-      (autoresFilter.length === 0 ||
-        value.autores.some((autor) => autoresFilter.includes(autor))) &&
+      (autoresFilter.length === 0 || value.autores.some(autor => autoresFilter.includes(autor))) &&
       (categoriasFilter.length === 0 ||
-        value.categorias
-          .map((value) => value.nome)
-          .some((categoria) => categoriasFilter.includes(categoria))) &&
+        value.categorias.map(value => value.nome).some(categoria => categoriasFilter.includes(categoria))) &&
       value.titulo.toLowerCase().startsWith(searchValue.toLowerCase())
     ) {
       return true;
@@ -110,7 +102,7 @@ export default function LivroClient() {
   const categorias = [
     ...new Set(
       books.reduce((acc, value) => {
-        return [...acc, ...value.categorias.map((value) => value.nome)];
+        return [...acc, ...value.categorias.map(value => value.nome)];
       }, [] as string[])
     ),
   ];
@@ -127,34 +119,24 @@ export default function LivroClient() {
         </Text>
         <Box className={stylesAdmin.adminFilterContainer}>
           <Box className={stylesAdmin.adminFilters}>
-            <Search
-              className={stylesAdmin.adminSearch}
-              value={searchValue}
-              setState={setSearchValue}
-              width={500}
-            />
+            <Search className={stylesAdmin.adminSearch} value={searchValue} setState={setSearchValue} width={500} />
             <Box className={stylesAdmin.adminSelectContainer}>
               <Select
                 options={categorias}
                 label="Categoria"
                 width={200}
                 activeValues={categoriasFilter}
-                handleChange={(values) => setCategoriasFilter(values)}
+                handleChange={values => setCategoriasFilter(values)}
               />
               <Select
                 options={autores}
                 label="Autores"
                 width={200}
                 activeValues={autoresFilter}
-                handleChange={(values) => setAutoresFilter(values)}
+                handleChange={values => setAutoresFilter(values)}
               />
             </Box>
-            <Button
-              className={stylesAdmin.adminButton}
-              size="sm"
-              width={120}
-              onClick={() => setIsCreateBookModalActive(true)}
-            >
+            <Button className={stylesAdmin.adminButton} size="sm" width={120} onClick={() => setIsCreateBookModalActive(true)}>
               Cadastrar
             </Button>
           </Box>
@@ -168,19 +150,9 @@ export default function LivroClient() {
             </Box>
           </Box>
         </Box>
-        <Table
-          items={filteredBooks}
-          columns={columns}
-          handleTrash={handleTrash}
-          handleEdit={handleEdit}
-          type="book"
-        />
+        <Table items={filteredBooks} columns={columns} handleTrash={handleTrash} handleEdit={handleEdit} type="book" />
       </Box>
-      <RegisterLivroModal
-        open={isCreateBookModalActive}
-        onOpenChange={onOpenChange}
-        {...livroEditProps}
-      />
+      <RegisterLivroModal open={isCreateBookModalActive} onOpenChange={onOpenChange} {...livroEditProps} />
     </>
   );
 }
