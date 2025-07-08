@@ -71,6 +71,9 @@ src/
 
 ## Membros do Grupo
 
-- **Aluno 1**: Valmir Paiva Stachin - [GitHub](https://github.com/valmirpst)
-- **Aluno 2**: Matheus Teodoro Garcia - [GitHub](https://github.com/matheustg)
-- **Aluno 3**: Amanda Soares Vieira - [GitHub](https://github.com/amandasoaresv)
+| **Nome**               | **GitHub**                                         |
+|------------------------|----------------------------------------------------|
+| Amanda Soares Vieira   | [GitHub](https://github.com/amandasoaresv)         |
+| Matheus Teodoro Garcia | [GitHub](https://github.com/matheustg)             |
+| Valmir Paiva Stachin   | [GitHub](https://github.com/valmirpst)             |
+
