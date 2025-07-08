@@ -1,6 +1,6 @@
 # Projeto Integrador - M34 2025
 
-## 💼 Integrantes
+## 👨‍💻 Integrantes
 
 `Amanda Soares Vieira` `Matheus Teodoro Garcia` `Valmir Paiva Stachin`
 
