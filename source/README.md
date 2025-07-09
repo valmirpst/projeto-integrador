@@ -1,22 +1,30 @@
-# Projeto Integrador - API Livraria
+# 📚 Projeto Integrador - API Livraria
 
-Esta é a API do Projeto Integrador (M34 - 2025), responsável pelo gerenciamento de livros, usuários, históricos de empréstimos e cursos de uma biblioteca acadêmica.
+Esta é a API do Projeto Integrador M34 - 2025, responsável pelo gerenciamento de livros, usuários, históricos de empréstimos e cursos de uma biblioteca acadêmica.
 
-## Funcionalidades
+---
 
-- Cadastro, consulta, atualização e remoção de **livros**
-- Gerenciamento de **usuários** (alunos, professores, bibliotecários)
-- Controle de **histórico** de empréstimos e devoluções
-- Cadastro e consulta de **cursos**
-- Filtros e buscas avançadas
+## 🚀 Funcionalidades
 
-## Tecnologias
+- 📖 Cadastro, consulta, atualização e remoção de **livros**
+- 👤 Gerenciamento de **usuários** (alunos, professores, bibliotecários)
+- 📄 Controle de **empréstimos** e **devoluções**
+- ✍️ Cadastro e consulta de **cursos**
+- 🔍 **Filtros** e **buscas avançadas**
 
-- Node.js + Express
-- PostgreSQL
-- Swagger (OpenAPI 3.0) para documentação interativa
+---
 
-## Como rodar
+
+## 🛠️ Tecnologias Utilizadas
+
+- [Node.js](https://nodejs.org/)
+- [Express](https://expressjs.com/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Swagger (OpenAPI 3.0)](https://swagger.io/specification/) — documentação interativa
+
+---
+
+## ⚙️ Como Executar o Projeto
 
 1. **Instale as dependências:**
 
@@ -44,7 +52,7 @@ Esta é a API do Projeto Integrador (M34 - 2025), responsável pelo gerenciament
 
 ---
 
-## Documentação Swagger
+📘 Documentação Swagger
 
 A API possui documentação interativa gerada automaticamente via Swagger.
 
@@ -56,7 +64,7 @@ Você também pode acessar o JSON da especificação em:
 
 ---
 
-## Estrutura de Pastas
+## 📁 Estrutura de Pastas
 
 ```
 src/
@@ -69,7 +77,7 @@ src/
 
 ---
 
-## Membros do Grupo
+## 👨‍💻 Membros do Grupo
 
 | **Nome**               | **GitHub**                                         |
 |------------------------|----------------------------------------------------|
